@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Switch as ToggleSwitch } from "@/components/ui/switch";
 import { ProfileCard } from "@/components/ProfileCard";
 import { Header } from "@/components/Header";
+import { usePageMeta } from "@/lib/meta";
 
 export default function ProfilePage() {
   const params = useParams<{ username: string }>();
@@ -48,6 +49,14 @@ export default function ProfilePage() {
   });
 
   const isMine = !!myProfile && !!profile && myProfile.id === profile.id;
+
+  usePageMeta({
+    title: profile
+      ? `@${profile.username} — ${profile.archetypeTitle} · Design Blend`
+      : "Design Blend",
+    description: profile?.archetypeDescription,
+    ogDescription: profile?.archetypeDescription,
+  });
 
   function generateInvite() {
     createInvite.mutate(undefined as never, {
@@ -135,6 +144,15 @@ export default function ProfilePage() {
           <p className="mt-3 text-muted-foreground text-lg">
             {profile.archetypeTitle}
           </p>
+          {profile.confidence < 0.6 && (
+            <div
+              className="mt-4 inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-3 py-1 text-xs text-amber-700 dark:text-amber-400"
+              data-testid="text-low-confidence"
+            >
+              <Sparkles className="h-3 w-3" />
+              Low-confidence read — take a few more questions to sharpen this fingerprint.
+            </div>
+          )}
 
           <div className="mt-10 grid lg:grid-cols-[auto,1fr] gap-10 items-start">
             <div className="flex justify-center lg:justify-start">

@@ -43,6 +43,18 @@ export default function QuizRatePage() {
 
   const submitRating = useSubmitRating();
   const completeSession = useCompleteQuizSession();
+
+  // Prefetch the next style image once the current node is loaded so swiping feels instant.
+  // We can't know the next node's URL ahead of time (server picks adaptively), but we can
+  // warm the browser cache for it as soon as the new "next" payload arrives.
+  const prefetchedRef = useRef<Set<string>>(new Set());
+  useEffect(() => {
+    const url = nextData?.node?.imageUrl;
+    if (!url || prefetchedRef.current.has(url)) return;
+    prefetchedRef.current.add(url);
+    const img = new Image();
+    img.src = url;
+  }, [nextData?.node?.imageUrl]);
   const [completing, setCompleting] = useState(false);
 
   const node = nextData?.node ?? null;

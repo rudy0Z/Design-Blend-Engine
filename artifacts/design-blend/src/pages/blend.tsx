@@ -9,24 +9,54 @@ import {
 import { Button } from "@/components/ui/button";
 import { Header } from "@/components/Header";
 import { AXIS_DEFS } from "@/lib/fields";
+import { usePageMeta } from "@/lib/meta";
 
 export default function BlendPage() {
   const params = useParams<{ userA: string; userB: string }>();
   const { userA, userB } = params;
+  const isSelfBlend = userA && userB && userA.toLowerCase() === userB.toLowerCase();
   const cardRef = useRef<HTMLDivElement>(null);
   const [exporting, setExporting] = useState(false);
   const [actionMsg, setActionMsg] = useState<string | null>(null);
+
+  usePageMeta({
+    title: `@${userA} × @${userB} — Design Blend`,
+    description: "See how these two designers' tastes overlap and diverge.",
+  });
 
   const { data: blend, isLoading, error } = useGetBlendByUsers(
     userA,
     userB,
     {
       query: {
-        enabled: !!userA && !!userB,
+        enabled: !!userA && !!userB && !isSelfBlend,
         queryKey: getGetBlendByUsersQueryKey(userA, userB),
       },
     },
   );
+
+  if (isSelfBlend) {
+    return (
+      <>
+        <Header />
+        <div className="min-h-screen flex items-center justify-center p-6">
+          <div className="text-center max-w-md" data-testid="text-self-blend">
+            <p className="font-semibold text-foreground">
+              You can't blend with yourself.
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Send your invite link to another designer to see how your tastes overlap.
+            </p>
+            <Link href={`/profile/${userA}`}>
+              <Button className="mt-6" data-testid="button-back-profile">
+                Back to my profile
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   async function downloadCard() {
     if (!cardRef.current) return;

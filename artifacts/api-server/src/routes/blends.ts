@@ -18,6 +18,7 @@ import {
 import { randomBytes } from "node:crypto";
 import { makeId } from "../lib/ids";
 import { AXIS_KEYS, cosineSimilarityVector } from "../lib/scoring";
+import { generateCollaborationLine } from "../lib/gemini";
 import {
   requireAuth,
   getUserIdOrNull,
@@ -189,8 +190,10 @@ async function computeBlend(a: Profile, b: Profile) {
     scoreB: b.styleVector[n.id] ?? 0,
   }));
 
-  const pct = Math.round(((similarity + 1) / 2) * 100);
-  const collaborationLine = `${a.archetypeTitle} × ${b.archetypeTitle}: a ${pct}% blend that would ship together.`;
+  const collaborationLine = await generateCollaborationLine(
+    { title: a.archetypeTitle, description: a.archetypeDescription },
+    { title: b.archetypeTitle, description: b.archetypeDescription },
+  );
 
   return {
     id: makeId("bl"),
