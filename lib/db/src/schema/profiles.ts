@@ -20,6 +20,7 @@ export const profilesTable = pgTable(
     axes: jsonb("axes").$type<AxisScores>().notNull(),
     styleVector: jsonb("style_vector").$type<StyleVector>().notNull(),
     topStyles: text("top_styles").array().notNull().default([]),
+    fieldDistribution: jsonb("field_distribution").$type<Record<string, number>>().notNull().default({}),
     confidence: real("confidence").notNull().default(0),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true })

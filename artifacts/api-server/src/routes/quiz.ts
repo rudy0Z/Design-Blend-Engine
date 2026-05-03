@@ -24,6 +24,7 @@ import {
   scoreAxes,
   pickArchetype,
   styleVectorFromAxes,
+  getFieldDistribution,
 } from "../lib/scoring";
 import { loadGraph } from "../lib/graph";
 import {
@@ -138,12 +139,15 @@ router.get("/quiz/sessions/:id/next", async (req, res): Promise<void> => {
     return;
   }
 
-  // Persist the traversal entry so /ratings can record the actual reason it was served.
+  // Persist the traversal entry + any switchCount/fieldsCovered changes the engine made
+  // while selecting this node, so /ratings doesn't lose them when it rebuilds state.
   if (!session.traversalPath.find((t) => t.nodeId === next.node.id)) {
     await db
       .update(quizSessionsTable)
       .set({
         traversalPath: [...session.traversalPath, { nodeId: next.node.id, reason: next.reason }],
+        switchCount: state.switchCount,
+        fieldsCovered: state.fieldsCovered,
       })
       .where(eq(quizSessionsTable.id, p.data.id));
   }
@@ -206,7 +210,8 @@ router.post("/quiz/sessions/:id/ratings", async (req, res): Promise<void> => {
   const ratings = [...filteredRatings, newRating];
 
   // Rebuild the axis distribution from scratch over the full updated ratings list to
-  // avoid double-counting when a rating is replaced.
+  // avoid double-counting when a rating is replaced. switchCount is preserved from the
+  // session because it accumulates from /next traversal decisions, not from ratings.
   const rebuiltState = deserializeEngine({
     axisDistribution: null,
     ratings: [],
@@ -224,6 +229,8 @@ router.post("/quiz/sessions/:id/ratings", async (req, res): Promise<void> => {
     rating: r.rating,
     responseTimeMs: r.responseTimeMs,
   }));
+  // Preserve switchCount accumulated by /next moves.
+  rebuiltState.switchCount = session.switchCount;
 
   const visited = session.visitedNodes.includes(body.data.nodeId)
     ? session.visitedNodes
@@ -277,6 +284,7 @@ router.post("/quiz/sessions/:id/complete", async (req, res): Promise<void> => {
     .sort(([, a], [, b]) => b - a)
     .slice(0, 5)
     .map(([id]) => id);
+  const fieldDistribution = getFieldDistribution(session.ratings, byId);
 
   const profileId = session.profileId ?? makeId("p");
   const username = makeUsername(arch.id);
@@ -293,6 +301,7 @@ router.post("/quiz/sessions/:id/complete", async (req, res): Promise<void> => {
       axes,
       styleVector,
       topStyles,
+      fieldDistribution,
       confidence: arch.confidence,
     })
     .onConflictDoUpdate({
@@ -305,6 +314,7 @@ router.post("/quiz/sessions/:id/complete", async (req, res): Promise<void> => {
         axes,
         styleVector,
         topStyles,
+        fieldDistribution,
         confidence: arch.confidence,
       },
     })

@@ -14,6 +14,7 @@ export * from "./healthStatus";
 export * from "./listStylesParams";
 export * from "./nextStyleResponse";
 export * from "./profile";
+export * from "./profileFieldDistribution";
 export * from "./profileStyleVector";
 export * from "./quizSession";
 export * from "./rating";

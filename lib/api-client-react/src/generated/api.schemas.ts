@@ -92,6 +92,8 @@ export interface NextStyleResponse {
 
 export type ProfileStyleVector = { [key: string]: number };
 
+export type ProfileFieldDistribution = { [key: string]: number };
+
 export interface Profile {
   id: string;
   /** @nullable */
@@ -106,6 +108,7 @@ export interface Profile {
   axes: AxisScores;
   styleVector: ProfileStyleVector;
   topStyles: string[];
+  fieldDistribution: ProfileFieldDistribution;
   confidence: number;
   createdAt: string;
   updatedAt: string;

@@ -89,11 +89,12 @@ export function shouldTerminate(
   const asked = state.history.length;
   const beliefs = Object.values(state.axisDistribution);
   const allConfident = beliefs.every((a) => a.confidence > 0.75);
-  if (allConfident && asked >= 12) return { reason: "complete", questionsAsked: asked };
+  if (allConfident) return { reason: "complete", questionsAsked: asked };
   if (asked >= 60) return { reason: "max_reached", questionsAsked: asked };
-  if (asked >= totalTarget) return { reason: "target_reached", questionsAsked: asked };
   const enoughData = asked >= 20 && beliefs.filter((a) => a.confidence > 0.6).length >= 6;
   if (enoughData) return { reason: "viable_profile", questionsAsked: asked };
+  // totalTarget is informational (drives /next progress %); spec doesn't mandate hard stop.
+  void totalTarget;
   return false;
 }
 

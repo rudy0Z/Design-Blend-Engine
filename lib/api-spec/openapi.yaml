@@ -387,6 +387,9 @@ components:
         topStyles:
           type: array
           items: { type: string }
+        fieldDistribution:
+          type: object
+          additionalProperties: { type: number }
         confidence: { type: number }
         createdAt: { type: string, format: date-time }
         updatedAt: { type: string, format: date-time }
@@ -400,6 +403,7 @@ components:
         - axes
         - styleVector
         - topStyles
+        - fieldDistribution
         - confidence
         - createdAt
         - updatedAt

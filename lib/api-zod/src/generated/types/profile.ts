@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { AxisScores } from "./axisScores";
+import type { ProfileFieldDistribution } from "./profileFieldDistribution";
 import type { ProfileStyleVector } from "./profileStyleVector";
 
 export interface Profile {
@@ -22,6 +23,7 @@ export interface Profile {
   axes: AxisScores;
   styleVector: ProfileStyleVector;
   topStyles: string[];
+  fieldDistribution: ProfileFieldDistribution;
   confidence: number;
   createdAt: Date;
   updatedAt: Date;
