@@ -110,10 +110,15 @@ export function informationGain(node: StyleNode, state: EngineState): number {
   return gain;
 }
 
-function ratableOnly(nodes: StyleNode[], state: EngineState, allowedFields?: string[]): StyleNode[] {
+function ratableOnly(
+  nodes: StyleNode[],
+  state: EngineState,
+  allowedFields?: string[],
+  minDepth = 3,
+): StyleNode[] {
   const rated = new Set(state.history.map((h) => h.nodeId));
   return nodes.filter(
-    (n) => n.depth >= 3 && !rated.has(n.id) && (!allowedFields || allowedFields.length === 0 || allowedFields.includes(n.field)),
+    (n) => n.depth >= minDepth && !rated.has(n.id) && (!allowedFields || allowedFields.length === 0 || allowedFields.includes(n.field)),
   );
 }
 
@@ -264,10 +269,12 @@ function switchField(state: EngineState, graph: GraphSnapshot, allowed: string[]
   );
   candidateFields.sort((a, b) => Number(state.fieldsCovered.includes(a)) - Number(state.fieldsCovered.includes(b)));
   for (const f of candidateFields) {
+    // Field-switch starts broad: allow depth-2 probes (override the default depth>=3 filter).
     const candidates = ratableOnly(
       getAllNodes(graph).filter((n) => n.field === f && n.depth === 2),
       state,
       allowed,
+      2,
     );
     if (candidates.length > 0) {
       candidates.sort((a, b) => informationGain(b, state) - informationGain(a, state));

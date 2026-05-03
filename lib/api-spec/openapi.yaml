@@ -352,6 +352,10 @@ components:
           type: number
           minimum: 0
           maximum: 100
+        responseTimeMs:
+          type: number
+          minimum: 0
+          description: Time in ms between showing the style and the user submitting a rating. Used for gut-reaction weighting.
       required: [nodeId, rating]
 
     NextStyleResponse:

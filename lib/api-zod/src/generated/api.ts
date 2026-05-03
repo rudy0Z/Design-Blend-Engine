@@ -159,12 +159,21 @@ export const SubmitRatingParams = zod.object({
 export const submitRatingBodyRatingMin = 0;
 export const submitRatingBodyRatingMax = 100;
 
+export const submitRatingBodyResponseTimeMsMin = 0;
+
 export const SubmitRatingBody = zod.object({
   nodeId: zod.string(),
   rating: zod
     .number()
     .min(submitRatingBodyRatingMin)
     .max(submitRatingBodyRatingMax),
+  responseTimeMs: zod
+    .number()
+    .min(submitRatingBodyResponseTimeMsMin)
+    .optional()
+    .describe(
+      "Time in ms between showing the style and the user submitting a rating. Used for gut-reaction weighting.",
+    ),
 });
 
 export const SubmitRatingResponse = zod.object({

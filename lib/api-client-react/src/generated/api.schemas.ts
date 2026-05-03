@@ -80,6 +80,11 @@ export interface RatingBody {
    * @maximum 100
    */
   rating: number;
+  /**
+   * Time in ms between showing the style and the user submitting a rating. Used for gut-reaction weighting.
+   * @minimum 0
+   */
+  responseTimeMs?: number;
 }
 
 export interface NextStyleResponse {

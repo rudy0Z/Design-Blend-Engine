@@ -16,7 +16,12 @@ export type AxisKey = (typeof AXIS_KEYS)[number];
 const NEUTRAL_AXES: AxisScores = Object.fromEntries(AXIS_KEYS.map((k) => [k, 50])) as AxisScores;
 const clamp01_100 = (n: number) => Math.max(0, Math.min(100, Math.round(n)));
 
-/** Convert raw rating (stars 0..5 → slider, or slider 0..100). */
+/**
+ * Normalize a raw rating into 0..100 slider space.
+ * Accepts either a star value (0..5, mapped to 0/20/40/60/80/100) OR a slider value (0..100).
+ * Used by quiz-ingestion code paths that accept star input; the API contract today
+ * accepts slider directly so this is a helper for forthcoming UI flows.
+ */
 export function normalizeRating(stars: number | null | undefined, slider: number | null | undefined): number {
   if (typeof slider === "number") return Math.max(0, Math.min(100, slider));
   const map: Record<number, number> = { 0: 0, 1: 20, 2: 40, 3: 60, 4: 80, 5: 100 };
