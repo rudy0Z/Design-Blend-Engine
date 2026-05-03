@@ -82,15 +82,11 @@ router.get("/quiz/sessions/:id/next", async (req, res): Promise<void> => {
     return;
   }
 
-  const fieldFilter = session.selectedFields.length > 0
-    ? inArray(styleNodesTable.field, session.selectedFields)
-    : undefined;
-  const visitedFilter = session.visitedNodes.length > 0
-    ? notInArray(styleNodesTable.id, session.visitedNodes)
-    : undefined;
-  const where = fieldFilter && visitedFilter
-    ? and(fieldFilter, visitedFilter)
-    : (fieldFilter ?? visitedFilter);
+  // Quiz only asks about leaf style nodes (depth=3); domain/field parents are graph-only.
+  const filters = [eq(styleNodesTable.depth, 3)];
+  if (session.selectedFields.length > 0) filters.push(inArray(styleNodesTable.field, session.selectedFields));
+  if (session.visitedNodes.length > 0) filters.push(notInArray(styleNodesTable.id, session.visitedNodes));
+  const where = filters.length === 1 ? filters[0] : and(...filters);
 
   const candidates = where
     ? await db.select().from(styleNodesTable).where(where)

@@ -430,48 +430,125 @@ const rows: SeedRow[] = [
     neighbors: ["gd_swiss_intl", "gd_geometric_mark", "ui_grid_strict"], contrasts: ["gd_punk_zine"], popularity: 0.55 },
 ];
 
-// All seeded nodes are leaf "style" nodes (depth 3 in the field→domain→style hierarchy).
-const NODE_DEPTH = 3;
+// Field → domain → style hierarchy. Field=depth 1, Domain=depth 2, Style=depth 3.
+const STYLE_DEPTH = 3;
+const DOMAIN_DEPTH = 2;
+const FIELD_DEPTH = 1;
 
 const fieldOf = new Map(rows.map((r) => [r.id, r.field]));
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
+const domainParentId = (field: string, domain: string) => `${field}__${slug(domain)}`;
+const fieldParentId = (field: string) => `field__${field}`;
 
-export const styleNodes: InsertStyleNode[] = rows.map((r) => ({
+const FIELD_LABEL: Record<string, string> = { ui: "UI / UX Design", gd: "Graphic Design" };
+
+// Build leaf style nodes with parent references to their domain parent
+const leafNodes: InsertStyleNode[] = rows.map((r) => ({
   id: r.id,
   label: r.label,
   field: r.field,
   domain: r.domain,
-  depth: NODE_DEPTH,
+  depth: STYLE_DEPTH,
   visualCharacter: r.visualCharacter,
   referencePoint: r.referencePoint ?? "",
   imageUrl: img(r.domain, r.id),
   axisLoadings: axes(r.ax),
-  parent: r.parent ?? null,
+  parent: r.parent ?? domainParentId(r.field, r.domain),
   children: r.children ?? [],
   neighbors: r.neighbors ?? [],
   contrasts: r.contrasts ?? [],
   popularity: r.popularity ?? 0.5,
 }));
 
+// Group leaves by (field, domain) to build domain-level parents and to compute
+// each domain's child list + averaged axis loadings.
+const domainGroups = new Map<string, { field: string; domain: string; children: InsertStyleNode[] }>();
+for (const n of leafNodes) {
+  const key = domainParentId(n.field, n.domain);
+  const g = domainGroups.get(key) ?? { field: n.field, domain: n.domain, children: [] };
+  g.children.push(n);
+  domainGroups.set(key, g);
+}
+
+const NEUTRAL_AXES = axes([0, 0, 0, 0, 0, 0, 0, 0]);
+function avgAxes(items: InsertStyleNode[]): InsertStyleNode["axisLoadings"] {
+  if (items.length === 0) return NEUTRAL_AXES;
+  const out: Record<string, number> = {};
+  for (const k of AXIS_KEYS) {
+    out[k] = items.reduce((s, n) => s + (n.axisLoadings as Record<string, number>)[k], 0) / items.length;
+  }
+  return out as InsertStyleNode["axisLoadings"];
+}
+
+const domainNodes: InsertStyleNode[] = Array.from(domainGroups.entries()).map(([id, g]) => ({
+  id,
+  label: g.domain,
+  field: g.field,
+  domain: g.domain,
+  depth: DOMAIN_DEPTH,
+  visualCharacter: `${g.domain} — domain grouping for ${FIELD_LABEL[g.field] ?? g.field}.`,
+  referencePoint: "",
+  imageUrl: img(g.domain, id),
+  axisLoadings: avgAxes(g.children),
+  parent: fieldParentId(g.field),
+  children: g.children.map((c) => c.id),
+  neighbors: [],
+  contrasts: [],
+  popularity: 0.4,
+}));
+
+// Field-level parents (depth 1)
+const fields = Array.from(new Set(rows.map((r) => r.field)));
+const fieldNodes: InsertStyleNode[] = fields.map((f) => {
+  const fieldDomains = domainNodes.filter((d) => d.field === f);
+  return {
+    id: fieldParentId(f),
+    label: FIELD_LABEL[f] ?? f.toUpperCase(),
+    field: f,
+    domain: FIELD_LABEL[f] ?? f,
+    depth: FIELD_DEPTH,
+    visualCharacter: `${FIELD_LABEL[f] ?? f} — top-level field root.`,
+    referencePoint: "",
+    imageUrl: img(fieldDomains[0]?.domain ?? "Visual Language", fieldParentId(f)),
+    axisLoadings: avgAxes(fieldDomains),
+    parent: null,
+    children: fieldDomains.map((d) => d.id),
+    neighbors: [],
+    contrasts: [],
+    popularity: 0.3,
+  };
+});
+
+export const styleNodes: InsertStyleNode[] = [...leafNodes, ...domainNodes, ...fieldNodes];
+
 export type EdgeType = "neighbor" | "contrast" | "parent_child" | "cross_field";
 
-export const styleEdges = rows.flatMap((r) => {
-  const out: { fromNode: string; toNode: string; edgeType: EdgeType; weight: number }[] = [];
+const edges: { fromNode: string; toNode: string; edgeType: EdgeType; weight: number }[] = [];
+
+// Leaf relationships (neighbor, contrast, cross_field, parent_child to domain)
+for (const r of rows) {
   for (const n of r.neighbors ?? []) {
     const otherField = fieldOf.get(n);
     const isCross = otherField && otherField !== r.field;
-    out.push({ fromNode: r.id, toNode: n, edgeType: "neighbor", weight: 1 });
-    if (isCross) {
-      out.push({ fromNode: r.id, toNode: n, edgeType: "cross_field", weight: 1 });
-    }
+    edges.push({ fromNode: r.id, toNode: n, edgeType: "neighbor", weight: 1 });
+    if (isCross) edges.push({ fromNode: r.id, toNode: n, edgeType: "cross_field", weight: 1 });
   }
   for (const n of r.contrasts ?? []) {
-    out.push({ fromNode: r.id, toNode: n, edgeType: "contrast", weight: 1 });
+    edges.push({ fromNode: r.id, toNode: n, edgeType: "contrast", weight: 1 });
   }
-  if (r.parent) {
-    out.push({ fromNode: r.id, toNode: r.parent, edgeType: "parent_child", weight: 1 });
-  }
+  const parentId = r.parent ?? domainParentId(r.field, r.domain);
+  edges.push({ fromNode: r.id, toNode: parentId, edgeType: "parent_child", weight: 1 });
+  edges.push({ fromNode: parentId, toNode: r.id, edgeType: "parent_child", weight: 1 });
   for (const n of r.children ?? []) {
-    out.push({ fromNode: r.id, toNode: n, edgeType: "parent_child", weight: 1 });
+    edges.push({ fromNode: r.id, toNode: n, edgeType: "parent_child", weight: 1 });
   }
-  return out;
-});
+}
+
+// Domain → field parent_child edges (both directions)
+for (const d of domainNodes) {
+  if (!d.parent) continue;
+  edges.push({ fromNode: d.id, toNode: d.parent, edgeType: "parent_child", weight: 1 });
+  edges.push({ fromNode: d.parent, toNode: d.id, edgeType: "parent_child", weight: 1 });
+}
+
+export const styleEdges = edges;
