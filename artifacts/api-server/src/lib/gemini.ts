@@ -61,9 +61,10 @@ export async function generateCollaborationLine(
       .replace(/\n+/g, " ")
       .trim();
     if (!cleaned) return FALLBACK(a, b);
-    // Cap at 12 words just in case the model overshoots.
-    const words = cleaned.split(/\s+/);
-    return words.length > 12 ? words.slice(0, 12).join(" ") : cleaned;
+    // PRD: max 8 words. Hard-cap, then re-add a period if we trimmed.
+    const words = cleaned.replace(/[.!?]+$/, "").split(/\s+/);
+    if (words.length > 8) return words.slice(0, 8).join(" ") + ".";
+    return cleaned.endsWith(".") ? cleaned : cleaned + ".";
   } catch (err) {
     console.warn("[gemini] collaboration line failed:", (err as Error).message);
     return FALLBACK(a, b);

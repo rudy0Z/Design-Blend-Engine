@@ -56,6 +56,9 @@ export default function ProfilePage() {
       : "Design Blend",
     description: profile?.archetypeDescription,
     ogDescription: profile?.archetypeDescription,
+    ogImage: profile
+      ? `${window.location.origin}/api/og/profile/${profile.username}`
+      : undefined,
   });
 
   function generateInvite() {

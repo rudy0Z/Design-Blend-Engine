@@ -16,6 +16,7 @@ export function usePageMeta(opts: {
   description?: string;
   ogTitle?: string;
   ogDescription?: string;
+  ogImage?: string;
 }) {
   useEffect(() => {
     const prevTitle = document.title;
@@ -24,8 +25,12 @@ export function usePageMeta(opts: {
     setMeta('meta[property="og:title"]', "content", opts.ogTitle ?? opts.title);
     if (opts.ogDescription)
       setMeta('meta[property="og:description"]', "content", opts.ogDescription);
+    if (opts.ogImage) {
+      setMeta('meta[property="og:image"]', "content", opts.ogImage);
+      setMeta('meta[name="twitter:image"]', "content", opts.ogImage);
+    }
     return () => {
       document.title = prevTitle;
     };
-  }, [opts.title, opts.description, opts.ogTitle, opts.ogDescription]);
+  }, [opts.title, opts.description, opts.ogTitle, opts.ogDescription, opts.ogImage]);
 }

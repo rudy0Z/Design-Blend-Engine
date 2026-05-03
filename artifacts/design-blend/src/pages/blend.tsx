@@ -22,6 +22,10 @@ export default function BlendPage() {
   usePageMeta({
     title: `@${userA} × @${userB} — Design Blend`,
     description: "See how these two designers' tastes overlap and diverge.",
+    ogImage:
+      userA && userB && !isSelfBlend
+        ? `${window.location.origin}/api/og/blend/${userA}/${userB}`
+        : undefined,
   });
 
   const { data: blend, isLoading, error } = useGetBlendByUsers(
@@ -31,6 +35,8 @@ export default function BlendPage() {
       query: {
         enabled: !!userA && !!userB && !isSelfBlend,
         queryKey: getGetBlendByUsersQueryKey(userA, userB),
+        // Poll while the AI collaboration line is still generating.
+        refetchInterval: (q) => (q.state.data?.collaborationLine ? false : 1500),
       },
     },
   );
@@ -245,9 +251,17 @@ export default function BlendPage() {
                   <h3 className="text-xs uppercase tracking-wider text-muted-foreground mb-3">
                     Collaboration
                   </h3>
-                  <p className="text-sm italic text-foreground" data-testid="text-collab-line">
-                    {blend.collaborationLine}
-                  </p>
+                  {blend.collaborationLine ? (
+                    <p className="text-sm italic text-foreground" data-testid="text-collab-line">
+                      {blend.collaborationLine}
+                    </p>
+                  ) : (
+                    <div
+                      className="h-4 w-2/3 rounded bg-muted animate-pulse"
+                      data-testid="text-collab-loading"
+                      aria-label="Generating collaboration line"
+                    />
+                  )}
                 </section>
 
                 <div className="pt-2 border-t border-border text-[10px] uppercase tracking-wider text-muted-foreground">

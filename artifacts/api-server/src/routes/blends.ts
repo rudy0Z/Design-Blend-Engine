@@ -113,7 +113,9 @@ router.get("/blends/:userA/:userB", async (req, res): Promise<void> => {
   const newest = Math.max(a.updatedAt.getTime(), b.updatedAt.getTime());
   let stored = existing;
   if (!existing || existing.createdAt.getTime() < newest) {
-    const blend = await computeBlend(a, b);
+    // Compute the deterministic parts synchronously; the AI collaboration
+    // line is generated in the background to keep this request fast.
+    const blend = computeBlendCore(a, b);
     if (existing) {
       [stored] = await db
         .update(blendsTable)
@@ -122,7 +124,7 @@ router.get("/blends/:userA/:userB", async (req, res): Promise<void> => {
           axisDeltas: blend.axisDeltas,
           sharedStyles: blend.sharedStyles,
           divergentStyles: blend.divergentStyles,
-          collaborationLine: blend.collaborationLine,
+          collaborationLine: "",
           usernameA: blend.usernameA,
           usernameB: blend.usernameB,
           createdAt: new Date(),
@@ -132,6 +134,7 @@ router.get("/blends/:userA/:userB", async (req, res): Promise<void> => {
     } else {
       [stored] = await db.insert(blendsTable).values(blend).returning();
     }
+    void scheduleCollaborationLine(stored!.id, a, b);
   }
 
   // If the request asked for the reversed ordering, present a flipped view.
@@ -158,7 +161,7 @@ function flipBlend<T extends {
   };
 }
 
-async function computeBlend(a: Profile, b: Profile) {
+function computeBlendCore(a: Profile, b: Profile) {
   // PRD: cosine similarity on the full style_vector (every node prediction),
   // not just the 8 axes. Axis deltas remain useful for align/diverge analysis.
   const similarity = cosineSimilarityVector(a.styleVector, b.styleVector);
@@ -166,35 +169,13 @@ async function computeBlend(a: Profile, b: Profile) {
   for (const k of AXIS_KEYS) axisDeltas[k] = a.axes[k] - b.axes[k];
 
   const sharedIds = a.topStyles.filter((id) => b.topStyles.includes(id));
-  const sharedNodeRows = sharedIds.length > 0
-    ? await db.select().from(styleNodesTable).where(inArray(styleNodesTable.id, sharedIds))
-    : [];
-  const sharedStyles = sharedNodeRows.map((n) => ({
-    nodeId: n.id,
-    label: n.label,
-    scoreA: a.styleVector[n.id] ?? 0,
-    scoreB: b.styleVector[n.id] ?? 0,
-  }));
-
   const divergentIds = [
     ...a.topStyles.filter((id) => !b.topStyles.includes(id)).slice(0, 2),
     ...b.topStyles.filter((id) => !a.topStyles.includes(id)).slice(0, 2),
   ];
-  const divergentNodeRows = divergentIds.length > 0
-    ? await db.select().from(styleNodesTable).where(inArray(styleNodesTable.id, divergentIds))
-    : [];
-  const divergentStyles = divergentNodeRows.map((n) => ({
-    nodeId: n.id,
-    label: n.label,
-    scoreA: a.styleVector[n.id] ?? 0,
-    scoreB: b.styleVector[n.id] ?? 0,
-  }));
 
-  const collaborationLine = await generateCollaborationLine(
-    { title: a.archetypeTitle, description: a.archetypeDescription },
-    { title: b.archetypeTitle, description: b.archetypeDescription },
-  );
-
+  void sharedIds;
+  void divergentIds;
   return {
     id: makeId("bl"),
     profileAId: a.id,
@@ -203,10 +184,58 @@ async function computeBlend(a: Profile, b: Profile) {
     usernameB: b.username,
     similarity,
     axisDeltas,
-    sharedStyles,
-    divergentStyles,
-    collaborationLine,
+    sharedStyles: [] as { nodeId: string; label: string; scoreA: number; scoreB: number }[],
+    divergentStyles: [] as { nodeId: string; label: string; scoreA: number; scoreB: number }[],
+    collaborationLine: "",
   };
+}
+
+// Async post-write enrichment: hydrate shared/divergent style labels and
+// generate the AI collaboration line. Persisted directly into the blends row.
+const inflight = new Set<string>();
+async function scheduleCollaborationLine(blendId: string, a: Profile, b: Profile) {
+  if (inflight.has(blendId)) return;
+  inflight.add(blendId);
+  try {
+    const sharedIds = a.topStyles.filter((id) => b.topStyles.includes(id));
+    const divergentIds = [
+      ...a.topStyles.filter((id) => !b.topStyles.includes(id)).slice(0, 2),
+      ...b.topStyles.filter((id) => !a.topStyles.includes(id)).slice(0, 2),
+    ];
+    const allIds = [...new Set([...sharedIds, ...divergentIds])];
+    const nodeRows = allIds.length > 0
+      ? await db.select().from(styleNodesTable).where(inArray(styleNodesTable.id, allIds))
+      : [];
+    const byId = new Map(nodeRows.map((n) => [n.id, n]));
+    const sharedStyles = sharedIds
+      .map((id) => byId.get(id))
+      .filter((n): n is typeof nodeRows[number] => !!n)
+      .map((n) => ({
+        nodeId: n.id, label: n.label,
+        scoreA: a.styleVector[n.id] ?? 0, scoreB: b.styleVector[n.id] ?? 0,
+      }));
+    const divergentStyles = divergentIds
+      .map((id) => byId.get(id))
+      .filter((n): n is typeof nodeRows[number] => !!n)
+      .map((n) => ({
+        nodeId: n.id, label: n.label,
+        scoreA: a.styleVector[n.id] ?? 0, scoreB: b.styleVector[n.id] ?? 0,
+      }));
+
+    const collaborationLine = await generateCollaborationLine(
+      { title: a.archetypeTitle, description: a.archetypeDescription },
+      { title: b.archetypeTitle, description: b.archetypeDescription },
+    );
+
+    await db
+      .update(blendsTable)
+      .set({ sharedStyles, divergentStyles, collaborationLine })
+      .where(eq(blendsTable.id, blendId));
+  } catch (err) {
+    console.warn("[blend] enrichment failed:", (err as Error).message);
+  } finally {
+    inflight.delete(blendId);
+  }
 }
 
 export default router;
