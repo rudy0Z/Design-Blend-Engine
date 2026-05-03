@@ -1,4 +1,4 @@
-import { pgTable, text, jsonb, timestamp, real, uniqueIndex } from "drizzle-orm/pg-core";
+import { pgTable, text, jsonb, timestamp, real, boolean, uniqueIndex } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 import type { AxisLoadings } from "./style-nodes";
@@ -22,6 +22,7 @@ export const profilesTable = pgTable(
     topStyles: text("top_styles").array().notNull().default([]),
     fieldDistribution: jsonb("field_distribution").$type<Record<string, number>>().notNull().default({}),
     confidence: real("confidence").notNull().default(0),
+    isPublic: boolean("is_public").notNull().default(true),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true })
       .notNull()

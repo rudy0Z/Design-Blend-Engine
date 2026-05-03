@@ -225,6 +225,7 @@ export const CompleteQuizSessionResponse = zod.object({
   topStyles: zod.array(zod.string()),
   fieldDistribution: zod.record(zod.string(), zod.number()),
   confidence: zod.number(),
+  isPublic: zod.boolean(),
   createdAt: zod.coerce.date(),
   updatedAt: zod.coerce.date(),
 });
@@ -256,8 +257,141 @@ export const GetProfileByUsernameResponse = zod.object({
   topStyles: zod.array(zod.string()),
   fieldDistribution: zod.record(zod.string(), zod.number()),
   confidence: zod.number(),
+  isPublic: zod.boolean(),
   createdAt: zod.coerce.date(),
   updatedAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Save a profile from a completed quiz session, optionally claiming a username
+ */
+export const SaveProfileBody = zod.object({
+  sessionId: zod.string(),
+  username: zod.string(),
+  displayName: zod.string().nullish(),
+});
+
+export const SaveProfileResponse = zod.object({
+  id: zod.string(),
+  userId: zod.string().nullish(),
+  username: zod.string(),
+  displayName: zod.string().nullish(),
+  archetypeId: zod.string(),
+  archetypeTitle: zod.string(),
+  archetypeDescription: zod.string(),
+  archetypeColor: zod.string(),
+  axes: zod.object({
+    order_chaos: zod.number(),
+    minimal_maximal: zod.number(),
+    classic_contemporary: zod.number(),
+    functional_expressive: zod.number(),
+    warm_cold: zod.number(),
+    flat_dimensional: zod.number(),
+    literal_abstract: zod.number(),
+    system_intuition: zod.number(),
+  }),
+  styleVector: zod.record(zod.string(), zod.number()),
+  topStyles: zod.array(zod.string()),
+  fieldDistribution: zod.record(zod.string(), zod.number()),
+  confidence: zod.number(),
+  isPublic: zod.boolean(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Get the signed-in user's profile, if any
+ */
+export const GetMyProfileResponse = zod.union([
+  zod.object({
+    id: zod.string(),
+    userId: zod.string().nullish(),
+    username: zod.string(),
+    displayName: zod.string().nullish(),
+    archetypeId: zod.string(),
+    archetypeTitle: zod.string(),
+    archetypeDescription: zod.string(),
+    archetypeColor: zod.string(),
+    axes: zod.object({
+      order_chaos: zod.number(),
+      minimal_maximal: zod.number(),
+      classic_contemporary: zod.number(),
+      functional_expressive: zod.number(),
+      warm_cold: zod.number(),
+      flat_dimensional: zod.number(),
+      literal_abstract: zod.number(),
+      system_intuition: zod.number(),
+    }),
+    styleVector: zod.record(zod.string(), zod.number()),
+    topStyles: zod.array(zod.string()),
+    fieldDistribution: zod.record(zod.string(), zod.number()),
+    confidence: zod.number(),
+    isPublic: zod.boolean(),
+    createdAt: zod.coerce.date(),
+    updatedAt: zod.coerce.date(),
+  }),
+  zod.null(),
+]);
+
+export const UpdateProfilePrivacyParams = zod.object({
+  username: zod.coerce.string(),
+});
+
+export const UpdateProfilePrivacyBody = zod.object({
+  isPublic: zod.boolean(),
+});
+
+export const UpdateProfilePrivacyResponse = zod.object({
+  id: zod.string(),
+  userId: zod.string().nullish(),
+  username: zod.string(),
+  displayName: zod.string().nullish(),
+  archetypeId: zod.string(),
+  archetypeTitle: zod.string(),
+  archetypeDescription: zod.string(),
+  archetypeColor: zod.string(),
+  axes: zod.object({
+    order_chaos: zod.number(),
+    minimal_maximal: zod.number(),
+    classic_contemporary: zod.number(),
+    functional_expressive: zod.number(),
+    warm_cold: zod.number(),
+    flat_dimensional: zod.number(),
+    literal_abstract: zod.number(),
+    system_intuition: zod.number(),
+  }),
+  styleVector: zod.record(zod.string(), zod.number()),
+  topStyles: zod.array(zod.string()),
+  fieldDistribution: zod.record(zod.string(), zod.number()),
+  confidence: zod.number(),
+  isPublic: zod.boolean(),
+  createdAt: zod.coerce.date(),
+  updatedAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Create a short-lived invite token for the signed-in user's profile
+ */
+export const CreateBlendInviteResponse = zod.object({
+  id: zod.string(),
+  token: zod.string(),
+  profileId: zod.string(),
+  username: zod.string(),
+  createdAt: zod.coerce.date(),
+  expiresAt: zod.coerce.date(),
+});
+
+export const GetBlendInviteParams = zod.object({
+  token: zod.coerce.string(),
+});
+
+export const GetBlendInviteResponse = zod.object({
+  id: zod.string(),
+  token: zod.string(),
+  profileId: zod.string(),
+  username: zod.string(),
+  createdAt: zod.coerce.date(),
+  expiresAt: zod.coerce.date(),
 });
 
 /**

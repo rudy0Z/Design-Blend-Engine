@@ -116,8 +116,29 @@ export interface Profile {
   topStyles: string[];
   fieldDistribution: ProfileFieldDistribution;
   confidence: number;
+  isPublic: boolean;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface SaveProfileBody {
+  sessionId: string;
+  username: string;
+  /** @nullable */
+  displayName?: string | null;
+}
+
+export interface UpdatePrivacyBody {
+  isPublic: boolean;
+}
+
+export interface BlendInvite {
+  id: string;
+  token: string;
+  profileId: string;
+  username: string;
+  createdAt: string;
+  expiresAt: string;
 }
 
 export interface SharedStyle {

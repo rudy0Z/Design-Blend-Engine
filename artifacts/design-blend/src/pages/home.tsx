@@ -1,15 +1,13 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Zap, Share2 } from "lucide-react";
+import { Header } from "@/components/Header";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
+      <Header />
       <div className="max-w-5xl mx-auto px-6 py-16 sm:py-24">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-8" data-testid="text-brand">
-          <span className="inline-block h-2 w-2 rounded-full bg-primary" />
-          <span className="font-medium tracking-wide uppercase">Design Blend</span>
-        </div>
 
         <h1
           className="text-5xl sm:text-7xl font-serif font-bold tracking-tight leading-[0.95] text-foreground"

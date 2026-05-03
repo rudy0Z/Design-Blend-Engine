@@ -25,6 +25,7 @@ export interface Profile {
   topStyles: string[];
   fieldDistribution: ProfileFieldDistribution;
   confidence: number;
+  isPublic: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -188,6 +188,111 @@ paths:
           description: Not found
           content: { application/json: { schema: { $ref: "#/components/schemas/ErrorResponse" } } }
 
+  /profiles:
+    post:
+      operationId: saveProfile
+      tags: [profiles]
+      summary: Save a profile from a completed quiz session, optionally claiming a username
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SaveProfileBody" }
+      responses:
+        "200":
+          description: Saved profile
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Profile" }
+        "401":
+          description: Unauthorized
+          content: { application/json: { schema: { $ref: "#/components/schemas/ErrorResponse" } } }
+        "409":
+          description: Username taken
+          content: { application/json: { schema: { $ref: "#/components/schemas/ErrorResponse" } } }
+
+  /profiles/me:
+    get:
+      operationId: getMyProfile
+      tags: [profiles]
+      summary: Get the signed-in user's profile, if any
+      responses:
+        "200":
+          description: Profile or null
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/Profile"
+                  - type: "null"
+        "401":
+          description: Unauthorized
+          content: { application/json: { schema: { $ref: "#/components/schemas/ErrorResponse" } } }
+
+  /profiles/{username}/privacy:
+    patch:
+      operationId: updateProfilePrivacy
+      tags: [profiles]
+      parameters:
+        - in: path
+          name: username
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/UpdatePrivacyBody" }
+      responses:
+        "200":
+          description: Updated profile
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Profile" }
+        "401":
+          description: Unauthorized
+          content: { application/json: { schema: { $ref: "#/components/schemas/ErrorResponse" } } }
+        "403":
+          description: Forbidden
+          content: { application/json: { schema: { $ref: "#/components/schemas/ErrorResponse" } } }
+
+  /blends/invite:
+    post:
+      operationId: createBlendInvite
+      tags: [blends]
+      summary: Create a short-lived invite token for the signed-in user's profile
+      responses:
+        "200":
+          description: Invite created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BlendInvite" }
+        "401":
+          description: Unauthorized
+          content: { application/json: { schema: { $ref: "#/components/schemas/ErrorResponse" } } }
+        "404":
+          description: Profile not found
+          content: { application/json: { schema: { $ref: "#/components/schemas/ErrorResponse" } } }
+
+  /blends/invite/{token}:
+    get:
+      operationId: getBlendInvite
+      tags: [blends]
+      parameters:
+        - in: path
+          name: token
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Invite resolved
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BlendInvite" }
+        "404":
+          description: Not found or expired
+          content: { application/json: { schema: { $ref: "#/components/schemas/ErrorResponse" } } }
+
   /blends/{userA}/{userB}:
     get:
       operationId: getBlendByUsers
@@ -396,6 +501,7 @@ components:
           type: object
           additionalProperties: { type: number }
         confidence: { type: number }
+        isPublic: { type: boolean }
         createdAt: { type: string, format: date-time }
         updatedAt: { type: string, format: date-time }
       required:
@@ -410,8 +516,35 @@ components:
         - topStyles
         - fieldDistribution
         - confidence
+        - isPublic
         - createdAt
         - updatedAt
+
+    SaveProfileBody:
+      type: object
+      properties:
+        sessionId: { type: string }
+        username: { type: string }
+        displayName:
+          type: ["string", "null"]
+      required: [sessionId, username]
+
+    UpdatePrivacyBody:
+      type: object
+      properties:
+        isPublic: { type: boolean }
+      required: [isPublic]
+
+    BlendInvite:
+      type: object
+      properties:
+        id: { type: string }
+        token: { type: string }
+        profileId: { type: string }
+        username: { type: string }
+        createdAt: { type: string, format: date-time }
+        expiresAt: { type: string, format: date-time }
+      required: [id, token, profileId, username, createdAt, expiresAt]
 
     SharedStyle:
       type: object

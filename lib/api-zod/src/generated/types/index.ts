@@ -9,6 +9,7 @@
 export * from "./axisScores";
 export * from "./blend";
 export * from "./blendAxisDeltas";
+export * from "./blendInvite";
 export * from "./errorResponse";
 export * from "./healthStatus";
 export * from "./listStylesParams";
@@ -19,6 +20,8 @@ export * from "./profileStyleVector";
 export * from "./quizSession";
 export * from "./rating";
 export * from "./ratingBody";
+export * from "./saveProfileBody";
 export * from "./sharedStyle";
 export * from "./startSessionBody";
 export * from "./styleNode";
+export * from "./updatePrivacyBody";

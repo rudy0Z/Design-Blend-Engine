@@ -93,8 +93,8 @@ export function shouldTerminate(
   if (asked >= 60) return { reason: "max_reached", questionsAsked: asked };
   const enoughData = asked >= 20 && beliefs.filter((a) => a.confidence > 0.6).length >= 6;
   if (enoughData) return { reason: "viable_profile", questionsAsked: asked };
-  // totalTarget is informational (drives /next progress %); spec doesn't mandate hard stop.
-  void totalTarget;
+  // Hard stop at the user's target so the quiz never runs forever on noisy ratings.
+  if (asked >= totalTarget) return { reason: "target_reached", questionsAsked: asked };
   return false;
 }
 

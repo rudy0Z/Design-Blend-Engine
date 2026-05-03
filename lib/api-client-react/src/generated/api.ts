@@ -18,6 +18,7 @@ import type {
 
 import type {
   Blend,
+  BlendInvite,
   ErrorResponse,
   HealthStatus,
   ListStylesParams,
@@ -25,8 +26,10 @@ import type {
   Profile,
   QuizSession,
   RatingBody,
+  SaveProfileBody,
   StartSessionBody,
   StyleNode,
+  UpdatePrivacyBody,
 } from "./api.schemas";
 
 import { customFetch } from "../custom-fetch";
@@ -757,6 +760,409 @@ export function useGetProfileByUsername<
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getGetProfileByUsernameQueryOptions(username, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Save a profile from a completed quiz session, optionally claiming a username
+ */
+export const getSaveProfileUrl = () => {
+  return `/api/profiles`;
+};
+
+export const saveProfile = async (
+  saveProfileBody: SaveProfileBody,
+  options?: RequestInit,
+): Promise<Profile> => {
+  return customFetch<Profile>(getSaveProfileUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(saveProfileBody),
+  });
+};
+
+export const getSaveProfileMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof saveProfile>>,
+    TError,
+    { data: BodyType<SaveProfileBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof saveProfile>>,
+  TError,
+  { data: BodyType<SaveProfileBody> },
+  TContext
+> => {
+  const mutationKey = ["saveProfile"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof saveProfile>>,
+    { data: BodyType<SaveProfileBody> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return saveProfile(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type SaveProfileMutationResult = NonNullable<
+  Awaited<ReturnType<typeof saveProfile>>
+>;
+export type SaveProfileMutationBody = BodyType<SaveProfileBody>;
+export type SaveProfileMutationError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Save a profile from a completed quiz session, optionally claiming a username
+ */
+export const useSaveProfile = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof saveProfile>>,
+    TError,
+    { data: BodyType<SaveProfileBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof saveProfile>>,
+  TError,
+  { data: BodyType<SaveProfileBody> },
+  TContext
+> => {
+  return useMutation(getSaveProfileMutationOptions(options));
+};
+
+/**
+ * @summary Get the signed-in user's profile, if any
+ */
+export const getGetMyProfileUrl = () => {
+  return `/api/profiles/me`;
+};
+
+export const getMyProfile = async (
+  options?: RequestInit,
+): Promise<Profile | null> => {
+  return customFetch<Profile | null>(getGetMyProfileUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetMyProfileQueryKey = () => {
+  return [`/api/profiles/me`] as const;
+};
+
+export const getGetMyProfileQueryOptions = <
+  TData = Awaited<ReturnType<typeof getMyProfile>>,
+  TError = ErrorType<ErrorResponse>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getMyProfile>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetMyProfileQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getMyProfile>>> = ({
+    signal,
+  }) => getMyProfile({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getMyProfile>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetMyProfileQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getMyProfile>>
+>;
+export type GetMyProfileQueryError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Get the signed-in user's profile, if any
+ */
+
+export function useGetMyProfile<
+  TData = Awaited<ReturnType<typeof getMyProfile>>,
+  TError = ErrorType<ErrorResponse>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getMyProfile>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetMyProfileQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+export const getUpdateProfilePrivacyUrl = (username: string) => {
+  return `/api/profiles/${username}/privacy`;
+};
+
+export const updateProfilePrivacy = async (
+  username: string,
+  updatePrivacyBody: UpdatePrivacyBody,
+  options?: RequestInit,
+): Promise<Profile> => {
+  return customFetch<Profile>(getUpdateProfilePrivacyUrl(username), {
+    ...options,
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(updatePrivacyBody),
+  });
+};
+
+export const getUpdateProfilePrivacyMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateProfilePrivacy>>,
+    TError,
+    { username: string; data: BodyType<UpdatePrivacyBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateProfilePrivacy>>,
+  TError,
+  { username: string; data: BodyType<UpdatePrivacyBody> },
+  TContext
+> => {
+  const mutationKey = ["updateProfilePrivacy"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateProfilePrivacy>>,
+    { username: string; data: BodyType<UpdatePrivacyBody> }
+  > = (props) => {
+    const { username, data } = props ?? {};
+
+    return updateProfilePrivacy(username, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpdateProfilePrivacyMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateProfilePrivacy>>
+>;
+export type UpdateProfilePrivacyMutationBody = BodyType<UpdatePrivacyBody>;
+export type UpdateProfilePrivacyMutationError = ErrorType<ErrorResponse>;
+
+export const useUpdateProfilePrivacy = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateProfilePrivacy>>,
+    TError,
+    { username: string; data: BodyType<UpdatePrivacyBody> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof updateProfilePrivacy>>,
+  TError,
+  { username: string; data: BodyType<UpdatePrivacyBody> },
+  TContext
+> => {
+  return useMutation(getUpdateProfilePrivacyMutationOptions(options));
+};
+
+/**
+ * @summary Create a short-lived invite token for the signed-in user's profile
+ */
+export const getCreateBlendInviteUrl = () => {
+  return `/api/blends/invite`;
+};
+
+export const createBlendInvite = async (
+  options?: RequestInit,
+): Promise<BlendInvite> => {
+  return customFetch<BlendInvite>(getCreateBlendInviteUrl(), {
+    ...options,
+    method: "POST",
+  });
+};
+
+export const getCreateBlendInviteMutationOptions = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createBlendInvite>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createBlendInvite>>,
+  TError,
+  void,
+  TContext
+> => {
+  const mutationKey = ["createBlendInvite"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createBlendInvite>>,
+    void
+  > = () => {
+    return createBlendInvite(requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type CreateBlendInviteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createBlendInvite>>
+>;
+
+export type CreateBlendInviteMutationError = ErrorType<ErrorResponse>;
+
+/**
+ * @summary Create a short-lived invite token for the signed-in user's profile
+ */
+export const useCreateBlendInvite = <
+  TError = ErrorType<ErrorResponse>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createBlendInvite>>,
+    TError,
+    void,
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof createBlendInvite>>,
+  TError,
+  void,
+  TContext
+> => {
+  return useMutation(getCreateBlendInviteMutationOptions(options));
+};
+
+export const getGetBlendInviteUrl = (token: string) => {
+  return `/api/blends/invite/${token}`;
+};
+
+export const getBlendInvite = async (
+  token: string,
+  options?: RequestInit,
+): Promise<BlendInvite> => {
+  return customFetch<BlendInvite>(getGetBlendInviteUrl(token), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetBlendInviteQueryKey = (token: string) => {
+  return [`/api/blends/invite/${token}`] as const;
+};
+
+export const getGetBlendInviteQueryOptions = <
+  TData = Awaited<ReturnType<typeof getBlendInvite>>,
+  TError = ErrorType<ErrorResponse>,
+>(
+  token: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getBlendInvite>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetBlendInviteQueryKey(token);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getBlendInvite>>> = ({
+    signal,
+  }) => getBlendInvite(token, { signal, ...requestOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!token,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getBlendInvite>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetBlendInviteQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getBlendInvite>>
+>;
+export type GetBlendInviteQueryError = ErrorType<ErrorResponse>;
+
+export function useGetBlendInvite<
+  TData = Awaited<ReturnType<typeof getBlendInvite>>,
+  TError = ErrorType<ErrorResponse>,
+>(
+  token: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getBlendInvite>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetBlendInviteQueryOptions(token, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
