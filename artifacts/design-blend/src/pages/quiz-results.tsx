@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link, useParams } from "wouter";
+import { Link, useLocation, useParams } from "wouter";
 import html2canvas from "html2canvas";
 import { Show, useUser } from "@clerk/react";
 import { Loader2, Download, Share2, RotateCcw, Check } from "lucide-react";
@@ -22,6 +22,7 @@ export default function QuizResultsPage() {
   const params = useParams<{ sessionId: string }>();
   const sessionId = params.sessionId;
   const { user } = useUser();
+  const [, setLocation] = useLocation();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [error, setError] = useState<string | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -67,6 +68,17 @@ export default function QuizResultsPage() {
           setProfile(p);
           setSaved(true);
           setActionMsg(`Saved as @${p.username}.`);
+          // Honor a pending blend invite captured before the user signed up.
+          try {
+            const raw = localStorage.getItem("designBlend.pendingInvite");
+            if (raw) {
+              const pending = JSON.parse(raw) as { username?: string };
+              if (pending?.username && pending.username !== p.username) {
+                localStorage.removeItem("designBlend.pendingInvite");
+                setLocation(`/blend/${p.username}/${pending.username}`);
+              }
+            }
+          } catch {}
         },
         onError: (e) =>
           setActionMsg(`Couldn't save: ${(e as Error).message ?? "unknown error"}`),

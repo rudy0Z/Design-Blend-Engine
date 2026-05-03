@@ -17,7 +17,7 @@ import {
 } from "@workspace/api-zod";
 import { randomBytes } from "node:crypto";
 import { makeId } from "../lib/ids";
-import { AXIS_KEYS, cosineSimilarityAxes } from "../lib/scoring";
+import { AXIS_KEYS, cosineSimilarityVector } from "../lib/scoring";
 import {
   requireAuth,
   getUserIdOrNull,
@@ -107,18 +107,41 @@ router.get("/blends/:userA/:userB", async (req, res): Promise<void> => {
       and(eq(blendsTable.profileAId, a.id), eq(blendsTable.profileBId, b.id)),
       and(eq(blendsTable.profileAId, b.id), eq(blendsTable.profileBId, a.id)),
     ));
-  if (existing) {
+
+  // Cache freshness: recompute when either profile has been updated since cache.
+  const newest = Math.max(a.updatedAt.getTime(), b.updatedAt.getTime());
+  if (existing && existing.createdAt.getTime() >= newest) {
     res.json(GetBlendByUsersResponse.parse(existing));
     return;
   }
 
   const blend = await computeBlend(a, b);
+  if (existing) {
+    const [row] = await db
+      .update(blendsTable)
+      .set({
+        similarity: blend.similarity,
+        axisDeltas: blend.axisDeltas,
+        sharedStyles: blend.sharedStyles,
+        divergentStyles: blend.divergentStyles,
+        collaborationLine: blend.collaborationLine,
+        usernameA: blend.usernameA,
+        usernameB: blend.usernameB,
+        createdAt: new Date(),
+      })
+      .where(eq(blendsTable.id, existing.id))
+      .returning();
+    res.json(GetBlendByUsersResponse.parse(row));
+    return;
+  }
   const [row] = await db.insert(blendsTable).values(blend).returning();
   res.json(GetBlendByUsersResponse.parse(row));
 });
 
 async function computeBlend(a: Profile, b: Profile) {
-  const similarity = cosineSimilarityAxes(a.axes, b.axes);
+  // PRD: cosine similarity on the full style_vector (every node prediction),
+  // not just the 8 axes. Axis deltas remain useful for align/diverge analysis.
+  const similarity = cosineSimilarityVector(a.styleVector, b.styleVector);
   const axisDeltas: Record<string, number> = {};
   for (const k of AXIS_KEYS) axisDeltas[k] = a.axes[k] - b.axes[k];
 

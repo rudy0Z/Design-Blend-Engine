@@ -22,6 +22,8 @@ import {
   pickArchetype,
   styleVectorFromAxes,
   getFieldDistribution,
+  getFieldScores,
+  getCategoryScores,
 } from "../lib/scoring";
 import {
   requireAuth,
@@ -119,6 +121,9 @@ router.post("/profiles", requireAuth, async (req: AuthedRequest, res: Response):
     .slice(0, 5)
     .map(([id]) => id);
   const fieldDistribution = getFieldDistribution(session.ratings, byId);
+  const fieldScores = getFieldScores(session.ratings, byId);
+  const categoryScores = getCategoryScores(session.ratings, byId);
+  const selectedFields = session.selectedFields ?? [];
 
   // If the user already has a profile, update in place (and rename if desired).
   const [mine] = await db
@@ -127,6 +132,21 @@ router.post("/profiles", requireAuth, async (req: AuthedRequest, res: Response):
     .where(eq(profilesTable.userId, req.userId!))
     .limit(1);
 
+  const computed = {
+    archetypeId: arch.id,
+    archetypeTitle: arch.title,
+    archetypeDescription: arch.description,
+    archetypeColor: arch.color,
+    axes,
+    styleVector,
+    topStyles,
+    fieldDistribution,
+    fieldScores,
+    categoryScores,
+    selectedFields,
+    confidence: arch.confidence,
+  };
+
   let saved;
   if (mine) {
     [saved] = await db
@@ -134,15 +154,7 @@ router.post("/profiles", requireAuth, async (req: AuthedRequest, res: Response):
       .set({
         username,
         displayName: body.data.displayName ?? mine.displayName ?? null,
-        archetypeId: arch.id,
-        archetypeTitle: arch.title,
-        archetypeDescription: arch.description,
-        archetypeColor: arch.color,
-        axes,
-        styleVector,
-        topStyles,
-        fieldDistribution,
-        confidence: arch.confidence,
+        ...computed,
       })
       .where(eq(profilesTable.id, mine.id))
       .returning();
@@ -156,16 +168,8 @@ router.post("/profiles", requireAuth, async (req: AuthedRequest, res: Response):
         userId: req.userId,
         username,
         displayName: body.data.displayName ?? null,
-        archetypeId: arch.id,
-        archetypeTitle: arch.title,
-        archetypeDescription: arch.description,
-        archetypeColor: arch.color,
-        axes,
-        styleVector,
-        topStyles,
-        fieldDistribution,
-        confidence: arch.confidence,
         isPublic: true,
+        ...computed,
       })
       .onConflictDoUpdate({
         target: profilesTable.id,
@@ -173,15 +177,7 @@ router.post("/profiles", requireAuth, async (req: AuthedRequest, res: Response):
           userId: req.userId,
           username,
           displayName: body.data.displayName ?? null,
-          archetypeId: arch.id,
-          archetypeTitle: arch.title,
-          archetypeDescription: arch.description,
-          archetypeColor: arch.color,
-          axes,
-          styleVector,
-          topStyles,
-          fieldDistribution,
-          confidence: arch.confidence,
+          ...computed,
         },
       })
       .returning();

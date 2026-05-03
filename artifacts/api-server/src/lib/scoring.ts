@@ -154,6 +154,26 @@ export function pickArchetype(axes: AxisScores): Archetype & { confidence: numbe
   return { ...archetype, confidence };
 }
 
+export function cosineSimilarityVector(
+  a: Record<string, number>,
+  b: Record<string, number>,
+): number {
+  const keys = new Set<string>([...Object.keys(a), ...Object.keys(b)]);
+  let dot = 0,
+    na = 0,
+    nb = 0;
+  for (const k of keys) {
+    // styleVector values are 0..100 — center around 50 to give cosine signed direction.
+    const av = ((a[k] ?? 50) - 50) / 50;
+    const bv = ((b[k] ?? 50) - 50) / 50;
+    dot += av * bv;
+    na += av * av;
+    nb += bv * bv;
+  }
+  if (na === 0 || nb === 0) return 0;
+  return dot / (Math.sqrt(na) * Math.sqrt(nb));
+}
+
 export function cosineSimilarityAxes(a: AxisScores, b: AxisScores): number {
   let dot = 0,
     na = 0,

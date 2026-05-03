@@ -500,6 +500,15 @@ components:
         fieldDistribution:
           type: object
           additionalProperties: { type: number }
+        fieldScores:
+          type: object
+          additionalProperties: { type: number }
+        categoryScores:
+          type: object
+          additionalProperties: { type: number }
+        selectedFields:
+          type: array
+          items: { type: string }
         confidence: { type: number }
         isPublic: { type: boolean }
         createdAt: { type: string, format: date-time }
@@ -515,6 +524,9 @@ components:
         - styleVector
         - topStyles
         - fieldDistribution
+        - fieldScores
+        - categoryScores
+        - selectedFields
         - confidence
         - isPublic
         - createdAt

@@ -100,6 +100,10 @@ export type ProfileStyleVector = { [key: string]: number };
 
 export type ProfileFieldDistribution = { [key: string]: number };
 
+export type ProfileFieldScores = { [key: string]: number };
+
+export type ProfileCategoryScores = { [key: string]: number };
+
 export interface Profile {
   id: string;
   /** @nullable */
@@ -115,6 +119,9 @@ export interface Profile {
   styleVector: ProfileStyleVector;
   topStyles: string[];
   fieldDistribution: ProfileFieldDistribution;
+  fieldScores: ProfileFieldScores;
+  categoryScores: ProfileCategoryScores;
+  selectedFields: string[];
   confidence: number;
   isPublic: boolean;
   createdAt: string;

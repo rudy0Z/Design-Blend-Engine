@@ -33,8 +33,22 @@ export default function BlendInvitePage() {
     },
   });
 
+  // Persist intent so the user can finish sign-in or take the quiz
+  // and still come back to a real blend.
+  useEffect(() => {
+    if (invite) {
+      try {
+        localStorage.setItem(
+          "designBlend.pendingInvite",
+          JSON.stringify({ token, username: invite.username, savedAt: Date.now() }),
+        );
+      } catch {}
+    }
+  }, [invite, token]);
+
   useEffect(() => {
     if (invite && myProfile && invite.username !== myProfile.username) {
+      try { localStorage.removeItem("designBlend.pendingInvite"); } catch {}
       setLocation(`/blend/${myProfile.username}/${invite.username}`);
     }
   }, [invite, myProfile, setLocation]);

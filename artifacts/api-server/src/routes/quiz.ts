@@ -25,6 +25,8 @@ import {
   pickArchetype,
   styleVectorFromAxes,
   getFieldDistribution,
+  getFieldScores,
+  getCategoryScores,
 } from "../lib/scoring";
 import { loadGraph } from "../lib/graph";
 import {
@@ -286,6 +288,9 @@ router.post("/quiz/sessions/:id/complete", async (req, res): Promise<void> => {
     .slice(0, 5)
     .map(([id]) => id);
   const fieldDistribution = getFieldDistribution(session.ratings, byId);
+  const fieldScores = getFieldScores(session.ratings, byId);
+  const categoryScores = getCategoryScores(session.ratings, byId);
+  const selectedFields = session.selectedFields ?? [];
 
   const profileId = session.profileId ?? makeId("p");
   const username = makeUsername(arch.id);
@@ -303,6 +308,9 @@ router.post("/quiz/sessions/:id/complete", async (req, res): Promise<void> => {
       styleVector,
       topStyles,
       fieldDistribution,
+      fieldScores,
+      categoryScores,
+      selectedFields,
       confidence: arch.confidence,
     })
     .onConflictDoUpdate({
@@ -316,6 +324,9 @@ router.post("/quiz/sessions/:id/complete", async (req, res): Promise<void> => {
         styleVector,
         topStyles,
         fieldDistribution,
+        fieldScores,
+        categoryScores,
+        selectedFields,
         confidence: arch.confidence,
       },
     })

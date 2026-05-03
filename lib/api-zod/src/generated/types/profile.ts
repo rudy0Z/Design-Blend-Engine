@@ -6,7 +6,9 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { AxisScores } from "./axisScores";
+import type { ProfileCategoryScores } from "./profileCategoryScores";
 import type { ProfileFieldDistribution } from "./profileFieldDistribution";
+import type { ProfileFieldScores } from "./profileFieldScores";
 import type { ProfileStyleVector } from "./profileStyleVector";
 
 export interface Profile {
@@ -24,6 +26,9 @@ export interface Profile {
   styleVector: ProfileStyleVector;
   topStyles: string[];
   fieldDistribution: ProfileFieldDistribution;
+  fieldScores: ProfileFieldScores;
+  categoryScores: ProfileCategoryScores;
+  selectedFields: string[];
   confidence: number;
   isPublic: boolean;
   createdAt: Date;
