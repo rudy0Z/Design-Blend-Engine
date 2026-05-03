@@ -29,6 +29,7 @@ import {
   getCategoryScores,
 } from "../lib/scoring";
 import { loadGraph } from "../lib/graph";
+import { refreshBlendsForProfile } from "./blends";
 import {
   deserializeEngine,
   makeInitialDistribution,
@@ -372,6 +373,11 @@ router.post("/quiz/sessions/:id/complete", async (req, res): Promise<void> => {
     .update(quizSessionsTable)
     .set({ status: "completed", profileId, terminatedReason: session.terminatedReason ?? "complete" })
     .where(eq(quizSessionsTable.id, session.id));
+
+  // Re-warm any existing blends involving this freshly-updated profile so the
+  // collaboration line is regenerated against the new archetype/axes. Runs in
+  // the background; the response is not blocked.
+  void refreshBlendsForProfile(profile);
 
   res.json(CompleteQuizSessionResponse.parse(profile));
 });

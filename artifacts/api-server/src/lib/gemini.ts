@@ -33,17 +33,25 @@ export async function generateCollaborationLine(
   const client = getGemini();
   if (!client) return FALLBACK(a, b);
 
-  const prompt = [
-    "Two designers are collaborating. Describe the creative chemistry of their pairing in ONE sentence, MAX 8 words.",
-    "Be poetic and specific. No quotes. No trailing punctuation other than a period. No emojis.",
-    "",
-    `Designer A — ${a.title}: ${a.description}`,
-    `Designer B — ${b.title}: ${b.description}`,
-    "",
-    "Sentence:",
-  ].join("\n");
+  // Prompt verbatim from PRD §"If You Collaborated".
+  const prompt = `
+Two designers are blending their taste profiles.
+Designer 1: ${a.title} — ${a.description}
+Designer 2: ${b.title} — ${b.description}
+
+Write ONE sentence (max 8 words, poetic, specific) describing 
+what their collaboration would produce. Not generic. 
+Examples of good outputs:
+- "A rigorous system with a human pulse"
+- "Structure that forgets it was ever planned"
+- "Brutality made warm enough to live inside"
+Return ONLY the sentence, no quotes.
+  `;
 
   try {
+    // Note: PRD references "Gemini 1.5 Flash"; the Replit AI Integrations
+    // proxy currently exposes the 2.5 family. 2.5-flash is the closest
+    // analog (low-latency, low-cost, same prompt contract).
     const call = client.models.generateContent({
       model: "gemini-2.5-flash",
       contents: prompt,

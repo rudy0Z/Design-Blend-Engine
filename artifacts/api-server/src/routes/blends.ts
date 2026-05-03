@@ -193,6 +193,60 @@ function computeBlendCore(a: Profile, b: Profile) {
 // Async post-write enrichment: hydrate shared/divergent style labels and
 // generate the AI collaboration line. Persisted directly into the blends row.
 const inflight = new Set<string>();
+
+/**
+ * Called from POST /quiz/sessions/:id/complete: when a profile is freshly
+ * created/updated, find every existing blend it participates in, mark the
+ * collaboration line stale, and kick off async regeneration in the background.
+ * The next page-load of /blend/:a/:b will then poll until the new line lands.
+ */
+export async function refreshBlendsForProfile(profile: Profile): Promise<void> {
+  try {
+    const rows = await db
+      .select()
+      .from(blendsTable)
+      .where(
+        // either side of the blend matches the updated profile
+        // drizzle: use OR via inArray on profile id list of length 1+1
+        eq(blendsTable.profileAId, profile.id),
+      );
+    const rowsB = await db
+      .select()
+      .from(blendsTable)
+      .where(eq(blendsTable.profileBId, profile.id));
+    const all = [...rows, ...rowsB];
+    if (all.length === 0) return;
+
+    // Collect peer profile ids and load them in one query.
+    const peerIds = [
+      ...new Set(
+        all.map((r) => (r.profileAId === profile.id ? r.profileBId : r.profileAId)),
+      ),
+    ];
+    const peers = peerIds.length
+      ? await db.select().from(profilesTable).where(inArray(profilesTable.id, peerIds))
+      : [];
+    const peerById = new Map(peers.map((p) => [p.id, p]));
+
+    for (const blend of all) {
+      const peer = peerById.get(
+        blend.profileAId === profile.id ? blend.profileBId : blend.profileAId,
+      );
+      if (!peer) continue;
+      // Clear cached line so polling clients see "regenerating".
+      await db
+        .update(blendsTable)
+        .set({ collaborationLine: "" })
+        .where(eq(blendsTable.id, blend.id));
+      const a = blend.profileAId === profile.id ? profile : peer;
+      const b = blend.profileBId === profile.id ? profile : peer;
+      void scheduleCollaborationLine(blend.id, a, b);
+    }
+  } catch (err) {
+    console.warn("[blend] refreshBlendsForProfile failed:", (err as Error).message);
+  }
+}
+
 async function scheduleCollaborationLine(blendId: string, a: Profile, b: Profile) {
   if (inflight.has(blendId)) return;
   inflight.add(blendId);

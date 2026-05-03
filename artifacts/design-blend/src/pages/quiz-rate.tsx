@@ -365,7 +365,7 @@ function RatingCard({
       <img
         src={node.imageUrl}
         alt={node.label}
-        loading="lazy"
+        loading="eager"
         onLoad={onImageLoad}
         onError={onImageLoad}
         className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
