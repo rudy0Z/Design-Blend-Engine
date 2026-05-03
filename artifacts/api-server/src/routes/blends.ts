@@ -1,5 +1,5 @@
 import { Router, type IRouter, type Response } from "express";
-import { and, eq, gt, inArray, or } from "drizzle-orm";
+import { and, eq, gt, inArray } from "drizzle-orm";
 import {
   db,
   profilesTable,
@@ -87,56 +87,75 @@ router.get("/blends/:userA/:userB", async (req, res): Promise<void> => {
     .select()
     .from(profilesTable)
     .where(inArray(profilesTable.username, [p.data.userA, p.data.userB]));
-  const a = profiles.find((x) => x.username === p.data.userA);
-  const b = profiles.find((x) => x.username === p.data.userB);
-  if (!a || !b) { res.status(404).json({ error: "Profile not found" }); return; }
+  const reqA = profiles.find((x) => x.username === p.data.userA);
+  const reqB = profiles.find((x) => x.username === p.data.userB);
+  if (!reqA || !reqB) { res.status(404).json({ error: "Profile not found" }); return; }
 
   // Visibility: a private profile may only participate in a blend if the requester is its owner.
   const requesterId = getUserIdOrNull(req);
-  for (const prof of [a, b]) {
+  for (const prof of [reqA, reqB]) {
     if (!prof.isPublic && (!requesterId || requesterId !== prof.userId)) {
       res.status(404).json({ error: "Profile not found" });
       return;
     }
   }
 
+  // Canonical pair order (sorted by id) → stored once, regardless of URL ordering.
+  const [a, b] = reqA.id <= reqB.id ? [reqA, reqB] : [reqB, reqA];
+  const flipped = a.id !== reqA.id;
+
   const [existing] = await db
     .select()
     .from(blendsTable)
-    .where(or(
-      and(eq(blendsTable.profileAId, a.id), eq(blendsTable.profileBId, b.id)),
-      and(eq(blendsTable.profileAId, b.id), eq(blendsTable.profileBId, a.id)),
-    ));
+    .where(and(eq(blendsTable.profileAId, a.id), eq(blendsTable.profileBId, b.id)));
 
-  // Cache freshness: recompute when either profile has been updated since cache.
   const newest = Math.max(a.updatedAt.getTime(), b.updatedAt.getTime());
-  if (existing && existing.createdAt.getTime() >= newest) {
-    res.json(GetBlendByUsersResponse.parse(existing));
-    return;
+  let stored = existing;
+  if (!existing || existing.createdAt.getTime() < newest) {
+    const blend = await computeBlend(a, b);
+    if (existing) {
+      [stored] = await db
+        .update(blendsTable)
+        .set({
+          similarity: blend.similarity,
+          axisDeltas: blend.axisDeltas,
+          sharedStyles: blend.sharedStyles,
+          divergentStyles: blend.divergentStyles,
+          collaborationLine: blend.collaborationLine,
+          usernameA: blend.usernameA,
+          usernameB: blend.usernameB,
+          createdAt: new Date(),
+        })
+        .where(eq(blendsTable.id, existing.id))
+        .returning();
+    } else {
+      [stored] = await db.insert(blendsTable).values(blend).returning();
+    }
   }
 
-  const blend = await computeBlend(a, b);
-  if (existing) {
-    const [row] = await db
-      .update(blendsTable)
-      .set({
-        similarity: blend.similarity,
-        axisDeltas: blend.axisDeltas,
-        sharedStyles: blend.sharedStyles,
-        divergentStyles: blend.divergentStyles,
-        collaborationLine: blend.collaborationLine,
-        usernameA: blend.usernameA,
-        usernameB: blend.usernameB,
-        createdAt: new Date(),
-      })
-      .where(eq(blendsTable.id, existing.id))
-      .returning();
-    res.json(GetBlendByUsersResponse.parse(row));
-    return;
-  }
-  const [row] = await db.insert(blendsTable).values(blend).returning();
-  res.json(GetBlendByUsersResponse.parse(row));
+  // If the request asked for the reversed ordering, present a flipped view.
+  const view = flipped ? flipBlend(stored!) : stored!;
+  res.json(GetBlendByUsersResponse.parse(view));
 });
+
+function flipBlend<T extends {
+  usernameA: string;
+  usernameB: string;
+  axisDeltas: Record<string, number>;
+  sharedStyles: { nodeId: string; label: string; scoreA: number; scoreB: number }[];
+  divergentStyles: { nodeId: string; label: string; scoreA: number; scoreB: number }[];
+}>(b: T): T {
+  const flippedDeltas: Record<string, number> = {};
+  for (const k of Object.keys(b.axisDeltas)) flippedDeltas[k] = -b.axisDeltas[k];
+  return {
+    ...b,
+    usernameA: b.usernameB,
+    usernameB: b.usernameA,
+    axisDeltas: flippedDeltas,
+    sharedStyles: b.sharedStyles.map((s) => ({ ...s, scoreA: s.scoreB, scoreB: s.scoreA })),
+    divergentStyles: b.divergentStyles.map((s) => ({ ...s, scoreA: s.scoreB, scoreB: s.scoreA })),
+  };
+}
 
 async function computeBlend(a: Profile, b: Profile) {
   // PRD: cosine similarity on the full style_vector (every node prediction),

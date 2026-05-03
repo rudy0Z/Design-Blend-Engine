@@ -292,6 +292,42 @@ router.post("/quiz/sessions/:id/complete", async (req, res): Promise<void> => {
   const categoryScores = getCategoryScores(session.ratings, byId);
   const selectedFields = session.selectedFields ?? [];
 
+  // Anonymous (logged-out) sessions: don't persist a public profile yet —
+  // return a preview-shaped profile object derived from the session ratings.
+  // The user must sign in and POST /profiles to actually claim a username.
+  if (!session.userId) {
+    await db
+      .update(quizSessionsTable)
+      .set({ status: "completed", terminatedReason: session.terminatedReason ?? "complete" })
+      .where(eq(quizSessionsTable.id, session.id));
+    const now = new Date();
+    const previewUsername = `preview-${session.id.slice(-6)}`;
+    res.json(
+      CompleteQuizSessionResponse.parse({
+        id: `preview_${session.id}`,
+        userId: null,
+        username: previewUsername,
+        displayName: null,
+        archetypeId: arch.id,
+        archetypeTitle: arch.title,
+        archetypeDescription: arch.description,
+        archetypeColor: arch.color,
+        axes,
+        styleVector,
+        topStyles,
+        fieldDistribution,
+        fieldScores,
+        categoryScores,
+        selectedFields,
+        confidence: arch.confidence,
+        isPublic: false,
+        createdAt: now,
+        updatedAt: now,
+      }),
+    );
+    return;
+  }
+
   const profileId = session.profileId ?? makeId("p");
   const username = makeUsername(arch.id);
   const [profile] = await db
