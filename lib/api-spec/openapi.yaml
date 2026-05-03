@@ -292,6 +292,7 @@ components:
         nodeId: { type: string }
         rating: { type: number }
         ratedAt: { type: string }
+        responseTimeMs: { type: number }
       required: [nodeId, rating, ratedAt]
 
     QuizSession:

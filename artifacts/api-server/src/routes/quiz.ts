@@ -195,9 +195,10 @@ router.post("/quiz/sessions/:id/ratings", async (req, res): Promise<void> => {
     return;
   }
 
-  // Optional response time on the body (zod schema strips unknowns; pull off raw req).
-  const rawRt = (req.body as Record<string, unknown>)?.responseTimeMs;
-  const responseTimeMs = typeof rawRt === "number" && rawRt >= 0 ? rawRt : undefined;
+  const responseTimeMs =
+    typeof body.data.responseTimeMs === "number" && Number.isFinite(body.data.responseTimeMs) && body.data.responseTimeMs >= 0
+      ? body.data.responseTimeMs
+      : undefined;
 
   // Build the new ratings list (replacing any prior rating for this node).
   const filteredRatings = session.ratings.filter((r) => r.nodeId !== body.data.nodeId);

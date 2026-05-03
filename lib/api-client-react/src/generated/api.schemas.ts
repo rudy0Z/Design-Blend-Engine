@@ -46,6 +46,7 @@ export interface Rating {
   nodeId: string;
   rating: number;
   ratedAt: string;
+  responseTimeMs?: number;
 }
 
 export interface QuizSession {
