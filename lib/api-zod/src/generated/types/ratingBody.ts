@@ -6,8 +6,11 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface RateStyleBody {
+export interface RatingBody {
   nodeId: string;
-  /** 0–100 score (use 40 for skip) */
+  /**
+   * @minimum 0
+   * @maximum 100
+   */
   rating: number;
 }

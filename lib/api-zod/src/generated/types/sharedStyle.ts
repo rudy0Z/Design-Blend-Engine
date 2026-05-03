@@ -8,7 +8,7 @@
 
 export interface SharedStyle {
   nodeId: string;
-  name: string;
+  label: string;
   scoreA: number;
   scoreB: number;
 }

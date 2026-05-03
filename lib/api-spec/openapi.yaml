@@ -18,26 +18,31 @@ paths:
     get:
       operationId: healthCheck
       tags: [health]
-      summary: Health check
       responses:
         "200":
           description: Healthy
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/HealthStatus"
+              schema: { $ref: "#/components/schemas/HealthStatus" }
 
   /styles:
     get:
       operationId: listStyles
       tags: [styles]
-      summary: List all style nodes
+      summary: List style nodes (filterable)
       parameters:
         - in: query
           name: field
           required: false
-          schema:
-            type: string
+          schema: { type: string }
+        - in: query
+          name: domain
+          required: false
+          schema: { type: string }
+        - in: query
+          name: depth
+          required: false
+          schema: { type: integer }
       responses:
         "200":
           description: Style list
@@ -45,248 +50,180 @@ paths:
             application/json:
               schema:
                 type: array
-                items:
-                  $ref: "#/components/schemas/StyleNode"
+                items: { $ref: "#/components/schemas/StyleNode" }
 
   /styles/{id}:
     get:
       operationId: getStyle
       tags: [styles]
-      summary: Get one style node
       parameters:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          schema: { type: string }
       responses:
         "200":
           description: Style node
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/StyleNode"
+              schema: { $ref: "#/components/schemas/StyleNode" }
         "404":
           description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          content: { application/json: { schema: { $ref: "#/components/schemas/ErrorResponse" } } }
 
   /quiz/sessions:
     post:
       operationId: createQuizSession
       tags: [quiz]
-      summary: Start a new quiz session
       requestBody:
         required: true
         content:
           application/json:
-            schema:
-              $ref: "#/components/schemas/StartSessionBody"
+            schema: { $ref: "#/components/schemas/StartSessionBody" }
       responses:
         "201":
           description: Session created
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/QuizSession"
+              schema: { $ref: "#/components/schemas/QuizSession" }
 
   /quiz/sessions/{id}:
     get:
       operationId: getQuizSession
       tags: [quiz]
-      summary: Get session state
       parameters:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          schema: { type: string }
       responses:
         "200":
           description: Session
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/QuizSession"
+              schema: { $ref: "#/components/schemas/QuizSession" }
         "404":
           description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          content: { application/json: { schema: { $ref: "#/components/schemas/ErrorResponse" } } }
 
   /quiz/sessions/{id}/next:
     get:
       operationId: getNextStyle
       tags: [quiz]
-      summary: Get the next style to rate (adaptive)
       parameters:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          schema: { type: string }
       responses:
         "200":
           description: Next style or completion signal
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/NextStyleResponse"
+              schema: { $ref: "#/components/schemas/NextStyleResponse" }
         "404":
           description: Session not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          content: { application/json: { schema: { $ref: "#/components/schemas/ErrorResponse" } } }
 
-  /quiz/sessions/{id}/rate:
+  /quiz/sessions/{id}/ratings:
     post:
-      operationId: rateStyle
+      operationId: submitRating
       tags: [quiz]
       summary: Submit a rating for a style
       parameters:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          schema: { type: string }
       requestBody:
         required: true
         content:
           application/json:
-            schema:
-              $ref: "#/components/schemas/RateStyleBody"
+            schema: { $ref: "#/components/schemas/RatingBody" }
       responses:
         "200":
           description: Updated session
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/QuizSession"
+              schema: { $ref: "#/components/schemas/QuizSession" }
         "404":
           description: Session not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          content: { application/json: { schema: { $ref: "#/components/schemas/ErrorResponse" } } }
 
   /quiz/sessions/{id}/complete:
     post:
       operationId: completeQuizSession
       tags: [quiz]
-      summary: Finalize quiz, compute axes, create profile
       parameters:
         - in: path
           name: id
           required: true
-          schema:
-            type: string
+          schema: { type: string }
       responses:
         "200":
           description: Profile generated
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/Profile"
+              schema: { $ref: "#/components/schemas/Profile" }
         "404":
           description: Session not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          content: { application/json: { schema: { $ref: "#/components/schemas/ErrorResponse" } } }
 
-  /profiles/{id}:
+  /profiles/{username}:
     get:
-      operationId: getProfile
+      operationId: getProfileByUsername
       tags: [profiles]
-      summary: Get a public profile
       parameters:
         - in: path
-          name: id
+          name: username
           required: true
-          schema:
-            type: string
+          schema: { type: string }
       responses:
         "200":
           description: Profile
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/Profile"
+              schema: { $ref: "#/components/schemas/Profile" }
         "404":
           description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          content: { application/json: { schema: { $ref: "#/components/schemas/ErrorResponse" } } }
 
-  /blends:
-    post:
-      operationId: createBlend
-      tags: [blends]
-      summary: Create a blend between two profiles
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateBlendBody"
-      responses:
-        "201":
-          description: Blend created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Blend"
-        "404":
-          description: One or both profiles not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-
-  /blends/{id}:
+  /blends/{userA}/{userB}:
     get:
-      operationId: getBlend
+      operationId: getBlendByUsers
       tags: [blends]
-      summary: Get a blend
+      summary: Get (or create) a blend between two profiles by username
       parameters:
         - in: path
-          name: id
+          name: userA
           required: true
-          schema:
-            type: string
+          schema: { type: string }
+        - in: path
+          name: userB
+          required: true
+          schema: { type: string }
       responses:
         "200":
           description: Blend
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/Blend"
+              schema: { $ref: "#/components/schemas/Blend" }
         "404":
-          description: Not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
+          description: One or both profiles not found
+          content: { application/json: { schema: { $ref: "#/components/schemas/ErrorResponse" } } }
 
 components:
   schemas:
     HealthStatus:
       type: object
       properties:
-        status:
-          type: string
+        status: { type: string }
       required: [status]
 
     ErrorResponse:
       type: object
       properties:
-        error:
-          type: string
+        error: { type: string }
       required: [error]
 
     AxisScores:
@@ -314,16 +251,16 @@ components:
       type: object
       properties:
         id: { type: string }
-        name: { type: string }
+        label: { type: string }
         field: { type: string }
-        category: { type: string }
+        domain: { type: string }
+        depth: { type: integer }
         visualCharacter: { type: string }
         referencePoint: { type: string }
         imageUrl: { type: string }
         axisLoadings: { $ref: "#/components/schemas/AxisScores" }
-        parents:
-          type: array
-          items: { type: string }
+        parent:
+          type: ["string", "null"]
         children:
           type: array
           items: { type: string }
@@ -336,14 +273,14 @@ components:
         popularity: { type: number }
       required:
         - id
-        - name
+        - label
         - field
-        - category
+        - domain
+        - depth
         - visualCharacter
         - referencePoint
         - imageUrl
         - axisLoadings
-        - parents
         - children
         - neighbors
         - contrasts
@@ -407,13 +344,14 @@ components:
           type: ["integer", "null"]
       required: [selectedFields]
 
-    RateStyleBody:
+    RatingBody:
       type: object
       properties:
         nodeId: { type: string }
         rating:
           type: number
-          description: 0–100 score (use 40 for skip)
+          minimum: 0
+          maximum: 100
       required: [nodeId, rating]
 
     NextStyleResponse:
@@ -435,6 +373,7 @@ components:
         id: { type: string }
         userId:
           type: ["string", "null"]
+        username: { type: string }
         displayName:
           type: ["string", "null"]
         archetypeId: { type: string }
@@ -453,6 +392,7 @@ components:
         updatedAt: { type: string, format: date-time }
       required:
         - id
+        - username
         - archetypeId
         - archetypeTitle
         - archetypeDescription
@@ -464,21 +404,14 @@ components:
         - createdAt
         - updatedAt
 
-    CreateBlendBody:
-      type: object
-      properties:
-        profileAId: { type: string }
-        profileBId: { type: string }
-      required: [profileAId, profileBId]
-
     SharedStyle:
       type: object
       properties:
         nodeId: { type: string }
-        name: { type: string }
+        label: { type: string }
         scoreA: { type: number }
         scoreB: { type: number }
-      required: [nodeId, name, scoreA, scoreB]
+      required: [nodeId, label, scoreA, scoreB]
 
     Blend:
       type: object
@@ -486,6 +419,8 @@ components:
         id: { type: string }
         profileAId: { type: string }
         profileBId: { type: string }
+        usernameA: { type: string }
+        usernameB: { type: string }
         similarity: { type: number }
         axisDeltas:
           type: object
@@ -502,6 +437,8 @@ components:
         - id
         - profileAId
         - profileBId
+        - usernameA
+        - usernameB
         - similarity
         - axisDeltas
         - sharedStyles

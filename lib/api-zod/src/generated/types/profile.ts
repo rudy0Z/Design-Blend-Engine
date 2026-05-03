@@ -12,6 +12,7 @@ export interface Profile {
   id: string;
   /** @nullable */
   userId?: string | null;
+  username: string;
   /** @nullable */
   displayName?: string | null;
   archetypeId: string;

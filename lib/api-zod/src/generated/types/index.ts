@@ -9,7 +9,6 @@
 export * from "./axisScores";
 export * from "./blend";
 export * from "./blendAxisDeltas";
-export * from "./createBlendBody";
 export * from "./errorResponse";
 export * from "./healthStatus";
 export * from "./listStylesParams";
@@ -17,8 +16,8 @@ export * from "./nextStyleResponse";
 export * from "./profile";
 export * from "./profileStyleVector";
 export * from "./quizSession";
-export * from "./rateStyleBody";
 export * from "./rating";
+export * from "./ratingBody";
 export * from "./sharedStyle";
 export * from "./startSessionBody";
 export * from "./styleNode";

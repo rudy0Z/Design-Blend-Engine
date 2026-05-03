@@ -1,5 +1,5 @@
 import { Router, type IRouter } from "express";
-import { eq } from "drizzle-orm";
+import { eq, and, type SQL } from "drizzle-orm";
 import { db, styleNodesTable } from "@workspace/db";
 import {
   ListStylesQueryParams,
@@ -16,9 +16,14 @@ router.get("/styles", async (req, res): Promise<void> => {
     res.status(400).json({ error: q.error.message });
     return;
   }
-  const rows = q.data.field
-    ? await db.select().from(styleNodesTable).where(eq(styleNodesTable.field, q.data.field))
-    : await db.select().from(styleNodesTable);
+  const filters: SQL[] = [];
+  if (q.data.field) filters.push(eq(styleNodesTable.field, q.data.field));
+  if (q.data.domain) filters.push(eq(styleNodesTable.domain, q.data.domain));
+  if (q.data.depth !== undefined) filters.push(eq(styleNodesTable.depth, q.data.depth));
+
+  const rows = filters.length === 0
+    ? await db.select().from(styleNodesTable)
+    : await db.select().from(styleNodesTable).where(filters.length === 1 ? filters[0] : and(...filters));
   res.json(ListStylesResponse.parse(rows));
 });
 

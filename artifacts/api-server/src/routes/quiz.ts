@@ -13,9 +13,9 @@ import {
   GetQuizSessionResponse,
   GetNextStyleParams,
   GetNextStyleResponse,
-  RateStyleParams,
-  RateStyleBody,
-  RateStyleResponse,
+  SubmitRatingParams,
+  SubmitRatingBody,
+  SubmitRatingResponse,
   CompleteQuizSessionParams,
   CompleteQuizSessionResponse,
 } from "@workspace/api-zod";
@@ -28,12 +28,15 @@ import {
 
 const router: IRouter = Router();
 
+function makeUsername(archetypeId: string): string {
+  const slug = archetypeId.replace(/_/g, "-");
+  const tail = Math.random().toString(36).slice(2, 6);
+  return `${slug}-${tail}`;
+}
+
 router.post("/quiz/sessions", async (req, res): Promise<void> => {
   const parsed = CreateQuizSessionBody.safeParse(req.body);
-  if (!parsed.success) {
-    res.status(400).json({ error: parsed.error.message });
-    return;
-  }
+  if (!parsed.success) { res.status(400).json({ error: parsed.error.message }); return; }
   const id = makeId("qs");
   const [row] = await db
     .insert(quizSessionsTable)
@@ -53,23 +56,16 @@ router.post("/quiz/sessions", async (req, res): Promise<void> => {
 
 router.get("/quiz/sessions/:id", async (req, res): Promise<void> => {
   const p = GetQuizSessionParams.safeParse(req.params);
-  if (!p.success) {
-    res.status(400).json({ error: p.error.message });
-    return;
-  }
+  if (!p.success) { res.status(400).json({ error: p.error.message }); return; }
   const [row] = await db.select().from(quizSessionsTable).where(eq(quizSessionsTable.id, p.data.id));
   if (!row) { res.status(404).json({ error: "Session not found" }); return; }
   res.json(GetQuizSessionResponse.parse(row));
 });
 
-// Placeholder adaptive engine: pick a random unrated node from the selected fields,
-// preferring high-popularity nodes. Task #2 will replace with Bayesian sampling.
+// Placeholder adaptive engine — Task #2 replaces with Bayesian sampling.
 router.get("/quiz/sessions/:id/next", async (req, res): Promise<void> => {
   const p = GetNextStyleParams.safeParse(req.params);
-  if (!p.success) {
-    res.status(400).json({ error: p.error.message });
-    return;
-  }
+  if (!p.success) { res.status(400).json({ error: p.error.message }); return; }
   const [session] = await db
     .select()
     .from(quizSessionsTable)
@@ -92,7 +88,6 @@ router.get("/quiz/sessions/:id/next", async (req, res): Promise<void> => {
   const visitedFilter = session.visitedNodes.length > 0
     ? notInArray(styleNodesTable.id, session.visitedNodes)
     : undefined;
-
   const where = fieldFilter && visitedFilter
     ? and(fieldFilter, visitedFilter)
     : (fieldFilter ?? visitedFilter);
@@ -108,7 +103,6 @@ router.get("/quiz/sessions/:id/next", async (req, res): Promise<void> => {
     return;
   }
 
-  // Weight by popularity for the placeholder selector
   const totalW = candidates.reduce((s, c) => s + Math.max(0.1, c.popularity), 0);
   let r = Math.random() * totalW;
   let pick = candidates[0];
@@ -126,12 +120,12 @@ router.get("/quiz/sessions/:id/next", async (req, res): Promise<void> => {
   }));
 });
 
-router.post("/quiz/sessions/:id/rate", async (req, res): Promise<void> => {
-  const p = RateStyleParams.safeParse(req.params);
+router.post("/quiz/sessions/:id/ratings", async (req, res): Promise<void> => {
+  const p = SubmitRatingParams.safeParse(req.params);
   if (!p.success) { res.status(400).json({ error: p.error.message }); return; }
-  const body = RateStyleBody.safeParse(req.body);
+  const body = SubmitRatingBody.safeParse(req.body);
   if (!body.success) { res.status(400).json({ error: body.error.message }); return; }
-  if (body.data.rating < 0 || body.data.rating > 100 || !Number.isFinite(body.data.rating)) {
+  if (!Number.isFinite(body.data.rating) || body.data.rating < 0 || body.data.rating > 100) {
     res.status(400).json({ error: "rating must be a number between 0 and 100" });
     return;
   }
@@ -155,7 +149,7 @@ router.post("/quiz/sessions/:id/rate", async (req, res): Promise<void> => {
     .set({ ratings, visitedNodes: visited })
     .where(eq(quizSessionsTable.id, p.data.id))
     .returning();
-  res.json(RateStyleResponse.parse(updated));
+  res.json(SubmitRatingResponse.parse(updated));
 });
 
 router.post("/quiz/sessions/:id/complete", async (req, res): Promise<void> => {
@@ -179,11 +173,13 @@ router.post("/quiz/sessions/:id/complete", async (req, res): Promise<void> => {
     .map(([id]) => id);
 
   const profileId = session.profileId ?? makeId("p");
+  const username = makeUsername(archetype.id);
   const [profile] = await db
     .insert(profilesTable)
     .values({
       id: profileId,
       userId: session.userId,
+      username,
       archetypeId: archetype.id,
       archetypeTitle: archetype.title,
       archetypeDescription: archetype.description,

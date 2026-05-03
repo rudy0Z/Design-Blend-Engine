@@ -1,4 +1,4 @@
-import { pgTable, text, jsonb, real, index } from "drizzle-orm/pg-core";
+import { pgTable, text, jsonb, real, integer, index } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
@@ -17,20 +17,25 @@ export const styleNodesTable = pgTable(
   "style_nodes",
   {
     id: text("id").primaryKey(),
-    name: text("name").notNull(),
+    label: text("label").notNull(),
     field: text("field").notNull(),
-    category: text("category").notNull(),
+    domain: text("domain").notNull(),
+    depth: integer("depth").notNull().default(3),
     visualCharacter: text("visual_character").notNull(),
     referencePoint: text("reference_point").notNull().default(""),
     imageUrl: text("image_url").notNull(),
     axisLoadings: jsonb("axis_loadings").$type<AxisLoadings>().notNull(),
-    parents: text("parents").array().notNull().default([]),
+    parent: text("parent"),
     children: text("children").array().notNull().default([]),
     neighbors: text("neighbors").array().notNull().default([]),
     contrasts: text("contrasts").array().notNull().default([]),
     popularity: real("popularity").notNull().default(0.5),
   },
-  (t) => [index("style_nodes_field_idx").on(t.field), index("style_nodes_cat_idx").on(t.category)],
+  (t) => [
+    index("style_nodes_field_idx").on(t.field),
+    index("style_nodes_domain_idx").on(t.domain),
+    index("style_nodes_depth_idx").on(t.depth),
+  ],
 );
 
 export const insertStyleNodeSchema = createInsertSchema(styleNodesTable);

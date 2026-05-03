@@ -8,4 +8,6 @@
 
 export type ListStylesParams = {
   field?: string;
+  domain?: string;
+  depth?: number;
 };

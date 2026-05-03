@@ -9,14 +9,16 @@ import type { AxisScores } from "./axisScores";
 
 export interface StyleNode {
   id: string;
-  name: string;
+  label: string;
   field: string;
-  category: string;
+  domain: string;
+  depth: number;
   visualCharacter: string;
   referencePoint: string;
   imageUrl: string;
   axisLoadings: AxisScores;
-  parents: string[];
+  /** @nullable */
+  parent?: string | null;
   children: string[];
   neighbors: string[];
   contrasts: string[];

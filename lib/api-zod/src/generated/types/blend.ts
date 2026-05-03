@@ -12,6 +12,8 @@ export interface Blend {
   id: string;
   profileAId: string;
   profileBId: string;
+  usernameA: string;
+  usernameB: string;
   similarity: number;
   axisDeltas: BlendAxisDeltas;
   sharedStyles: SharedStyle[];

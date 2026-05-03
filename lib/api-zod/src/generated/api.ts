@@ -7,25 +7,25 @@
  */
 import * as zod from "zod";
 
-/**
- * @summary Health check
- */
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
 
 /**
- * @summary List all style nodes
+ * @summary List style nodes (filterable)
  */
 export const ListStylesQueryParams = zod.object({
   field: zod.coerce.string().optional(),
+  domain: zod.coerce.string().optional(),
+  depth: zod.coerce.number().optional(),
 });
 
 export const ListStylesResponseItem = zod.object({
   id: zod.string(),
-  name: zod.string(),
+  label: zod.string(),
   field: zod.string(),
-  category: zod.string(),
+  domain: zod.string(),
+  depth: zod.number(),
   visualCharacter: zod.string(),
   referencePoint: zod.string(),
   imageUrl: zod.string(),
@@ -39,7 +39,7 @@ export const ListStylesResponseItem = zod.object({
     literal_abstract: zod.number(),
     system_intuition: zod.number(),
   }),
-  parents: zod.array(zod.string()),
+  parent: zod.string().nullish(),
   children: zod.array(zod.string()),
   neighbors: zod.array(zod.string()),
   contrasts: zod.array(zod.string()),
@@ -47,18 +47,16 @@ export const ListStylesResponseItem = zod.object({
 });
 export const ListStylesResponse = zod.array(ListStylesResponseItem);
 
-/**
- * @summary Get one style node
- */
 export const GetStyleParams = zod.object({
   id: zod.coerce.string(),
 });
 
 export const GetStyleResponse = zod.object({
   id: zod.string(),
-  name: zod.string(),
+  label: zod.string(),
   field: zod.string(),
-  category: zod.string(),
+  domain: zod.string(),
+  depth: zod.number(),
   visualCharacter: zod.string(),
   referencePoint: zod.string(),
   imageUrl: zod.string(),
@@ -72,16 +70,13 @@ export const GetStyleResponse = zod.object({
     literal_abstract: zod.number(),
     system_intuition: zod.number(),
   }),
-  parents: zod.array(zod.string()),
+  parent: zod.string().nullish(),
   children: zod.array(zod.string()),
   neighbors: zod.array(zod.string()),
   contrasts: zod.array(zod.string()),
   popularity: zod.number(),
 });
 
-/**
- * @summary Start a new quiz session
- */
 export const CreateQuizSessionBody = zod.object({
   selectedFields: zod.array(zod.string()),
   selectedCategories: zod.array(zod.string()).optional(),
@@ -89,9 +84,6 @@ export const CreateQuizSessionBody = zod.object({
   targetCount: zod.number().nullish(),
 });
 
-/**
- * @summary Get session state
- */
 export const GetQuizSessionParams = zod.object({
   id: zod.coerce.string(),
 });
@@ -116,9 +108,6 @@ export const GetQuizSessionResponse = zod.object({
   updatedAt: zod.coerce.date(),
 });
 
-/**
- * @summary Get the next style to rate (adaptive)
- */
 export const GetNextStyleParams = zod.object({
   id: zod.coerce.string(),
 });
@@ -132,9 +121,10 @@ export const GetNextStyleResponse = zod.object({
     .union([
       zod.object({
         id: zod.string(),
-        name: zod.string(),
+        label: zod.string(),
         field: zod.string(),
-        category: zod.string(),
+        domain: zod.string(),
+        depth: zod.number(),
         visualCharacter: zod.string(),
         referencePoint: zod.string(),
         imageUrl: zod.string(),
@@ -148,7 +138,7 @@ export const GetNextStyleResponse = zod.object({
           literal_abstract: zod.number(),
           system_intuition: zod.number(),
         }),
-        parents: zod.array(zod.string()),
+        parent: zod.string().nullish(),
         children: zod.array(zod.string()),
         neighbors: zod.array(zod.string()),
         contrasts: zod.array(zod.string()),
@@ -162,16 +152,22 @@ export const GetNextStyleResponse = zod.object({
 /**
  * @summary Submit a rating for a style
  */
-export const RateStyleParams = zod.object({
+export const SubmitRatingParams = zod.object({
   id: zod.coerce.string(),
 });
 
-export const RateStyleBody = zod.object({
+export const submitRatingBodyRatingMin = 0;
+export const submitRatingBodyRatingMax = 100;
+
+export const SubmitRatingBody = zod.object({
   nodeId: zod.string(),
-  rating: zod.number().describe("0–100 score (use 40 for skip)"),
+  rating: zod
+    .number()
+    .min(submitRatingBodyRatingMin)
+    .max(submitRatingBodyRatingMax),
 });
 
-export const RateStyleResponse = zod.object({
+export const SubmitRatingResponse = zod.object({
   id: zod.string(),
   profileId: zod.string().nullish(),
   userId: zod.string().nullish(),
@@ -191,9 +187,6 @@ export const RateStyleResponse = zod.object({
   updatedAt: zod.coerce.date(),
 });
 
-/**
- * @summary Finalize quiz, compute axes, create profile
- */
 export const CompleteQuizSessionParams = zod.object({
   id: zod.coerce.string(),
 });
@@ -201,6 +194,7 @@ export const CompleteQuizSessionParams = zod.object({
 export const CompleteQuizSessionResponse = zod.object({
   id: zod.string(),
   userId: zod.string().nullish(),
+  username: zod.string(),
   displayName: zod.string().nullish(),
   archetypeId: zod.string(),
   archetypeTitle: zod.string(),
@@ -223,16 +217,14 @@ export const CompleteQuizSessionResponse = zod.object({
   updatedAt: zod.coerce.date(),
 });
 
-/**
- * @summary Get a public profile
- */
-export const GetProfileParams = zod.object({
-  id: zod.coerce.string(),
+export const GetProfileByUsernameParams = zod.object({
+  username: zod.coerce.string(),
 });
 
-export const GetProfileResponse = zod.object({
+export const GetProfileByUsernameResponse = zod.object({
   id: zod.string(),
   userId: zod.string().nullish(),
+  username: zod.string(),
   displayName: zod.string().nullish(),
   archetypeId: zod.string(),
   archetypeTitle: zod.string(),
@@ -256,30 +248,25 @@ export const GetProfileResponse = zod.object({
 });
 
 /**
- * @summary Create a blend between two profiles
+ * @summary Get (or create) a blend between two profiles by username
  */
-export const CreateBlendBody = zod.object({
-  profileAId: zod.string(),
-  profileBId: zod.string(),
+export const GetBlendByUsersParams = zod.object({
+  userA: zod.coerce.string(),
+  userB: zod.coerce.string(),
 });
 
-/**
- * @summary Get a blend
- */
-export const GetBlendParams = zod.object({
-  id: zod.coerce.string(),
-});
-
-export const GetBlendResponse = zod.object({
+export const GetBlendByUsersResponse = zod.object({
   id: zod.string(),
   profileAId: zod.string(),
   profileBId: zod.string(),
+  usernameA: zod.string(),
+  usernameB: zod.string(),
   similarity: zod.number(),
   axisDeltas: zod.record(zod.string(), zod.number()),
   sharedStyles: zod.array(
     zod.object({
       nodeId: zod.string(),
-      name: zod.string(),
+      label: zod.string(),
       scoreA: zod.number(),
       scoreB: zod.number(),
     }),
@@ -287,7 +274,7 @@ export const GetBlendResponse = zod.object({
   divergentStyles: zod.array(
     zod.object({
       nodeId: zod.string(),
-      name: zod.string(),
+      label: zod.string(),
       scoreA: zod.number(),
       scoreB: zod.number(),
     }),

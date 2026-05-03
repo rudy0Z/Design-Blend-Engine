@@ -1,28 +1,46 @@
 import { Router, type IRouter } from "express";
-import { eq, inArray } from "drizzle-orm";
-import { db, profilesTable, blendsTable, styleNodesTable } from "@workspace/db";
+import { and, eq, inArray, or } from "drizzle-orm";
+import { db, profilesTable, blendsTable, styleNodesTable, type Profile } from "@workspace/db";
 import {
-  CreateBlendBody,
-  GetBlendParams,
-  GetBlendResponse,
+  GetBlendByUsersParams,
+  GetBlendByUsersResponse,
 } from "@workspace/api-zod";
 import { makeId } from "../lib/ids";
 import { AXIS_KEYS, cosineSimilarityAxes } from "../lib/scoring";
 
 const router: IRouter = Router();
 
-router.post("/blends", async (req, res): Promise<void> => {
-  const body = CreateBlendBody.safeParse(req.body);
-  if (!body.success) { res.status(400).json({ error: body.error.message }); return; }
+router.get("/blends/:userA/:userB", async (req, res): Promise<void> => {
+  const p = GetBlendByUsersParams.safeParse(req.params);
+  if (!p.success) { res.status(400).json({ error: p.error.message }); return; }
 
   const profiles = await db
     .select()
     .from(profilesTable)
-    .where(inArray(profilesTable.id, [body.data.profileAId, body.data.profileBId]));
-  const a = profiles.find((p) => p.id === body.data.profileAId);
-  const b = profiles.find((p) => p.id === body.data.profileBId);
+    .where(inArray(profilesTable.username, [p.data.userA, p.data.userB]));
+  const a = profiles.find((x) => x.username === p.data.userA);
+  const b = profiles.find((x) => x.username === p.data.userB);
   if (!a || !b) { res.status(404).json({ error: "Profile not found" }); return; }
 
+  // Look up an existing blend in either order
+  const [existing] = await db
+    .select()
+    .from(blendsTable)
+    .where(or(
+      and(eq(blendsTable.profileAId, a.id), eq(blendsTable.profileBId, b.id)),
+      and(eq(blendsTable.profileAId, b.id), eq(blendsTable.profileBId, a.id)),
+    ));
+  if (existing) {
+    res.json(GetBlendByUsersResponse.parse(existing));
+    return;
+  }
+
+  const blend = await computeBlend(a, b);
+  const [row] = await db.insert(blendsTable).values(blend).returning();
+  res.json(GetBlendByUsersResponse.parse(row));
+});
+
+async function computeBlend(a: Profile, b: Profile) {
   const similarity = cosineSimilarityAxes(a.axes, b.axes);
   const axisDeltas: Record<string, number> = {};
   for (const k of AXIS_KEYS) axisDeltas[k] = a.axes[k] - b.axes[k];
@@ -33,12 +51,11 @@ router.post("/blends", async (req, res): Promise<void> => {
     : [];
   const sharedStyles = sharedNodeRows.map((n) => ({
     nodeId: n.id,
-    name: n.name,
+    label: n.label,
     scoreA: a.styleVector[n.id] ?? 0,
     scoreB: b.styleVector[n.id] ?? 0,
   }));
 
-  // Divergent: top of A not in B and vice versa
   const divergentIds = [
     ...a.topStyles.filter((id) => !b.topStyles.includes(id)).slice(0, 2),
     ...b.topStyles.filter((id) => !a.topStyles.includes(id)).slice(0, 2),
@@ -48,36 +65,26 @@ router.post("/blends", async (req, res): Promise<void> => {
     : [];
   const divergentStyles = divergentNodeRows.map((n) => ({
     nodeId: n.id,
-    name: n.name,
+    label: n.label,
     scoreA: a.styleVector[n.id] ?? 0,
     scoreB: b.styleVector[n.id] ?? 0,
   }));
 
-  // Placeholder collab line — Task #4 will replace with Gemini.
   const pct = Math.round(((similarity + 1) / 2) * 100);
   const collaborationLine = `${a.archetypeTitle} × ${b.archetypeTitle}: a ${pct}% blend that would ship together.`;
 
-  const id = makeId("bl");
-  const [row] = await db.insert(blendsTable).values({
-    id,
+  return {
+    id: makeId("bl"),
     profileAId: a.id,
     profileBId: b.id,
+    usernameA: a.username,
+    usernameB: b.username,
     similarity,
     axisDeltas,
     sharedStyles,
     divergentStyles,
     collaborationLine,
-  }).returning();
-
-  res.status(201).json(GetBlendResponse.parse(row));
-});
-
-router.get("/blends/:id", async (req, res): Promise<void> => {
-  const p = GetBlendParams.safeParse(req.params);
-  if (!p.success) { res.status(400).json({ error: p.error.message }); return; }
-  const [row] = await db.select().from(blendsTable).where(eq(blendsTable.id, p.data.id));
-  if (!row) { res.status(404).json({ error: "Blend not found" }); return; }
-  res.json(GetBlendResponse.parse(row));
-});
+  };
+}
 
 export default router;

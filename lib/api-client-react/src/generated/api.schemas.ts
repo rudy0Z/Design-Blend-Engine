@@ -26,14 +26,16 @@ export interface AxisScores {
 
 export interface StyleNode {
   id: string;
-  name: string;
+  label: string;
   field: string;
-  category: string;
+  domain: string;
+  depth: number;
   visualCharacter: string;
   referencePoint: string;
   imageUrl: string;
   axisLoadings: AxisScores;
-  parents: string[];
+  /** @nullable */
+  parent?: string | null;
   children: string[];
   neighbors: string[];
   contrasts: string[];
@@ -71,9 +73,12 @@ export interface StartSessionBody {
   targetCount?: number | null;
 }
 
-export interface RateStyleBody {
+export interface RatingBody {
   nodeId: string;
-  /** 0–100 score (use 40 for skip) */
+  /**
+   * @minimum 0
+   * @maximum 100
+   */
   rating: number;
 }
 
@@ -91,6 +96,7 @@ export interface Profile {
   id: string;
   /** @nullable */
   userId?: string | null;
+  username: string;
   /** @nullable */
   displayName?: string | null;
   archetypeId: string;
@@ -105,14 +111,9 @@ export interface Profile {
   updatedAt: string;
 }
 
-export interface CreateBlendBody {
-  profileAId: string;
-  profileBId: string;
-}
-
 export interface SharedStyle {
   nodeId: string;
-  name: string;
+  label: string;
   scoreA: number;
   scoreB: number;
 }
@@ -123,6 +124,8 @@ export interface Blend {
   id: string;
   profileAId: string;
   profileBId: string;
+  usernameA: string;
+  usernameB: string;
   similarity: number;
   axisDeltas: BlendAxisDeltas;
   sharedStyles: SharedStyle[];
@@ -133,4 +136,6 @@ export interface Blend {
 
 export type ListStylesParams = {
   field?: string;
+  domain?: string;
+  depth?: number;
 };

@@ -18,14 +18,13 @@ import type {
 
 import type {
   Blend,
-  CreateBlendBody,
   ErrorResponse,
   HealthStatus,
   ListStylesParams,
   NextStyleResponse,
   Profile,
   QuizSession,
-  RateStyleBody,
+  RatingBody,
   StartSessionBody,
   StyleNode,
 } from "./api.schemas";
@@ -39,9 +38,6 @@ type Awaited<O> = O extends AwaitedInput<infer T> ? T : never;
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
-/**
- * @summary Health check
- */
 export const getHealthCheckUrl = () => {
   return `/api/healthz`;
 };
@@ -90,10 +86,6 @@ export type HealthCheckQueryResult = NonNullable<
 >;
 export type HealthCheckQueryError = ErrorType<unknown>;
 
-/**
- * @summary Health check
- */
-
 export function useHealthCheck<
   TData = Awaited<ReturnType<typeof healthCheck>>,
   TError = ErrorType<unknown>,
@@ -115,7 +107,7 @@ export function useHealthCheck<
 }
 
 /**
- * @summary List all style nodes
+ * @summary List style nodes (filterable)
  */
 export const getListStylesUrl = (params?: ListStylesParams) => {
   const normalizedParams = new URLSearchParams();
@@ -182,7 +174,7 @@ export type ListStylesQueryResult = NonNullable<
 export type ListStylesQueryError = ErrorType<unknown>;
 
 /**
- * @summary List all style nodes
+ * @summary List style nodes (filterable)
  */
 
 export function useListStyles<
@@ -208,9 +200,6 @@ export function useListStyles<
   return { ...query, queryKey: queryOptions.queryKey };
 }
 
-/**
- * @summary Get one style node
- */
 export const getGetStyleUrl = (id: string) => {
   return `/api/styles/${id}`;
 };
@@ -266,10 +255,6 @@ export type GetStyleQueryResult = NonNullable<
 >;
 export type GetStyleQueryError = ErrorType<ErrorResponse>;
 
-/**
- * @summary Get one style node
- */
-
 export function useGetStyle<
   TData = Awaited<ReturnType<typeof getStyle>>,
   TError = ErrorType<ErrorResponse>,
@@ -293,9 +278,6 @@ export function useGetStyle<
   return { ...query, queryKey: queryOptions.queryKey };
 }
 
-/**
- * @summary Start a new quiz session
- */
 export const getCreateQuizSessionUrl = () => {
   return `/api/quiz/sessions`;
 };
@@ -356,9 +338,6 @@ export type CreateQuizSessionMutationResult = NonNullable<
 export type CreateQuizSessionMutationBody = BodyType<StartSessionBody>;
 export type CreateQuizSessionMutationError = ErrorType<unknown>;
 
-/**
- * @summary Start a new quiz session
- */
 export const useCreateQuizSession = <
   TError = ErrorType<unknown>,
   TContext = unknown,
@@ -379,9 +358,6 @@ export const useCreateQuizSession = <
   return useMutation(getCreateQuizSessionMutationOptions(options));
 };
 
-/**
- * @summary Get session state
- */
 export const getGetQuizSessionUrl = (id: string) => {
   return `/api/quiz/sessions/${id}`;
 };
@@ -439,10 +415,6 @@ export type GetQuizSessionQueryResult = NonNullable<
 >;
 export type GetQuizSessionQueryError = ErrorType<ErrorResponse>;
 
-/**
- * @summary Get session state
- */
-
 export function useGetQuizSession<
   TData = Awaited<ReturnType<typeof getQuizSession>>,
   TError = ErrorType<ErrorResponse>,
@@ -466,9 +438,6 @@ export function useGetQuizSession<
   return { ...query, queryKey: queryOptions.queryKey };
 }
 
-/**
- * @summary Get the next style to rate (adaptive)
- */
 export const getGetNextStyleUrl = (id: string) => {
   return `/api/quiz/sessions/${id}/next`;
 };
@@ -526,10 +495,6 @@ export type GetNextStyleQueryResult = NonNullable<
 >;
 export type GetNextStyleQueryError = ErrorType<ErrorResponse>;
 
-/**
- * @summary Get the next style to rate (adaptive)
- */
-
 export function useGetNextStyle<
   TData = Awaited<ReturnType<typeof getNextStyle>>,
   TError = ErrorType<ErrorResponse>,
@@ -556,41 +521,41 @@ export function useGetNextStyle<
 /**
  * @summary Submit a rating for a style
  */
-export const getRateStyleUrl = (id: string) => {
-  return `/api/quiz/sessions/${id}/rate`;
+export const getSubmitRatingUrl = (id: string) => {
+  return `/api/quiz/sessions/${id}/ratings`;
 };
 
-export const rateStyle = async (
+export const submitRating = async (
   id: string,
-  rateStyleBody: RateStyleBody,
+  ratingBody: RatingBody,
   options?: RequestInit,
 ): Promise<QuizSession> => {
-  return customFetch<QuizSession>(getRateStyleUrl(id), {
+  return customFetch<QuizSession>(getSubmitRatingUrl(id), {
     ...options,
     method: "POST",
     headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(rateStyleBody),
+    body: JSON.stringify(ratingBody),
   });
 };
 
-export const getRateStyleMutationOptions = <
+export const getSubmitRatingMutationOptions = <
   TError = ErrorType<ErrorResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof rateStyle>>,
+    Awaited<ReturnType<typeof submitRating>>,
     TError,
-    { id: string; data: BodyType<RateStyleBody> },
+    { id: string; data: BodyType<RatingBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof rateStyle>>,
+  Awaited<ReturnType<typeof submitRating>>,
   TError,
-  { id: string; data: BodyType<RateStyleBody> },
+  { id: string; data: BodyType<RatingBody> },
   TContext
 > => {
-  const mutationKey = ["rateStyle"];
+  const mutationKey = ["submitRating"];
   const { mutation: mutationOptions, request: requestOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -600,49 +565,46 @@ export const getRateStyleMutationOptions = <
     : { mutation: { mutationKey }, request: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof rateStyle>>,
-    { id: string; data: BodyType<RateStyleBody> }
+    Awaited<ReturnType<typeof submitRating>>,
+    { id: string; data: BodyType<RatingBody> }
   > = (props) => {
     const { id, data } = props ?? {};
 
-    return rateStyle(id, data, requestOptions);
+    return submitRating(id, data, requestOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type RateStyleMutationResult = NonNullable<
-  Awaited<ReturnType<typeof rateStyle>>
+export type SubmitRatingMutationResult = NonNullable<
+  Awaited<ReturnType<typeof submitRating>>
 >;
-export type RateStyleMutationBody = BodyType<RateStyleBody>;
-export type RateStyleMutationError = ErrorType<ErrorResponse>;
+export type SubmitRatingMutationBody = BodyType<RatingBody>;
+export type SubmitRatingMutationError = ErrorType<ErrorResponse>;
 
 /**
  * @summary Submit a rating for a style
  */
-export const useRateStyle = <
+export const useSubmitRating = <
   TError = ErrorType<ErrorResponse>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof rateStyle>>,
+    Awaited<ReturnType<typeof submitRating>>,
     TError,
-    { id: string; data: BodyType<RateStyleBody> },
+    { id: string; data: BodyType<RatingBody> },
     TContext
   >;
   request?: SecondParameter<typeof customFetch>;
 }): UseMutationResult<
-  Awaited<ReturnType<typeof rateStyle>>,
+  Awaited<ReturnType<typeof submitRating>>,
   TError,
-  { id: string; data: BodyType<RateStyleBody> },
+  { id: string; data: BodyType<RatingBody> },
   TContext
 > => {
-  return useMutation(getRateStyleMutationOptions(options));
+  return useMutation(getSubmitRatingMutationOptions(options));
 };
 
-/**
- * @summary Finalize quiz, compute axes, create profile
- */
 export const getCompleteQuizSessionUrl = (id: string) => {
   return `/api/quiz/sessions/${id}/complete`;
 };
@@ -701,9 +663,6 @@ export type CompleteQuizSessionMutationResult = NonNullable<
 
 export type CompleteQuizSessionMutationError = ErrorType<ErrorResponse>;
 
-/**
- * @summary Finalize quiz, compute axes, create profile
- */
 export const useCompleteQuizSession = <
   TError = ErrorType<ErrorResponse>,
   TContext = unknown,
@@ -724,35 +683,32 @@ export const useCompleteQuizSession = <
   return useMutation(getCompleteQuizSessionMutationOptions(options));
 };
 
-/**
- * @summary Get a public profile
- */
-export const getGetProfileUrl = (id: string) => {
-  return `/api/profiles/${id}`;
+export const getGetProfileByUsernameUrl = (username: string) => {
+  return `/api/profiles/${username}`;
 };
 
-export const getProfile = async (
-  id: string,
+export const getProfileByUsername = async (
+  username: string,
   options?: RequestInit,
 ): Promise<Profile> => {
-  return customFetch<Profile>(getGetProfileUrl(id), {
+  return customFetch<Profile>(getGetProfileByUsernameUrl(username), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetProfileQueryKey = (id: string) => {
-  return [`/api/profiles/${id}`] as const;
+export const getGetProfileByUsernameQueryKey = (username: string) => {
+  return [`/api/profiles/${username}`] as const;
 };
 
-export const getGetProfileQueryOptions = <
-  TData = Awaited<ReturnType<typeof getProfile>>,
+export const getGetProfileByUsernameQueryOptions = <
+  TData = Awaited<ReturnType<typeof getProfileByUsername>>,
   TError = ErrorType<ErrorResponse>,
 >(
-  id: string,
+  username: string,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getProfile>>,
+      Awaited<ReturnType<typeof getProfileByUsername>>,
       TError,
       TData
     >;
@@ -761,48 +717,46 @@ export const getGetProfileQueryOptions = <
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetProfileQueryKey(id);
+  const queryKey =
+    queryOptions?.queryKey ?? getGetProfileByUsernameQueryKey(username);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getProfile>>> = ({
-    signal,
-  }) => getProfile(id, { signal, ...requestOptions });
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getProfileByUsername>>
+  > = ({ signal }) =>
+    getProfileByUsername(username, { signal, ...requestOptions });
 
   return {
     queryKey,
     queryFn,
-    enabled: !!id,
+    enabled: !!username,
     ...queryOptions,
   } as UseQueryOptions<
-    Awaited<ReturnType<typeof getProfile>>,
+    Awaited<ReturnType<typeof getProfileByUsername>>,
     TError,
     TData
   > & { queryKey: QueryKey };
 };
 
-export type GetProfileQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getProfile>>
+export type GetProfileByUsernameQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getProfileByUsername>>
 >;
-export type GetProfileQueryError = ErrorType<ErrorResponse>;
+export type GetProfileByUsernameQueryError = ErrorType<ErrorResponse>;
 
-/**
- * @summary Get a public profile
- */
-
-export function useGetProfile<
-  TData = Awaited<ReturnType<typeof getProfile>>,
+export function useGetProfileByUsername<
+  TData = Awaited<ReturnType<typeof getProfileByUsername>>,
   TError = ErrorType<ErrorResponse>,
 >(
-  id: string,
+  username: string,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getProfile>>,
+      Awaited<ReturnType<typeof getProfileByUsername>>,
       TError,
       TData
     >;
     request?: SecondParameter<typeof customFetch>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetProfileQueryOptions(id, options);
+  const queryOptions = getGetProfileByUsernameQueryOptions(username, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -812,120 +766,36 @@ export function useGetProfile<
 }
 
 /**
- * @summary Create a blend between two profiles
+ * @summary Get (or create) a blend between two profiles by username
  */
-export const getCreateBlendUrl = () => {
-  return `/api/blends`;
+export const getGetBlendByUsersUrl = (userA: string, userB: string) => {
+  return `/api/blends/${userA}/${userB}`;
 };
 
-export const createBlend = async (
-  createBlendBody: CreateBlendBody,
+export const getBlendByUsers = async (
+  userA: string,
+  userB: string,
   options?: RequestInit,
 ): Promise<Blend> => {
-  return customFetch<Blend>(getCreateBlendUrl(), {
-    ...options,
-    method: "POST",
-    headers: { "Content-Type": "application/json", ...options?.headers },
-    body: JSON.stringify(createBlendBody),
-  });
-};
-
-export const getCreateBlendMutationOptions = <
-  TError = ErrorType<ErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createBlend>>,
-    TError,
-    { data: BodyType<CreateBlendBody> },
-    TContext
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createBlend>>,
-  TError,
-  { data: BodyType<CreateBlendBody> },
-  TContext
-> => {
-  const mutationKey = ["createBlend"];
-  const { mutation: mutationOptions, request: requestOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, request: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createBlend>>,
-    { data: BodyType<CreateBlendBody> }
-  > = (props) => {
-    const { data } = props ?? {};
-
-    return createBlend(data, requestOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type CreateBlendMutationResult = NonNullable<
-  Awaited<ReturnType<typeof createBlend>>
->;
-export type CreateBlendMutationBody = BodyType<CreateBlendBody>;
-export type CreateBlendMutationError = ErrorType<ErrorResponse>;
-
-/**
- * @summary Create a blend between two profiles
- */
-export const useCreateBlend = <
-  TError = ErrorType<ErrorResponse>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createBlend>>,
-    TError,
-    { data: BodyType<CreateBlendBody> },
-    TContext
-  >;
-  request?: SecondParameter<typeof customFetch>;
-}): UseMutationResult<
-  Awaited<ReturnType<typeof createBlend>>,
-  TError,
-  { data: BodyType<CreateBlendBody> },
-  TContext
-> => {
-  return useMutation(getCreateBlendMutationOptions(options));
-};
-
-/**
- * @summary Get a blend
- */
-export const getGetBlendUrl = (id: string) => {
-  return `/api/blends/${id}`;
-};
-
-export const getBlend = async (
-  id: string,
-  options?: RequestInit,
-): Promise<Blend> => {
-  return customFetch<Blend>(getGetBlendUrl(id), {
+  return customFetch<Blend>(getGetBlendByUsersUrl(userA, userB), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetBlendQueryKey = (id: string) => {
-  return [`/api/blends/${id}`] as const;
+export const getGetBlendByUsersQueryKey = (userA: string, userB: string) => {
+  return [`/api/blends/${userA}/${userB}`] as const;
 };
 
-export const getGetBlendQueryOptions = <
-  TData = Awaited<ReturnType<typeof getBlend>>,
+export const getGetBlendByUsersQueryOptions = <
+  TData = Awaited<ReturnType<typeof getBlendByUsers>>,
   TError = ErrorType<ErrorResponse>,
 >(
-  id: string,
+  userA: string,
+  userB: string,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getBlend>>,
+      Awaited<ReturnType<typeof getBlendByUsers>>,
       TError,
       TData
     >;
@@ -934,46 +804,50 @@ export const getGetBlendQueryOptions = <
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetBlendQueryKey(id);
+  const queryKey =
+    queryOptions?.queryKey ?? getGetBlendByUsersQueryKey(userA, userB);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getBlend>>> = ({
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getBlendByUsers>>> = ({
     signal,
-  }) => getBlend(id, { signal, ...requestOptions });
+  }) => getBlendByUsers(userA, userB, { signal, ...requestOptions });
 
   return {
     queryKey,
     queryFn,
-    enabled: !!id,
+    enabled: !!(userA && userB),
     ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getBlend>>, TError, TData> & {
-    queryKey: QueryKey;
-  };
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getBlendByUsers>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
 };
 
-export type GetBlendQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getBlend>>
+export type GetBlendByUsersQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getBlendByUsers>>
 >;
-export type GetBlendQueryError = ErrorType<ErrorResponse>;
+export type GetBlendByUsersQueryError = ErrorType<ErrorResponse>;
 
 /**
- * @summary Get a blend
+ * @summary Get (or create) a blend between two profiles by username
  */
 
-export function useGetBlend<
-  TData = Awaited<ReturnType<typeof getBlend>>,
+export function useGetBlendByUsers<
+  TData = Awaited<ReturnType<typeof getBlendByUsers>>,
   TError = ErrorType<ErrorResponse>,
 >(
-  id: string,
+  userA: string,
+  userB: string,
   options?: {
     query?: UseQueryOptions<
-      Awaited<ReturnType<typeof getBlend>>,
+      Awaited<ReturnType<typeof getBlendByUsers>>,
       TError,
       TData
     >;
     request?: SecondParameter<typeof customFetch>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetBlendQueryOptions(id, options);
+  const queryOptions = getGetBlendByUsersQueryOptions(userA, userB, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
