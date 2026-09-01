@@ -17,6 +17,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { buildAppearance } from "@/lib/clerk-appearance";
 import NotFound from "@/pages/not-found";
 import HomePage from "@/pages/home";
+import CapturePage from "@/pages/capture";
 import QuizFieldsPage from "@/pages/quiz-fields";
 import QuizCategoriesPage from "@/pages/quiz-categories";
 import QuizRatePage from "@/pages/quiz-rate";
@@ -74,6 +75,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={HomePage} />
+      <Route path="/capture" component={CapturePage} />
       <Route path="/quiz" component={QuizFieldsPage} />
       <Route path="/quiz/categories" component={QuizCategoriesPage} />
       <Route path="/quiz/rate" component={QuizRatePage} />

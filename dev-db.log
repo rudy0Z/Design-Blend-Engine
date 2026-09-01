@@ -1,0 +1,85 @@
+Initialising Postgres data dir (first run)...
+The files belonging to this database system will be owned by user "rudra".
+This user must also own the server process.
+
+
+The database cluster will be initialized with this locale configuration:
+  locale provider:   libc
+  LC_COLLATE:  English_United Kingdom.utf8
+  LC_CTYPE:    English_United Kingdom.utf8
+  LC_MESSAGES: C
+  LC_MONETARY: English_United Kingdom.utf8
+  LC_NUMERIC:  English_United Kingdom.utf8
+  LC_TIME:     English_United Kingdom.utf8
+The default database encoding has accordingly been set to "UTF8".
+The default text search configuration will be set to "english".
+
+Data page checksums are enabled.
+
+
+
+creating directory D:/Projects/Design-Blend-Engine/.local/pg ... 
+ok
+creating subdirectories ... 
+ok
+
+selecting dynamic shared memory implementation ... windows
+selecting default "max_connections" ... 
+100
+selecting default "shared_buffers" ... 
+128MB
+selecting default time zone ... 
+Asia/Calcutta
+creating configuration files ... 
+ok
+running bootstrap script ... 
+ok
+
+performing post-bootstrap initialization ... 
+ok
+syncing data to disk ... 
+ok
+
+Success. You can now start the database server using:
+
+    ^"D^:^\Projects^\Design^-Blend^-Engine^\node^_modules^\^.pnpm^\^@embedded^-postgres^+windows^-x64^@18^.4^.0^-beta^.17^\node^_modules^\^@embedded^-postgres^\windows^-x64^\native^\bin^\pg^_ctl^" -D ^"D^:^\Projects^\Design^-Blend^-Engine^\^.local^\pg^" -l logfile start
+
+
+Starting Postgres on :54329...
+2026-09-01 21:20:19.294 IST [32396] LOG:  starting PostgreSQL 18.4 on x86_64-windows, compiled by msvc-19.44.35226, 64-bit
+
+2026-09-01 21:20:19.298 IST [32396] LOG:  listening on IPv6 address "::1", port 54329
+
+2026-09-01 21:20:19.298 IST [32396] LOG:  listening on IPv4 address "127.0.0.1", port 54329
+
+2026-09-01 21:20:19.399 IST [20272] LOG:  database system was shut down at 2026-09-01 21:20:13 IST
+
+2026-09-01 21:20:19.406 IST [32396] LOG:  database system is ready to accept connections
+
+Created database 'designblend'.
+
+  DATABASE_URL=postgres://postgres:designblend@localhost:54329/designblend
+
+Next: pnpm --filter @workspace/db push && pnpm --filter @workspace/db seed
+(Ctrl+C to stop)
+2026-09-01 21:21:21.815 IST [11300] ERROR:  relation "plates" does not exist at character 13
+2026-09-01 21:21:21.815 IST [11300] STATEMENT:  insert into "plates" ("id", "style_id", "category_id", "field_id", "label", "image_url", "credit_line", "source_url", "license_note", "alt_text", "axis_loadings", "tags", "status", "catalog_version", "created_at") values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, default) on conflict ("id") do update set "style_id" = $15, "category_id" = $16, "field_id" = $17, "image_url" = $18, "credit_line" = $19, "source_url" = $20, "license_note" = $21, "alt_text" = $22, "axis_loadings" = $23, "tags" = $24, "status" = $25, "catalog_version" = $26
+
+2026-09-01 21:21:55.165 IST [10456] ERROR:  relation "plates" does not exist at character 13
+2026-09-01 21:21:55.165 IST [10456] STATEMENT:  insert into "plates" ("id", "style_id", "category_id", "field_id", "label", "image_url", "credit_line", "source_url", "license_note", "alt_text", "axis_loadings", "tags", "status", "catalog_version", "created_at") values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, default) on conflict ("id") do update set "style_id" = $15, "category_id" = $16, "field_id" = $17, "image_url" = $18, "credit_line" = $19, "source_url" = $20, "license_note" = $21, "alt_text" = $22, "axis_loadings" = $23, "tags" = $24, "status" = $25, "catalog_version" = $26
+
+2026-09-01 21:22:24.091 IST [31856] LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+
+2026-09-01 21:25:19.505 IST [29712] LOG:  checkpoint starting: time
+
+2026-09-01 21:27:14.810 IST [29712] LOG:  checkpoint complete: wrote 1062 buffers (6.5%), wrote 3 SLRU buffers; 1 WAL file(s) added, 0 removed, 0 recycled; write=115.069 s, sync=0.184 s, total=115.305 s; sync files=365, longest=0.004 s, average=0.001 s; distance=5348 kB, estimate=5348 kB; lsn=0/1D2FE90, redo lsn=0/1D2A850
+
+2026-09-01 21:30:19.826 IST [29712] LOG:  checkpoint starting: time
+
+2026-09-01 21:30:22.169 IST [29712] LOG:  checkpoint complete: wrote 22 buffers (0.1%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=2.326 s, sync=0.009 s, total=2.344 s; sync files=14, longest=0.002 s, average=0.001 s; distance=39 kB, estimate=4817 kB; lsn=0/1D3A7C0, redo lsn=0/1D34560
+
+2026-09-01 21:35:19.170 IST [29712] LOG:  checkpoint starting: time
+
+2026-09-01 21:35:22.900 IST [29712] LOG:  checkpoint complete: wrote 34 buffers (0.2%), wrote 1 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=3.706 s, sync=0.013 s, total=3.730 s; sync files=21, longest=0.003 s, average=0.001 s; distance=251 kB, estimate=4360 kB; lsn=0/1D73410, redo lsn=0/1D733B8
+

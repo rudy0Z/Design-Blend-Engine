@@ -26,6 +26,8 @@ export const profilesTable = pgTable(
     selectedFields: text("selected_fields").array().notNull().default([]),
     confidence: real("confidence").notNull().default(0),
     isPublic: boolean("is_public").notNull().default(true),
+    /** Current published profile version (profile_versions.id). Null for legacy rows. */
+    currentVersionId: text("current_version_id"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true })
       .notNull()

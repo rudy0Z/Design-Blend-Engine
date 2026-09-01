@@ -23,10 +23,15 @@ export default function HomePage() {
         </p>
 
         <div className="mt-12 flex flex-wrap gap-4">
-          <Link href="/quiz">
+          <Link href="/capture">
             <Button size="lg" className="text-base px-8 h-12" data-testid="button-start-quiz">
-              Start the quiz
+              Build your taste profile
               <Zap className="ml-1 h-4 w-4" />
+            </Button>
+          </Link>
+          <Link href="/blend/alba/marlow">
+            <Button variant="outline" size="lg" className="text-base px-6 h-12" data-testid="button-view-demo-blend">
+              See a sample blend
             </Button>
           </Link>
         </div>

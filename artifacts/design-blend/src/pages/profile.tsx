@@ -203,9 +203,9 @@ export default function ProfilePage() {
                         </Button>
                       </Link>
                     ) : (
-                      <Link href="/quiz">
+                      <Link href="/capture">
                         <Button data-testid="button-take-quiz-to-blend">
-                          Take the quiz
+                          Build your taste profile
                         </Button>
                       </Link>
                     )}

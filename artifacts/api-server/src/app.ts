@@ -39,14 +39,21 @@ app.use(cors({ credentials: true, origin: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(
-  clerkMiddleware((req) => ({
-    publishableKey: publishableKeyFromHost(
-      getClerkProxyHost(req) ?? "",
-      process.env.CLERK_PUBLISHABLE_KEY,
-    ),
-  })),
-);
+const hasClerk = Boolean(process.env.CLERK_SECRET_KEY);
+
+if (hasClerk) {
+  app.use(
+    clerkMiddleware((req) => ({
+      publishableKey: publishableKeyFromHost(
+        getClerkProxyHost(req) ?? "",
+        process.env.CLERK_PUBLISHABLE_KEY,
+      ),
+    })),
+  );
+} else {
+  // Local dev / demo mode: no Clerk keys — capture flows run anonymously.
+  logger.warn("CLERK_SECRET_KEY not set — running without auth (anonymous capture).");
+}
 
 app.use("/api", router);
 

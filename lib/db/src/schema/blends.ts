@@ -17,6 +17,10 @@ export const blendsTable = pgTable(
     sharedStyles: jsonb("shared_styles").$type<SharedStyle[]>().notNull().default([]),
     divergentStyles: jsonb("divergent_styles").$type<SharedStyle[]>().notNull().default([]),
     collaborationLine: text("collaboration_line").notNull().default(""),
+    /** Engine model version used to compute this blend (docs/FINAL-PLAN.md §5). */
+    modelVersion: text("model_version"),
+    sharedPlateIds: text("shared_plate_ids").array().notNull().default([]),
+    divergentPlateIds: text("divergent_plate_ids").array().notNull().default([]),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [uniqueIndex("blends_pair_idx").on(t.profileAId, t.profileBId)],

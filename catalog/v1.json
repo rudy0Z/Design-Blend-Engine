@@ -1,0 +1,135 @@
+{
+  "_meta": {
+    "name": "design-blend-catalog",
+    "version": "v1.0.0-draft",
+    "schema_notes": {
+      "axis_loadings": "Object keyed by the 8 AXIS_KEYS from scoring.ts. Range -1.0..1.0. Sign convention: POSITIVE = the second pole of the axis name (chaos, maximal, contemporary, expressive, cold, dimensional, abstract, intuition); NEGATIVE = the first pole (order, minimal, classic, functional, warm, flat, literal, system). 0 or absent = axis not expressed by this plate.",
+      "status": "approved = curated & credited, ready to ship | pending = slot reserved, image + credit still to be curated | retired = removed via CREDITS.md takedown process",
+      "capture_modes": "plates are eligible for pick, rank, and rate flows unless tags exclude them (rank requires 3 siblings in the same category)"
+    },
+    "fields_count": 2,
+    "categories_count": 12,
+    "plates_target_per_category": 6,
+    "plates_target_total": 72,
+    "plates_approved": 0,
+    "plates_pending": 72
+  },
+  "axes": [
+    { "key": "order_chaos", "negative": "Order", "positive": "Chaos" },
+    { "key": "minimal_maximal", "negative": "Minimal", "positive": "Maximal" },
+    { "key": "classic_contemporary", "negative": "Classic", "positive": "Contemporary" },
+    { "key": "functional_expressive", "negative": "Functional", "positive": "Expressive" },
+    { "key": "warm_cold", "negative": "Warm", "positive": "Cold" },
+    { "key": "flat_dimensional", "negative": "Flat", "positive": "Dimensional" },
+    { "key": "literal_abstract", "negative": "Literal", "positive": "Abstract" },
+    { "key": "system_intuition", "negative": "System", "positive": "Intuition" }
+  ],
+  "fields": [
+    {
+      "id": "ui-ux",
+      "label": "UI / Product Design",
+      "cover_hint": "image-led card, dark editorial screenshot",
+      "categories": [
+        { "id": "ui-visual-language", "label": "Visual Design Language", "description": "Surface treatments: flat, glass, brutalist, editorial dark, bento, clay", "styles": ["ui_flat_minimal", "ui_glassmorphism", "ui_neumorphism", "ui_brutalist_ui", "ui_dark_editorial", "ui_bento_grid", "ui_claymorphism", "ui_skeuomorphic", "ui_aurora_gradient"] },
+        { "id": "ui-layout-composition", "label": "Layout & Composition", "description": "Grid logic: strict, asymmetric, full-bleed, spacious, editorial web, split", "styles": ["ui_grid_strict", "ui_asymmetric", "ui_fullbleed", "ui_card_heavy", "ui_dashboard_dense", "ui_spacious_minimal", "ui_editorial_web", "ui_split_screen"] },
+        { "id": "ui-interaction-motion", "label": "Interaction & Motion", "description": "How interfaces move: micro-interactions, scroll storytelling, kinetic feedback", "styles": ["ui_micro_interactions", "ui_scroll_storytelling", "ui_kinetic_feedback", "ui_no_animation", "ui_playful_physics"] },
+        { "id": "ui-data-interfaces", "label": "Data & Dense Interfaces", "description": "Dashboards, trading screens, B2B SaaS, command palettes", "styles": ["ui_dashboard_dense", "ui_b2b_saas", "ui_command_palette", "ui_data_viz_rich", "ui_terminal"] },
+        { "id": "ui-design-systems", "label": "Systems & Craft", "description": "Design systems, type scales, accessibility-first patterns", "styles": ["ui_system_identity", "ui_type_scale_strict", "ui_accessibility_first", "ui_token_driven"] },
+        { "id": "ui-emerging", "label": "Emerging Paradigms", "description": "Spatial UI, AI-native, retro computing, typographic-first", "styles": ["ui_spatial_ui", "ui_ai_native", "ui_retro_computing", "ui_typographic_ui", "ui_material_you"] }
+      ]
+    },
+    {
+      "id": "graphic",
+      "label": "Graphic Design",
+      "cover_hint": "image-led card, constructivist poster",
+      "categories": [
+        { "id": "gd-posters", "label": "Poster Design", "description": "Order-based, expressive, historical, conceptual posters", "styles": ["gd_swiss_intl", "gd_bauhaus", "gd_constructivist", "gd_psychedelic", "gd_punk_zine", "gd_maximalist_poster", "gd_minimalist_conceptual"] },
+        { "id": "gd-typography", "label": "Typography", "description": "Type as image, editorial setting, lettering, kinetic type", "styles": ["gd_experimental_type", "gd_editorial_typography", "gd_hand_lettered", "gd_kinetic_type", "gd_concrete_poetry"] },
+        { "id": "gd-brand-identity", "label": "Brand & Identity", "description": "Wordmarks, geometric marks, gradient brands, brand systems", "styles": ["gd_wordmark_classic", "gd_geometric_mark", "gd_gradient_brand", "gd_system_identity", "gd_artisan_packaging"] },
+        { "id": "gd-editorial-print", "label": "Editorial & Print", "description": "Magazine layout, book typography, catalog design, wayfinding", "styles": ["gd_magazine_layout", "gd_book_typography", "gd_catalog_design", "gd_wayfinding_system", "gd_technical_diagram"] },
+        { "id": "gd-packaging", "label": "Packaging & Objects", "description": "Minimal packaging, artisan packaging, label systems", "styles": ["gd_packaging_minimal", "gd_artisan_packaging", "gd_label_systems", "gd_naive_folk"] },
+        { "id": "gd-illustration", "label": "Illustration & Image", "description": "Flat vector, 3D illustration, collage, naive folk, character work", "styles": ["gd_flat_vector", "gd_3d_illustration", "gd_collage_poster", "gd_character_cartoon", "gd_geometric_abstract"] }
+      ]
+    }
+  ],
+  "plates": [
+    {
+      "id": "plate_ui_dark_editorial_linear",
+      "style_id": "ui_dark_editorial",
+      "category_id": "ui-visual-language",
+      "image_url": null,
+      "credit_line": "Linear (linear.app)",
+      "source_url": "https://linear.app",
+      "license_note": "product-screenshot",
+      "alt_text": "Dark product interface with restrained type, muted surfaces and a single accent color",
+      "axis_loadings": { "minimal_maximal": -0.7, "warm_cold": 0.8, "classic_contemporary": 0.9, "functional_expressive": -0.5, "system_intuition": 0.6 },
+      "tags": ["exemplar", "rank-eligible"],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_aurora_gradient_stripe",
+      "style_id": "ui_aurora_gradient",
+      "category_id": "ui-visual-language",
+      "image_url": null,
+      "credit_line": "Stripe, Inc. (stripe.com)",
+      "source_url": "https://stripe.com",
+      "license_note": "product-screenshot",
+      "alt_text": "Flowing multicolor gradient mesh across a clean white page",
+      "axis_loadings": { "classic_contemporary": 0.9, "flat_dimensional": 0.8, "minimal_maximal": 0.4, "warm_cold": -0.3, "functional_expressive": 0.4 },
+      "tags": ["exemplar", "rank-eligible"],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_spacious_minimal_superhuman",
+      "style_id": "ui_spacious_minimal",
+      "category_id": "ui-layout-composition",
+      "image_url": null,
+      "credit_line": "Superhuman (superhuman.com)",
+      "source_url": "https://superhuman.com",
+      "license_note": "product-screenshot",
+      "alt_text": "Extremely sparse interface, few elements per screen, wide whitespace",
+      "axis_loadings": { "minimal_maximal": -0.9, "order_chaos": -0.5, "warm_cold": -0.6, "functional_expressive": -0.6 },
+      "tags": ["exemplar"],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_brutalist_bloomberg",
+      "style_id": "ui_brutalist_ui",
+      "category_id": "ui-data-interfaces",
+      "image_url": null,
+      "credit_line": "Bloomberg L.P. (Bloomberg Terminal)",
+      "source_url": "https://www.bloomberg.com/professional/",
+      "license_note": "product-screenshot",
+      "alt_text": "Dense amber-on-black terminal grid, raw data panels, no decorative chrome",
+      "axis_loadings": { "minimal_maximal": 0.5, "order_chaos": 0.4, "warm_cold": -0.5, "functional_expressive": 0.3, "flat_dimensional": -0.8 },
+      "tags": ["exemplar", "rank-eligible"],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_swiss_beethoven",
+      "style_id": "gd_swiss_intl",
+      "category_id": "gd-posters",
+      "image_url": null,
+      "credit_line": "Poster: Josef Müller-Brockmann, Beethoven, 1955",
+      "source_url": "https://www.moma.org/collection/works/6765",
+      "license_note": "public-domain",
+      "alt_text": "Swiss poster of nested concentric arcs on white, mathematical rhythm",
+      "axis_loadings": { "order_chaos": -0.95, "minimal_maximal": -0.6, "warm_cold": 0.7, "functional_expressive": -0.8, "system_intuition": -0.9, "classic_contemporary": -0.4 },
+      "tags": ["exemplar", "rank-eligible"],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_constructivist_books",
+      "style_id": "gd_constructivist",
+      "category_id": "gd-posters",
+      "image_url": null,
+      "credit_line": "Poster: Alexander Rodchenko, Books (Please!…), 1924",
+      "source_url": "https://www.moma.org/collection/works/8399",
+      "license_note": "public-domain",
+      "alt_text": "Constructivist poster, hard diagonals, red and black type calling for books",
+      "axis_loadings": { "order_chaos": 0.5, "classic_contemporary": -0.8, "functional_expressive": 0.9, "literal_abstract": 0.5, "warm_cold": -0.2 },
+      "tags": ["exemplar", "rank-eligible"],
+      "status": "pending"
+    }
+  ]
+}
