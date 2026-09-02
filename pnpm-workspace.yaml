@@ -5,20 +5,21 @@ packages:
   - workers/*
   - scripts
 
+# pnpm v11 consolidates build-approval into allowBuilds (name: true|false).
 allowBuilds:
-  '@clerk/shared': set this to true or false
-  '@embedded-postgres/darwin-arm64': set this to true or false
-  '@embedded-postgres/darwin-x64': set this to true or false
-  '@embedded-postgres/linux-arm': set this to true or false
-  '@embedded-postgres/linux-arm64': set this to true or false
-  '@embedded-postgres/linux-ia32': set this to true or false
-  '@embedded-postgres/linux-ppc64': set this to true or false
-  '@embedded-postgres/linux-x64': set this to true or false
-  '@embedded-postgres/windows-x64': set this to true or false
-  '@google/genai': set this to true or false
-  esbuild: set this to true or false
-  protobufjs: set this to true or false
-  workerd: set this to true or false
+  '@clerk/shared': false
+  '@embedded-postgres/darwin-arm64': false
+  '@embedded-postgres/darwin-x64': false
+  '@embedded-postgres/linux-arm': false
+  '@embedded-postgres/linux-arm64': false
+  '@embedded-postgres/linux-ia32': false
+  '@embedded-postgres/linux-ppc64': false
+  '@embedded-postgres/linux-x64': false
+  '@embedded-postgres/windows-x64': true
+  '@google/genai': false
+  esbuild: true
+  protobufjs: false
+  workerd: true
 
 autoInstallPeers: false
 
@@ -51,14 +52,6 @@ minimumReleaseAge: 1440
 minimumReleaseAgeExclude:
   - '@replit/*'
   - stripe-replit-sync
-
-onlyBuiltDependencies:
-  - '@swc/core'
-  - esbuild
-  - msw
-  - unrs-resolver
-  - embedded-postgres
-  - '@embedded-postgres/*'
 
 overrides:
   '@esbuild-kit/esm-loader': npm:tsx@^4.21.0

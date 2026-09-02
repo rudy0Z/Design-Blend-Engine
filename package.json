@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "preinstall": "node -e \"if(!/pnpm/.test(process.env.npm_config_user_agent||'')){console.error('Use pnpm instead');process.exit(1)}\"",
+    "preinstall": "node -e \"const agent=process.env.npm_config_user_agent||'';const exec=process.env.npm_execpath||'';if(agent&&!/pnpm/i.test(agent)&&!/pnpm/i.test(exec)){console.error('Design Blend uses pnpm. Enable it with: corepack enable pnpm');process.exit(1)}\"",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --filter \"./workers/**\" --if-present run typecheck",

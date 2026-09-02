@@ -1,7 +1,7 @@
 {
   "_meta": {
     "name": "design-blend-catalog",
-    "version": "v1.0.0-draft",
+    "version": "v1.1.0",
     "schema_notes": {
       "axis_loadings": "Object keyed by the 8 AXIS_KEYS from scoring.ts. Range -1.0..1.0. Sign convention: POSITIVE = the second pole of the axis name (chaos, maximal, contemporary, expressive, cold, dimensional, abstract, intuition); NEGATIVE = the first pole (order, minimal, classic, functional, warm, flat, literal, system). 0 or absent = axis not expressed by this plate.",
       "status": "approved = curated & credited, ready to ship | pending = slot reserved, image + credit still to be curated | retired = removed via CREDITS.md takedown process",
@@ -12,17 +12,50 @@
     "plates_target_per_category": 6,
     "plates_target_total": 72,
     "plates_approved": 0,
-    "plates_pending": 72
+    "plates_pending": 68,
+    "plates_count": 68
   },
   "axes": [
-    { "key": "order_chaos", "negative": "Order", "positive": "Chaos" },
-    { "key": "minimal_maximal", "negative": "Minimal", "positive": "Maximal" },
-    { "key": "classic_contemporary", "negative": "Classic", "positive": "Contemporary" },
-    { "key": "functional_expressive", "negative": "Functional", "positive": "Expressive" },
-    { "key": "warm_cold", "negative": "Warm", "positive": "Cold" },
-    { "key": "flat_dimensional", "negative": "Flat", "positive": "Dimensional" },
-    { "key": "literal_abstract", "negative": "Literal", "positive": "Abstract" },
-    { "key": "system_intuition", "negative": "System", "positive": "Intuition" }
+    {
+      "key": "order_chaos",
+      "negative": "Order",
+      "positive": "Chaos"
+    },
+    {
+      "key": "minimal_maximal",
+      "negative": "Minimal",
+      "positive": "Maximal"
+    },
+    {
+      "key": "classic_contemporary",
+      "negative": "Classic",
+      "positive": "Contemporary"
+    },
+    {
+      "key": "functional_expressive",
+      "negative": "Functional",
+      "positive": "Expressive"
+    },
+    {
+      "key": "warm_cold",
+      "negative": "Warm",
+      "positive": "Cold"
+    },
+    {
+      "key": "flat_dimensional",
+      "negative": "Flat",
+      "positive": "Dimensional"
+    },
+    {
+      "key": "literal_abstract",
+      "negative": "Literal",
+      "positive": "Abstract"
+    },
+    {
+      "key": "system_intuition",
+      "negative": "System",
+      "positive": "Intuition"
+    }
   ],
   "fields": [
     {
@@ -30,12 +63,84 @@
       "label": "UI / Product Design",
       "cover_hint": "image-led card, dark editorial screenshot",
       "categories": [
-        { "id": "ui-visual-language", "label": "Visual Design Language", "description": "Surface treatments: flat, glass, brutalist, editorial dark, bento, clay", "styles": ["ui_flat_minimal", "ui_glassmorphism", "ui_neumorphism", "ui_brutalist_ui", "ui_dark_editorial", "ui_bento_grid", "ui_claymorphism", "ui_skeuomorphic", "ui_aurora_gradient"] },
-        { "id": "ui-layout-composition", "label": "Layout & Composition", "description": "Grid logic: strict, asymmetric, full-bleed, spacious, editorial web, split", "styles": ["ui_grid_strict", "ui_asymmetric", "ui_fullbleed", "ui_card_heavy", "ui_dashboard_dense", "ui_spacious_minimal", "ui_editorial_web", "ui_split_screen"] },
-        { "id": "ui-interaction-motion", "label": "Interaction & Motion", "description": "How interfaces move: micro-interactions, scroll storytelling, kinetic feedback", "styles": ["ui_micro_interactions", "ui_scroll_storytelling", "ui_kinetic_feedback", "ui_no_animation", "ui_playful_physics"] },
-        { "id": "ui-data-interfaces", "label": "Data & Dense Interfaces", "description": "Dashboards, trading screens, B2B SaaS, command palettes", "styles": ["ui_dashboard_dense", "ui_b2b_saas", "ui_command_palette", "ui_data_viz_rich", "ui_terminal"] },
-        { "id": "ui-design-systems", "label": "Systems & Craft", "description": "Design systems, type scales, accessibility-first patterns", "styles": ["ui_system_identity", "ui_type_scale_strict", "ui_accessibility_first", "ui_token_driven"] },
-        { "id": "ui-emerging", "label": "Emerging Paradigms", "description": "Spatial UI, AI-native, retro computing, typographic-first", "styles": ["ui_spatial_ui", "ui_ai_native", "ui_retro_computing", "ui_typographic_ui", "ui_material_you"] }
+        {
+          "id": "ui-visual-language",
+          "label": "Visual Design Language",
+          "description": "Surface treatments: flat, glass, brutalist, editorial dark, bento, clay",
+          "styles": [
+            "ui_flat_minimal",
+            "ui_glassmorphism",
+            "ui_neumorphism",
+            "ui_brutalist_ui",
+            "ui_dark_editorial",
+            "ui_bento_grid",
+            "ui_claymorphism",
+            "ui_skeuomorphic",
+            "ui_aurora_gradient"
+          ]
+        },
+        {
+          "id": "ui-layout-composition",
+          "label": "Layout & Composition",
+          "description": "Grid logic: strict, asymmetric, full-bleed, spacious, editorial web, split",
+          "styles": [
+            "ui_grid_strict",
+            "ui_asymmetric",
+            "ui_fullbleed",
+            "ui_card_heavy",
+            "ui_dashboard_dense",
+            "ui_spacious_minimal",
+            "ui_editorial_web",
+            "ui_split_screen"
+          ]
+        },
+        {
+          "id": "ui-interaction-motion",
+          "label": "Interaction & Motion",
+          "description": "How interfaces move: micro-interactions, scroll storytelling, kinetic feedback",
+          "styles": [
+            "ui_micro_interactions",
+            "ui_scroll_storytelling",
+            "ui_kinetic_feedback",
+            "ui_no_animation",
+            "ui_playful_physics"
+          ]
+        },
+        {
+          "id": "ui-data-interfaces",
+          "label": "Data & Dense Interfaces",
+          "description": "Dashboards, trading screens, B2B SaaS, command palettes",
+          "styles": [
+            "ui_dashboard_dense",
+            "ui_b2b_saas",
+            "ui_command_palette",
+            "ui_data_viz_rich",
+            "ui_terminal"
+          ]
+        },
+        {
+          "id": "ui-design-systems",
+          "label": "Systems & Craft",
+          "description": "Design systems, type scales, accessibility-first patterns",
+          "styles": [
+            "ui_system_identity",
+            "ui_type_scale_strict",
+            "ui_accessibility_first",
+            "ui_token_driven"
+          ]
+        },
+        {
+          "id": "ui-emerging",
+          "label": "Emerging Paradigms",
+          "description": "Spatial UI, AI-native, retro computing, typographic-first",
+          "styles": [
+            "ui_spatial_ui",
+            "ui_ai_native",
+            "ui_retro_computing",
+            "ui_typographic_ui",
+            "ui_material_you"
+          ]
+        }
       ]
     },
     {
@@ -43,79 +148,183 @@
       "label": "Graphic Design",
       "cover_hint": "image-led card, constructivist poster",
       "categories": [
-        { "id": "gd-posters", "label": "Poster Design", "description": "Order-based, expressive, historical, conceptual posters", "styles": ["gd_swiss_intl", "gd_bauhaus", "gd_constructivist", "gd_psychedelic", "gd_punk_zine", "gd_maximalist_poster", "gd_minimalist_conceptual"] },
-        { "id": "gd-typography", "label": "Typography", "description": "Type as image, editorial setting, lettering, kinetic type", "styles": ["gd_experimental_type", "gd_editorial_typography", "gd_hand_lettered", "gd_kinetic_type", "gd_concrete_poetry"] },
-        { "id": "gd-brand-identity", "label": "Brand & Identity", "description": "Wordmarks, geometric marks, gradient brands, brand systems", "styles": ["gd_wordmark_classic", "gd_geometric_mark", "gd_gradient_brand", "gd_system_identity", "gd_artisan_packaging"] },
-        { "id": "gd-editorial-print", "label": "Editorial & Print", "description": "Magazine layout, book typography, catalog design, wayfinding", "styles": ["gd_magazine_layout", "gd_book_typography", "gd_catalog_design", "gd_wayfinding_system", "gd_technical_diagram"] },
-        { "id": "gd-packaging", "label": "Packaging & Objects", "description": "Minimal packaging, artisan packaging, label systems", "styles": ["gd_packaging_minimal", "gd_artisan_packaging", "gd_label_systems", "gd_naive_folk"] },
-        { "id": "gd-illustration", "label": "Illustration & Image", "description": "Flat vector, 3D illustration, collage, naive folk, character work", "styles": ["gd_flat_vector", "gd_3d_illustration", "gd_collage_poster", "gd_character_cartoon", "gd_geometric_abstract"] }
+        {
+          "id": "gd-posters",
+          "label": "Poster Design",
+          "description": "Order-based, expressive, historical, conceptual posters",
+          "styles": [
+            "gd_swiss_intl",
+            "gd_bauhaus",
+            "gd_constructivist",
+            "gd_psychedelic",
+            "gd_punk_zine",
+            "gd_maximalist_poster",
+            "gd_minimalist_conceptual"
+          ]
+        },
+        {
+          "id": "gd-typography",
+          "label": "Typography",
+          "description": "Type as image, editorial setting, lettering, kinetic type",
+          "styles": [
+            "gd_experimental_type",
+            "gd_editorial_typography",
+            "gd_hand_lettered",
+            "gd_kinetic_type",
+            "gd_concrete_poetry"
+          ]
+        },
+        {
+          "id": "gd-brand-identity",
+          "label": "Brand & Identity",
+          "description": "Wordmarks, geometric marks, gradient brands, brand systems",
+          "styles": [
+            "gd_wordmark_classic",
+            "gd_geometric_mark",
+            "gd_gradient_brand",
+            "gd_system_identity",
+            "gd_artisan_packaging"
+          ]
+        },
+        {
+          "id": "gd-editorial-print",
+          "label": "Editorial & Print",
+          "description": "Magazine layout, book typography, catalog design, wayfinding",
+          "styles": [
+            "gd_magazine_layout",
+            "gd_book_typography",
+            "gd_catalog_design",
+            "gd_wayfinding_system",
+            "gd_technical_diagram"
+          ]
+        },
+        {
+          "id": "gd-packaging",
+          "label": "Packaging & Objects",
+          "description": "Minimal packaging, artisan packaging, label systems",
+          "styles": [
+            "gd_packaging_minimal",
+            "gd_artisan_packaging",
+            "gd_label_systems",
+            "gd_naive_folk"
+          ]
+        },
+        {
+          "id": "gd-illustration",
+          "label": "Illustration & Image",
+          "description": "Flat vector, 3D illustration, collage, naive folk, character work",
+          "styles": [
+            "gd_flat_vector",
+            "gd_3d_illustration",
+            "gd_collage_poster",
+            "gd_character_cartoon",
+            "gd_geometric_abstract"
+          ]
+        }
       ]
     }
   ],
   "plates": [
     {
-      "id": "plate_ui_dark_editorial_linear",
-      "style_id": "ui_dark_editorial",
-      "category_id": "ui-visual-language",
+      "id": "plate_gd_brand_identity_gd_artisan_packaging",
+      "style_id": "gd_artisan_packaging",
+      "category_id": "gd-brand-identity",
       "image_url": null,
-      "credit_line": "Linear (linear.app)",
-      "source_url": "https://linear.app",
-      "license_note": "product-screenshot",
-      "alt_text": "Dark product interface with restrained type, muted surfaces and a single accent color",
-      "axis_loadings": { "minimal_maximal": -0.7, "warm_cold": 0.8, "classic_contemporary": 0.9, "functional_expressive": -0.5, "system_intuition": 0.6 },
-      "tags": ["exemplar", "rank-eligible"],
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "Crafted packaging with natural papers, soft tactile surfaces and small human details",
+      "axis_loadings": {
+        "warm_cold": 0.8,
+        "functional_expressive": 0.4,
+        "minimal_maximal": -0.2,
+        "classic_contemporary": -0.3
+      },
+      "tags": [
+        "rank-eligible"
+      ],
       "status": "pending"
     },
     {
-      "id": "plate_ui_aurora_gradient_stripe",
-      "style_id": "ui_aurora_gradient",
-      "category_id": "ui-visual-language",
+      "id": "plate_gd_brand_identity_gd_geometric_mark",
+      "style_id": "gd_geometric_mark",
+      "category_id": "gd-brand-identity",
       "image_url": null,
-      "credit_line": "Stripe, Inc. (stripe.com)",
-      "source_url": "https://stripe.com",
-      "license_note": "product-screenshot",
-      "alt_text": "Flowing multicolor gradient mesh across a clean white page",
-      "axis_loadings": { "classic_contemporary": 0.9, "flat_dimensional": 0.8, "minimal_maximal": 0.4, "warm_cold": -0.3, "functional_expressive": 0.4 },
-      "tags": ["exemplar", "rank-eligible"],
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A pure geometric logomark built from circles, arcs and strict angles with mathematical precision",
+      "axis_loadings": {
+        "minimal_maximal": -0.5,
+        "order_chaos": -0.8,
+        "warm_cold": 0.3,
+        "system_intuition": -0.7,
+        "functional_expressive": -0.4
+      },
+      "tags": [
+        "rank-eligible"
+      ],
       "status": "pending"
     },
     {
-      "id": "plate_ui_spacious_minimal_superhuman",
-      "style_id": "ui_spacious_minimal",
-      "category_id": "ui-layout-composition",
+      "id": "plate_gd_brand_identity_gd_gradient_brand",
+      "style_id": "gd_gradient_brand",
+      "category_id": "gd-brand-identity",
       "image_url": null,
-      "credit_line": "Superhuman (superhuman.com)",
-      "source_url": "https://superhuman.com",
-      "license_note": "product-screenshot",
-      "alt_text": "Extremely sparse interface, few elements per screen, wide whitespace",
-      "axis_loadings": { "minimal_maximal": -0.9, "order_chaos": -0.5, "warm_cold": -0.6, "functional_expressive": -0.6 },
-      "tags": ["exemplar"],
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A modern brand identity animated by vivid layered gradients across letterforms and shapes",
+      "axis_loadings": {
+        "flat_dimensional": 0.7,
+        "classic_contemporary": 0.8,
+        "warm_cold": 0.4,
+        "minimal_maximal": 0.3
+      },
+      "tags": [
+        "rank-eligible"
+      ],
       "status": "pending"
     },
     {
-      "id": "plate_ui_brutalist_bloomberg",
-      "style_id": "ui_brutalist_ui",
-      "category_id": "ui-data-interfaces",
+      "id": "plate_gd_brand_identity_gd_system_identity",
+      "style_id": "gd_system_identity",
+      "category_id": "gd-brand-identity",
       "image_url": null,
-      "credit_line": "Bloomberg L.P. (Bloomberg Terminal)",
-      "source_url": "https://www.bloomberg.com/professional/",
-      "license_note": "product-screenshot",
-      "alt_text": "Dense amber-on-black terminal grid, raw data panels, no decorative chrome",
-      "axis_loadings": { "minimal_maximal": 0.5, "order_chaos": 0.4, "warm_cold": -0.5, "functional_expressive": 0.3, "flat_dimensional": -0.8 },
-      "tags": ["exemplar", "rank-eligible"],
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A systematic identity built from a modular grid, constrained palette and repeatable components",
+      "axis_loadings": {
+        "order_chaos": -0.8,
+        "system_intuition": -0.8,
+        "minimal_maximal": -0.4,
+        "functional_expressive": -0.6
+      },
+      "tags": [
+        "rank-eligible"
+      ],
       "status": "pending"
     },
     {
-      "id": "plate_gd_swiss_beethoven",
-      "style_id": "gd_swiss_intl",
-      "category_id": "gd-posters",
+      "id": "plate_gd_brand_identity_gd_wordmark_classic",
+      "style_id": "gd_wordmark_classic",
+      "category_id": "gd-brand-identity",
       "image_url": null,
-      "credit_line": "Poster: Josef Müller-Brockmann, Beethoven, 1955",
-      "source_url": "https://www.moma.org/collection/works/6765",
-      "license_note": "public-domain",
-      "alt_text": "Swiss poster of nested concentric arcs on white, mathematical rhythm",
-      "axis_loadings": { "order_chaos": -0.95, "minimal_maximal": -0.6, "warm_cold": 0.7, "functional_expressive": -0.8, "system_intuition": -0.9, "classic_contemporary": -0.4 },
-      "tags": ["exemplar", "rank-eligible"],
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A classic serif wordmark or monogram with refined detailing, even weight and timeless proportions",
+      "axis_loadings": {
+        "order_chaos": -0.9,
+        "minimal_maximal": -0.5,
+        "classic_contemporary": -0.6,
+        "functional_expressive": -0.7,
+        "system_intuition": -0.7
+      },
+      "tags": [
+        "rank-eligible"
+      ],
       "status": "pending"
     },
     {
@@ -127,8 +336,1300 @@
       "source_url": "https://www.moma.org/collection/works/8399",
       "license_note": "public-domain",
       "alt_text": "Constructivist poster, hard diagonals, red and black type calling for books",
-      "axis_loadings": { "order_chaos": 0.5, "classic_contemporary": -0.8, "functional_expressive": 0.9, "literal_abstract": 0.5, "warm_cold": -0.2 },
-      "tags": ["exemplar", "rank-eligible"],
+      "axis_loadings": {
+        "order_chaos": 0.5,
+        "classic_contemporary": -0.8,
+        "functional_expressive": 0.9,
+        "literal_abstract": 0.5,
+        "warm_cold": -0.2
+      },
+      "tags": [
+        "exemplar",
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_editorial_print_gd_book_typography",
+      "style_id": "gd_book_typography",
+      "category_id": "gd-editorial-print",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A book interior with quiet, impeccably set type, humble margins and nothing competing with the text",
+      "axis_loadings": {
+        "order_chaos": -0.6,
+        "minimal_maximal": -0.5,
+        "warm_cold": 0.3,
+        "functional_expressive": -0.4,
+        "system_intuition": -0.5
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_editorial_print_gd_catalog_design",
+      "style_id": "gd_catalog_design",
+      "category_id": "gd-editorial-print",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A clean catalog layout that lets dense product information breathe through consistent templates",
+      "axis_loadings": {
+        "order_chaos": -0.5,
+        "minimal_maximal": -0.3,
+        "warm_cold": 0.3,
+        "functional_expressive": -0.3,
+        "system_intuition": -0.4
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_editorial_print_gd_magazine_layout",
+      "style_id": "gd_magazine_layout",
+      "category_id": "gd-editorial-print",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A magazine spread with a confident grid, pull quotes, layered imagery and editorial flair",
+      "axis_loadings": {
+        "order_chaos": -0.4,
+        "functional_expressive": 0.5,
+        "minimal_maximal": -0.3,
+        "classic_contemporary": 0.5,
+        "flat_dimensional": 0.3
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_editorial_print_gd_technical_diagram",
+      "style_id": "gd_technical_diagram",
+      "category_id": "gd-editorial-print",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A technical diagram with fine precise lines, annotations and exploded detail explaining how something works",
+      "axis_loadings": {
+        "order_chaos": -0.7,
+        "minimal_maximal": -0.3,
+        "warm_cold": -0.3,
+        "functional_expressive": -0.6,
+        "system_intuition": -0.6
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_editorial_print_gd_wayfinding_system",
+      "style_id": "gd_wayfinding_system",
+      "category_id": "gd-editorial-print",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A wayfinding system of directional signage using strong pictograms, arrows and high legibility at a distance",
+      "axis_loadings": {
+        "order_chaos": -0.9,
+        "minimal_maximal": -0.4,
+        "warm_cold": 0.2,
+        "functional_expressive": -0.5,
+        "system_intuition": -0.8
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_illustration_gd_3d_illustration",
+      "style_id": "gd_3d_illustration",
+      "category_id": "gd-illustration",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A dimensional 3D illustration with rendered lighting, smooth materials and playful perspective",
+      "axis_loadings": {
+        "flat_dimensional": 0.9,
+        "minimal_maximal": 0.4,
+        "classic_contemporary": 0.7,
+        "functional_expressive": 0.5
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_illustration_gd_character_cartoon",
+      "style_id": "gd_character_cartoon",
+      "category_id": "gd-illustration",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A cartoon character illustration with exaggerated features, lively poses and expressive linework",
+      "axis_loadings": {
+        "functional_expressive": 0.8,
+        "warm_cold": 0.7,
+        "order_chaos": 0.4,
+        "minimal_maximal": 0.4,
+        "literal_abstract": 0.5
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_illustration_gd_collage_poster",
+      "style_id": "gd_collage_poster",
+      "category_id": "gd-illustration",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A collage poster layering cut-out photographs, textures and type into a rhythmic assembled whole",
+      "axis_loadings": {
+        "order_chaos": 0.6,
+        "minimal_maximal": 0.5,
+        "functional_expressive": 0.8,
+        "warm_cold": 0.5,
+        "literal_abstract": 0.6
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_illustration_gd_flat_vector",
+      "style_id": "gd_flat_vector",
+      "category_id": "gd-illustration",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A flat vector illustration with crisp solid shapes, no gradients and bold unmodulated color",
+      "axis_loadings": {
+        "flat_dimensional": -0.8,
+        "minimal_maximal": -0.4,
+        "warm_cold": 0.5,
+        "functional_expressive": 0.3,
+        "order_chaos": -0.3
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_illustration_gd_geometric_abstract",
+      "style_id": "gd_geometric_abstract",
+      "category_id": "gd-illustration",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A geometric abstract composition of reduced shapes and fields, more about form than subject",
+      "axis_loadings": {
+        "literal_abstract": 0.8,
+        "order_chaos": -0.4,
+        "minimal_maximal": -0.3,
+        "flat_dimensional": -0.2,
+        "system_intuition": -0.5
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_packaging_gd_artisan_packaging",
+      "style_id": "gd_artisan_packaging",
+      "category_id": "gd-packaging",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "Crafted packaging with natural papers, soft tactile surfaces and small human details",
+      "axis_loadings": {
+        "warm_cold": 0.8,
+        "functional_expressive": 0.4,
+        "minimal_maximal": -0.2,
+        "classic_contemporary": -0.3
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_packaging_gd_label_systems",
+      "style_id": "gd_label_systems",
+      "category_id": "gd-packaging",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A systematic label design applying a strict template of type and color across a family of products",
+      "axis_loadings": {
+        "order_chaos": -0.6,
+        "minimal_maximal": -0.4,
+        "warm_cold": 0.4,
+        "functional_expressive": -0.4,
+        "system_intuition": -0.6
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_packaging_gd_naive_folk",
+      "style_id": "gd_naive_folk",
+      "category_id": "gd-packaging",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A naive folk-art illustration with flat folk motifs, hand-painted texture and vivid folk color",
+      "axis_loadings": {
+        "warm_cold": 0.9,
+        "functional_expressive": 0.7,
+        "order_chaos": 0.5,
+        "minimal_maximal": 0.4,
+        "classic_contemporary": -0.5
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_packaging_gd_packaging_minimal",
+      "style_id": "gd_packaging_minimal",
+      "category_id": "gd-packaging",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "Minimal packaging with a single color block, one line of type and vast blank surface",
+      "axis_loadings": {
+        "minimal_maximal": -0.9,
+        "order_chaos": -0.6,
+        "functional_expressive": -0.5,
+        "warm_cold": 0.3,
+        "flat_dimensional": -0.3
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_posters_gd_bauhaus",
+      "style_id": "gd_bauhaus",
+      "category_id": "gd-posters",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "Bauhaus composition with primary-color geometric shapes, diagonal energy and industrial-modernist type",
+      "axis_loadings": {
+        "order_chaos": -0.5,
+        "minimal_maximal": -0.4,
+        "classic_contemporary": 0.7,
+        "functional_expressive": 0.6,
+        "warm_cold": 0.4,
+        "literal_abstract": 0.5
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_posters_gd_maximalist_poster",
+      "style_id": "gd_maximalist_poster",
+      "category_id": "gd-posters",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A maximalist poster crammed edge-to-edge with many layers, colors and overlapping elements and no breathing room",
+      "axis_loadings": {
+        "minimal_maximal": 0.95,
+        "order_chaos": 0.6,
+        "functional_expressive": 0.8,
+        "warm_cold": 0.5,
+        "flat_dimensional": 0.4
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_posters_gd_minimalist_conceptual",
+      "style_id": "gd_minimalist_conceptual",
+      "category_id": "gd-posters",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A conceptual poster reduced to a single powerful idea and tiny formal gesture on a near-empty background",
+      "axis_loadings": {
+        "minimal_maximal": -0.9,
+        "order_chaos": -0.5,
+        "functional_expressive": 0.3,
+        "literal_abstract": 0.7,
+        "system_intuition": -0.3
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_posters_gd_psychedelic",
+      "style_id": "gd_psychedelic",
+      "category_id": "gd-posters",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A flowing, liquid psychedelic poster with swirling warped type, vibrating high-chroma color and dense ornament",
+      "axis_loadings": {
+        "order_chaos": 0.9,
+        "warm_cold": 0.8,
+        "functional_expressive": 0.8,
+        "minimal_maximal": 0.7,
+        "literal_abstract": 0.6,
+        "classic_contemporary": -0.6
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_posters_gd_punk_zine",
+      "style_id": "gd_punk_zine",
+      "category_id": "gd-posters",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A cut-and-paste punk zine spread with torn collaged type, photocopy texture, staples and raw black ink",
+      "axis_loadings": {
+        "order_chaos": 0.9,
+        "minimal_maximal": 0.7,
+        "functional_expressive": 0.9,
+        "warm_cold": 0.3,
+        "literal_abstract": 0.4,
+        "classic_contemporary": -0.7
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_swiss_beethoven",
+      "style_id": "gd_swiss_intl",
+      "category_id": "gd-posters",
+      "image_url": null,
+      "credit_line": "Poster: Josef Müller-Brockmann, Beethoven, 1955",
+      "source_url": "https://www.moma.org/collection/works/6765",
+      "license_note": "public-domain",
+      "alt_text": "Swiss poster of nested concentric arcs on white, mathematical rhythm",
+      "axis_loadings": {
+        "order_chaos": -0.95,
+        "minimal_maximal": -0.6,
+        "warm_cold": 0.7,
+        "functional_expressive": -0.8,
+        "system_intuition": -0.9,
+        "classic_contemporary": -0.4
+      },
+      "tags": [
+        "exemplar",
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_typography_gd_concrete_poetry",
+      "style_id": "gd_concrete_poetry",
+      "category_id": "gd-typography",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A concrete-poetry page where the arrangement of words on the page is itself the meaning",
+      "axis_loadings": {
+        "literal_abstract": 0.9,
+        "functional_expressive": 0.7,
+        "order_chaos": 0.4,
+        "minimal_maximal": -0.3,
+        "system_intuition": 0.4
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_typography_gd_editorial_typography",
+      "style_id": "gd_editorial_typography",
+      "category_id": "gd-typography",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "An editorial spread driven by expressive yet disciplined typography in a clear structure",
+      "axis_loadings": {
+        "order_chaos": -0.3,
+        "minimal_maximal": -0.5,
+        "functional_expressive": 0.5,
+        "classic_contemporary": 0.6,
+        "literal_abstract": 0.3
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_typography_gd_experimental_type",
+      "style_id": "gd_experimental_type",
+      "category_id": "gd-typography",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "An experimental type treatment where the letterforms themselves are distorted, broken, layered or drawn",
+      "axis_loadings": {
+        "functional_expressive": 0.9,
+        "order_chaos": 0.5,
+        "literal_abstract": 0.7,
+        "minimal_maximal": 0.3,
+        "classic_contemporary": 0.6
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_typography_gd_hand_lettered",
+      "style_id": "gd_hand_lettered",
+      "category_id": "gd-typography",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "Hand-lettered signage or packaging where warm, human-drawn letterforms are the hero",
+      "axis_loadings": {
+        "warm_cold": 0.7,
+        "functional_expressive": 0.6,
+        "order_chaos": 0.4,
+        "classic_contemporary": -0.4,
+        "system_intuition": 0.5
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_gd_typography_gd_kinetic_type",
+      "style_id": "gd_kinetic_type",
+      "category_id": "gd-typography",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "Kinetic or motion-based type where letters dance, skew and overlap with apparent speed",
+      "axis_loadings": {
+        "functional_expressive": 0.9,
+        "classic_contemporary": 0.8,
+        "order_chaos": 0.5,
+        "warm_cold": 0.4
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_aurora_gradient_stripe",
+      "style_id": "ui_aurora_gradient",
+      "category_id": "ui-visual-language",
+      "image_url": null,
+      "credit_line": "Stripe, Inc. (stripe.com)",
+      "source_url": "https://stripe.com",
+      "license_note": "product-screenshot",
+      "alt_text": "Flowing multicolor gradient mesh across a clean white page",
+      "axis_loadings": {
+        "classic_contemporary": 0.9,
+        "flat_dimensional": 0.8,
+        "minimal_maximal": 0.4,
+        "warm_cold": -0.3,
+        "functional_expressive": 0.4
+      },
+      "tags": [
+        "exemplar",
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_brutalist_bloomberg",
+      "style_id": "ui_brutalist_ui",
+      "category_id": "ui-data-interfaces",
+      "image_url": null,
+      "credit_line": "Bloomberg L.P. (Bloomberg Terminal)",
+      "source_url": "https://www.bloomberg.com/professional/",
+      "license_note": "product-screenshot",
+      "alt_text": "Dense amber-on-black terminal grid, raw data panels, no decorative chrome",
+      "axis_loadings": {
+        "minimal_maximal": 0.5,
+        "order_chaos": 0.4,
+        "warm_cold": -0.5,
+        "functional_expressive": 0.3,
+        "flat_dimensional": -0.8
+      },
+      "tags": [
+        "exemplar",
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_dark_editorial_linear",
+      "style_id": "ui_dark_editorial",
+      "category_id": "ui-visual-language",
+      "image_url": null,
+      "credit_line": "Linear (linear.app)",
+      "source_url": "https://linear.app",
+      "license_note": "product-screenshot",
+      "alt_text": "Dark product interface with restrained type, muted surfaces and a single accent color",
+      "axis_loadings": {
+        "minimal_maximal": -0.7,
+        "warm_cold": 0.8,
+        "classic_contemporary": 0.9,
+        "functional_expressive": -0.5,
+        "system_intuition": 0.6
+      },
+      "tags": [
+        "exemplar",
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_data_interfaces_ui_b2b_saas",
+      "style_id": "ui_b2b_saas",
+      "category_id": "ui-data-interfaces",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A composed enterprise application with a top nav, left sidebar, dense tables and colored status chips",
+      "axis_loadings": {
+        "order_chaos": -0.6,
+        "system_intuition": -0.7,
+        "minimal_maximal": 0.6,
+        "functional_expressive": -0.5,
+        "flat_dimensional": -0.4
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_data_interfaces_ui_command_palette",
+      "style_id": "ui_command_palette",
+      "category_id": "ui-data-interfaces",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A keyboard-driven interface centered on a searchable command bar with a short flat list of fuzzy-matched actions",
+      "axis_loadings": {
+        "system_intuition": -0.6,
+        "minimal_maximal": -0.5,
+        "order_chaos": -0.5,
+        "functional_expressive": -0.3
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_data_interfaces_ui_dashboard_dense",
+      "style_id": "ui_dashboard_dense",
+      "category_id": "ui-data-interfaces",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A high-density operational screen packing many panels, tables and small charts into a tight information grid",
+      "axis_loadings": {
+        "order_chaos": -0.4,
+        "minimal_maximal": 0.8,
+        "system_intuition": -0.6,
+        "flat_dimensional": -0.5,
+        "functional_expressive": -0.6
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_data_interfaces_ui_data_viz_rich",
+      "style_id": "ui_data_viz_rich",
+      "category_id": "ui-data-interfaces",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A visualization-heavy screen packed with charts, gradients and dense but readable encoded data",
+      "axis_loadings": {
+        "functional_expressive": 0.5,
+        "flat_dimensional": 0.6,
+        "warm_cold": 0.4,
+        "minimal_maximal": 0.3
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_data_interfaces_ui_terminal",
+      "style_id": "ui_terminal",
+      "category_id": "ui-data-interfaces",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A monospaced terminal-style interface on a dark background, raw text output, no icons or chrome",
+      "axis_loadings": {
+        "flat_dimensional": -0.6,
+        "minimal_maximal": 0.5,
+        "warm_cold": -0.4,
+        "functional_expressive": -0.3,
+        "system_intuition": -0.5
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_design_systems_ui_accessibility_first",
+      "style_id": "ui_accessibility_first",
+      "category_id": "ui-design-systems",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A high-contrast, screen-reader-friendly interface prioritizing legibility, labels, focus states and clarity",
+      "axis_loadings": {
+        "functional_expressive": -0.7,
+        "order_chaos": -0.6,
+        "system_intuition": -0.6,
+        "minimal_maximal": -0.4,
+        "warm_cold": -0.5
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_design_systems_ui_system_identity",
+      "style_id": "ui_system_identity",
+      "category_id": "ui-design-systems",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A disciplined, token-driven interface where spacing, type and color follow strict documented rules",
+      "axis_loadings": {
+        "order_chaos": -0.8,
+        "system_intuition": -0.9,
+        "minimal_maximal": -0.5,
+        "functional_expressive": -0.6
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_design_systems_ui_token_driven",
+      "style_id": "ui_token_driven",
+      "category_id": "ui-design-systems",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A design-system component panel showing interfaces assembled entirely from named design tokens",
+      "axis_loadings": {
+        "order_chaos": -0.8,
+        "system_intuition": -0.8,
+        "minimal_maximal": -0.4,
+        "functional_expressive": -0.5
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_design_systems_ui_type_scale_strict",
+      "style_id": "ui_type_scale_strict",
+      "category_id": "ui-design-systems",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A layout where a rigorous typographic scale and baseline grid determine everything; type is the interface",
+      "axis_loadings": {
+        "order_chaos": -0.7,
+        "system_intuition": -0.7,
+        "minimal_maximal": -0.4,
+        "functional_expressive": -0.5
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_emerging_ui_ai_native",
+      "style_id": "ui_ai_native",
+      "category_id": "ui-emerging",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A generative, adaptive interface with chat-like prompts, streaming responses and suggested actions",
+      "axis_loadings": {
+        "classic_contemporary": 0.9,
+        "system_intuition": 0.6,
+        "functional_expressive": 0.5,
+        "order_chaos": 0.3
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_emerging_ui_material_you",
+      "style_id": "ui_material_you",
+      "category_id": "ui-emerging",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A color-extracted, tactile Android-style interface with dynamic tonal palettes and soft ambient shapes",
+      "axis_loadings": {
+        "warm_cold": 0.5,
+        "flat_dimensional": 0.6,
+        "minimal_maximal": 0.2,
+        "classic_contemporary": 0.7
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_emerging_ui_retro_computing",
+      "style_id": "ui_retro_computing",
+      "category_id": "ui-emerging",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A nostalgic interface recalling early computers - scanlines, blocky pixels, beige or phosphor-green palettes",
+      "axis_loadings": {
+        "classic_contemporary": -0.5,
+        "order_chaos": -0.3,
+        "minimal_maximal": 0.5,
+        "warm_cold": -0.4,
+        "flat_dimensional": -0.5
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_emerging_ui_spatial_ui",
+      "style_id": "ui_spatial_ui",
+      "category_id": "ui-emerging",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A spatial interface with depth, layers and perspective, panels floating at different z-heights in 3D space",
+      "axis_loadings": {
+        "classic_contemporary": 0.9,
+        "flat_dimensional": 0.9,
+        "functional_expressive": 0.6,
+        "minimal_maximal": 0.3
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_emerging_ui_typographic_ui",
+      "style_id": "ui_typographic_ui",
+      "category_id": "ui-emerging",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "An interface led primarily by typography, where oversized type sets the hierarchy over imagery and icons",
+      "axis_loadings": {
+        "functional_expressive": 0.6,
+        "minimal_maximal": -0.4,
+        "order_chaos": -0.3,
+        "literal_abstract": 0.4
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_interaction_motion_ui_kinetic_feedback",
+      "style_id": "ui_kinetic_feedback",
+      "category_id": "ui-interaction-motion",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "An interface built around physical motion - inertia, springs, drag and momentum - where every gesture reacts",
+      "axis_loadings": {
+        "functional_expressive": 0.7,
+        "warm_cold": 0.3,
+        "minimal_maximal": 0.2,
+        "system_intuition": 0.5
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_interaction_motion_ui_micro_interactions",
+      "style_id": "ui_micro_interactions",
+      "category_id": "ui-interaction-motion",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A lively interface where buttons, toggles and fields respond with small physical, animated feedback",
+      "axis_loadings": {
+        "system_intuition": 0.6,
+        "functional_expressive": 0.5,
+        "warm_cold": 0.4,
+        "minimal_maximal": -0.2
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_interaction_motion_ui_no_animation",
+      "style_id": "ui_no_animation",
+      "category_id": "ui-interaction-motion",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A still, static interface where nothing animates; state changes are instant and unadorned",
+      "axis_loadings": {
+        "order_chaos": -0.7,
+        "system_intuition": -0.8,
+        "minimal_maximal": -0.5,
+        "functional_expressive": -0.6
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_interaction_motion_ui_playful_physics",
+      "style_id": "ui_playful_physics",
+      "category_id": "ui-interaction-motion",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A whimsical UI with physics-driven elements that bounce, wobble and collide in a playful sandbox",
+      "axis_loadings": {
+        "functional_expressive": 0.8,
+        "warm_cold": 0.6,
+        "order_chaos": 0.5,
+        "minimal_maximal": 0.3
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_interaction_motion_ui_scroll_storytelling",
+      "style_id": "ui_scroll_storytelling",
+      "category_id": "ui-interaction-motion",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A long page that unfolds a narrative as you scroll, with sections morphing, pinning and revealing",
+      "axis_loadings": {
+        "classic_contemporary": 0.9,
+        "functional_expressive": 0.7,
+        "flat_dimensional": 0.6,
+        "order_chaos": 0.3
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_layout_composition_ui_asymmetric",
+      "style_id": "ui_asymmetric",
+      "category_id": "ui-layout-composition",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "Deliberately off-balance layout using asymmetric columns and tensioned whitespace for a dynamic read",
+      "axis_loadings": {
+        "order_chaos": 0.4,
+        "functional_expressive": 0.5,
+        "minimal_maximal": -0.3,
+        "classic_contemporary": 0.6
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_layout_composition_ui_card_heavy",
+      "style_id": "ui_card_heavy",
+      "category_id": "ui-layout-composition",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A surface built almost entirely from stacked rectangular cards with independent shadows and rounded corners",
+      "axis_loadings": {
+        "flat_dimensional": 0.6,
+        "minimal_maximal": 0.5,
+        "order_chaos": -0.3,
+        "system_intuition": -0.3
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_layout_composition_ui_dashboard_dense",
+      "style_id": "ui_dashboard_dense",
+      "category_id": "ui-layout-composition",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A high-density operational screen packing many panels, tables and small charts into a tight information grid",
+      "axis_loadings": {
+        "order_chaos": -0.4,
+        "minimal_maximal": 0.8,
+        "system_intuition": -0.6,
+        "flat_dimensional": -0.5,
+        "functional_expressive": -0.6
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_layout_composition_ui_editorial_web",
+      "style_id": "ui_editorial_web",
+      "category_id": "ui-layout-composition",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A magazine-like web layout with a masthead, crisp headlines, overset columns and refined typography",
+      "axis_loadings": {
+        "classic_contemporary": 0.6,
+        "order_chaos": -0.4,
+        "functional_expressive": 0.5,
+        "flat_dimensional": 0.3
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_layout_composition_ui_fullbleed",
+      "style_id": "ui_fullbleed",
+      "category_id": "ui-layout-composition",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "Edge-to-edge imagery and type filling the entire viewport, no frame or margin containing the content",
+      "axis_loadings": {
+        "minimal_maximal": 0.4,
+        "flat_dimensional": 0.6,
+        "functional_expressive": 0.4,
+        "order_chaos": 0.3
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_layout_composition_ui_grid_strict",
+      "style_id": "ui_grid_strict",
+      "category_id": "ui-layout-composition",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A rigid, mathematically aligned grid of columns and rows; alignment and rhythm are the entire design",
+      "axis_loadings": {
+        "order_chaos": -0.9,
+        "system_intuition": -0.9,
+        "minimal_maximal": -0.5,
+        "flat_dimensional": -0.4
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_layout_composition_ui_split_screen",
+      "style_id": "ui_split_screen",
+      "category_id": "ui-layout-composition",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "Viewport divided into two or more flanking panes that scroll or change together",
+      "axis_loadings": {
+        "order_chaos": -0.2,
+        "system_intuition": -0.4,
+        "minimal_maximal": -0.3,
+        "flat_dimensional": 0.4
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_spacious_minimal_superhuman",
+      "style_id": "ui_spacious_minimal",
+      "category_id": "ui-layout-composition",
+      "image_url": null,
+      "credit_line": "Superhuman (superhuman.com)",
+      "source_url": "https://superhuman.com",
+      "license_note": "product-screenshot",
+      "alt_text": "Extremely sparse interface, few elements per screen, wide whitespace",
+      "axis_loadings": {
+        "minimal_maximal": -0.9,
+        "order_chaos": -0.5,
+        "warm_cold": -0.6,
+        "functional_expressive": -0.6
+      },
+      "tags": [
+        "exemplar"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_visual_language_ui_bento_grid",
+      "style_id": "ui_bento_grid",
+      "category_id": "ui-visual-language",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A tidy grid of rounded cards of varied sizes, like a bento box, each holding one focused module",
+      "axis_loadings": {
+        "order_chaos": -0.6,
+        "minimal_maximal": -0.3,
+        "flat_dimensional": 0.4,
+        "classic_contemporary": 0.6,
+        "system_intuition": -0.5
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_visual_language_ui_brutalist_ui",
+      "style_id": "ui_brutalist_ui",
+      "category_id": "ui-visual-language",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "Raw, unpolished web UI - thick borders, default system type, harsh color blocks and a deliberately unfinished look",
+      "axis_loadings": {
+        "order_chaos": 0.5,
+        "minimal_maximal": 0.5,
+        "flat_dimensional": -0.7,
+        "functional_expressive": 0.4,
+        "literal_abstract": -0.6
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_visual_language_ui_claymorphism",
+      "style_id": "ui_claymorphism",
+      "category_id": "ui-visual-language",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "Playful chunky 3D clay-like UI elements with soft blob shadows and pastel fills",
+      "axis_loadings": {
+        "warm_cold": 0.6,
+        "flat_dimensional": 0.7,
+        "functional_expressive": 0.3,
+        "minimal_maximal": -0.2
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_visual_language_ui_flat_minimal",
+      "style_id": "ui_flat_minimal",
+      "category_id": "ui-visual-language",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "A flat, cropped-simple interface with straight edges, restrained palette and generous whitespace; nothing decorative",
+      "axis_loadings": {
+        "minimal_maximal": -0.9,
+        "order_chaos": -0.8,
+        "flat_dimensional": -0.7,
+        "functional_expressive": -0.5,
+        "system_intuition": -0.4
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_visual_language_ui_glassmorphism",
+      "style_id": "ui_glassmorphism",
+      "category_id": "ui-visual-language",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "Frosted translucent panels layered over a soft colorful glow, with blurred backdrops and floating cards",
+      "axis_loadings": {
+        "flat_dimensional": 0.6,
+        "warm_cold": 0.5,
+        "classic_contemporary": 0.7,
+        "minimal_maximal": -0.3,
+        "system_intuition": 0.4
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_visual_language_ui_neumorphism",
+      "style_id": "ui_neumorphism",
+      "category_id": "ui-visual-language",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "Soft extruded UI where cards appear pressed into a single-tone background, using gentle shadows and highlights",
+      "axis_loadings": {
+        "flat_dimensional": 0.7,
+        "warm_cold": 0.3,
+        "minimal_maximal": -0.4,
+        "classic_contemporary": 0.5
+      },
+      "tags": [
+        "rank-eligible"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "plate_ui_visual_language_ui_skeuomorphic",
+      "style_id": "ui_skeuomorphic",
+      "category_id": "ui-visual-language",
+      "image_url": null,
+      "credit_line": "Pending curation — see CREDITS.md",
+      "source_url": null,
+      "license_note": "to-curate",
+      "alt_text": "Interfaces textured to imitate physical objects - leather, metal, stitching, glossy buttons and real-world affordances",
+      "axis_loadings": {
+        "classic_contemporary": -0.6,
+        "flat_dimensional": 0.8,
+        "functional_expressive": -0.4,
+        "warm_cold": 0.5
+      },
+      "tags": [
+        "rank-eligible"
+      ],
       "status": "pending"
     }
   ]
