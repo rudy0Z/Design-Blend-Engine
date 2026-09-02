@@ -1,0 +1,13 @@
+name = "design-blend-api"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+workers_dev = true
+
+# Per-environment secrets (set with `wrangler secret put DATABASE_URL`):
+#   DATABASE_URL   — Neon Postgres connection string (https:// neon.tech)
+# Optional vars:
+[vars]
+CORS_ORIGIN = "*"
+
+[observability]
+enabled = true

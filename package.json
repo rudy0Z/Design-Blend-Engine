@@ -6,7 +6,15 @@
     "preinstall": "node -e \"if(!/pnpm/.test(process.env.npm_config_user_agent||'')){console.error('Use pnpm instead');process.exit(1)}\"",
     "build": "pnpm run typecheck && pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
-    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
+    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --filter \"./workers/**\" --if-present run typecheck",
+    "db:push": "pnpm --filter @workspace/db push",
+    "db:seed": "pnpm --filter @workspace/db seed",
+    "db:demo": "pnpm --filter @workspace/db demo",
+    "dev:db": "node .local/dev-db.mjs",
+    "api:dev": "pnpm --filter @workspace/api-server dev",
+    "web:dev": "pnpm --filter @workspace/design-blend dev",
+    "worker:dev": "pnpm --filter @workspace/api-worker dev",
+    "worker:deploy": "pnpm --filter @workspace/api-worker deploy"
   },
   "private": true,
   "devDependencies": {

@@ -1,0 +1,6 @@
+import { Hono } from "hono";
+import type { Env } from "../db";
+
+export const healthRoutes = new Hono<{ Bindings: Env }>();
+
+healthRoutes.get("/healthz", (c) => c.json({ status: "ok" }));
