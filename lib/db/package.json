@@ -11,7 +11,8 @@
     "push": "drizzle-kit push --config ./drizzle.config.ts",
     "push-force": "drizzle-kit push --force --config ./drizzle.config.ts",
     "seed": "tsx src/seed-catalog.ts",
-    "demo": "tsx src/seed-demo.ts"
+    "demo": "tsx src/seed-demo.ts",
+    "test": "vitest run"
   },
   "dependencies": {
     "@workspace/taste-engine": "workspace:*",
@@ -24,6 +25,7 @@
     "@types/node": "catalog:",
     "@types/pg": "^8.18.0",
     "drizzle-kit": "^0.31.9",
-    "tsx": "catalog:"
+    "tsx": "catalog:",
+    "vitest": "^3.2.4"
   }
 }

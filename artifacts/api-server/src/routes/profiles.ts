@@ -1,40 +1,23 @@
+/**
+ * Profile read/privacy routes backed by the versioned engine
+ * (docs/FINAL-PLAN.md §1, §6). The legacy quiz-session save path is gone:
+ * profiles are created by POST /api/capture/sessions/:id/complete.
+ */
 import { Router, type IRouter, type Response } from "express";
-import { and, eq } from "drizzle-orm";
-import {
-  db,
-  profilesTable,
-  quizSessionsTable,
-  styleNodesTable,
-  type StyleNode,
-} from "@workspace/db";
+import { and, desc, eq } from "drizzle-orm";
+import { db, profileVersionsTable, profilesTable } from "@workspace/db";
 import {
   GetProfileByUsernameParams,
   GetProfileByUsernameResponse,
-  SaveProfileBody,
-  SaveProfileResponse,
-  UpdateProfilePrivacyParams,
   UpdateProfilePrivacyBody,
+  UpdateProfilePrivacyParams,
   UpdateProfilePrivacyResponse,
 } from "@workspace/api-zod";
-import { makeId } from "../lib/ids";
-import {
-  scoreAxes,
-  pickArchetype,
-  styleVectorFromAxes,
-  getFieldDistribution,
-  getFieldScores,
-  getCategoryScores,
-} from "../lib/scoring";
-import {
-  requireAuth,
-  getUserIdOrNull,
-  type AuthedRequest,
-} from "../middlewares/requireAuth";
+import { requireAuth, getUserIdOrNull, type AuthedRequest } from "../middlewares/requireAuth";
 
 const router: IRouter = Router();
 
-const USERNAME_RE = /^[a-z0-9][a-z0-9-]{1,30}$/;
-
+/** GET /api/profiles/me — the signed-in user's profile (null when none). */
 router.get("/profiles/me", requireAuth, async (req: AuthedRequest, res: Response): Promise<void> => {
   const [row] = await db
     .select()
@@ -48,6 +31,7 @@ router.get("/profiles/me", requireAuth, async (req: AuthedRequest, res: Response
   res.json(GetProfileByUsernameResponse.parse(row));
 });
 
+/** GET /api/profiles/:username — public profile, or the owner's own private one. */
 router.get("/profiles/:username", async (req, res): Promise<void> => {
   const p = GetProfileByUsernameParams.safeParse(req.params);
   if (!p.success) {
@@ -72,125 +56,7 @@ router.get("/profiles/:username", async (req, res): Promise<void> => {
   res.json(GetProfileByUsernameResponse.parse(row));
 });
 
-router.post("/profiles", requireAuth, async (req: AuthedRequest, res: Response): Promise<void> => {
-  const body = SaveProfileBody.safeParse(req.body);
-  if (!body.success) {
-    res.status(400).json({ error: body.error.message });
-    return;
-  }
-  const username = body.data.username.trim().toLowerCase();
-  if (!USERNAME_RE.test(username)) {
-    res.status(400).json({
-      error:
-        "Username must be 2-31 chars, lowercase letters/digits/dashes, and start with a letter or digit.",
-    });
-    return;
-  }
-
-  const [session] = await db
-    .select()
-    .from(quizSessionsTable)
-    .where(eq(quizSessionsTable.id, body.data.sessionId));
-  if (!session) {
-    res.status(404).json({ error: "Quiz session not found" });
-    return;
-  }
-  // The session must either belong to this user, or be unclaimed (no userId yet).
-  if (session.userId && session.userId !== req.userId) {
-    res.status(403).json({ error: "Session belongs to another user" });
-    return;
-  }
-
-  // If username is taken by another userId, reject.
-  const [existingByName] = await db
-    .select()
-    .from(profilesTable)
-    .where(eq(profilesTable.username, username));
-  if (existingByName && existingByName.userId && existingByName.userId !== req.userId) {
-    res.status(409).json({ error: "Username already taken" });
-    return;
-  }
-
-  const allNodes = (await db.select().from(styleNodesTable)) as StyleNode[];
-  const byId = new Map(allNodes.map((n) => [n.id, n]));
-  const axes = scoreAxes(session.ratings, byId);
-  const arch = pickArchetype(axes);
-  const styleVector = styleVectorFromAxes(axes, allNodes);
-  const topStyles = Object.entries(styleVector)
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, 5)
-    .map(([id]) => id);
-  const fieldDistribution = getFieldDistribution(session.ratings, byId);
-  const fieldScores = getFieldScores(session.ratings, byId);
-  const categoryScores = getCategoryScores(session.ratings, byId);
-  const selectedFields = session.selectedFields ?? [];
-
-  // If the user already has a profile, update in place (and rename if desired).
-  const [mine] = await db
-    .select()
-    .from(profilesTable)
-    .where(eq(profilesTable.userId, req.userId!))
-    .limit(1);
-
-  const computed = {
-    archetypeId: arch.id,
-    archetypeTitle: arch.title,
-    archetypeDescription: arch.description,
-    archetypeColor: arch.color,
-    axes,
-    styleVector,
-    topStyles,
-    fieldDistribution,
-    fieldScores,
-    categoryScores,
-    selectedFields,
-    confidence: arch.confidence,
-  };
-
-  let saved;
-  if (mine) {
-    [saved] = await db
-      .update(profilesTable)
-      .set({
-        username,
-        displayName: body.data.displayName ?? mine.displayName ?? null,
-        ...computed,
-      })
-      .where(eq(profilesTable.id, mine.id))
-      .returning();
-  } else {
-    // If existingByName exists with no userId (anonymous), claim it by attaching userId.
-    const profileId = existingByName ? existingByName.id : makeId("p");
-    [saved] = await db
-      .insert(profilesTable)
-      .values({
-        id: profileId,
-        userId: req.userId,
-        username,
-        displayName: body.data.displayName ?? null,
-        isPublic: true,
-        ...computed,
-      })
-      .onConflictDoUpdate({
-        target: profilesTable.id,
-        set: {
-          userId: req.userId,
-          username,
-          displayName: body.data.displayName ?? null,
-          ...computed,
-        },
-      })
-      .returning();
-  }
-
-  await db
-    .update(quizSessionsTable)
-    .set({ status: "completed", profileId: saved.id, userId: req.userId })
-    .where(eq(quizSessionsTable.id, session.id));
-
-  res.json(SaveProfileResponse.parse(saved));
-});
-
+/** PATCH /api/profiles/:username/privacy — owner-only visibility toggle. */
 router.patch(
   "/profiles/:username/privacy",
   requireAuth,
@@ -222,5 +88,40 @@ router.patch(
     res.json(UpdateProfilePrivacyResponse.parse(updated));
   },
 );
+
+/** GET /api/profiles/:username/versions — version history (drift diff input, §6). */
+router.get("/profiles/:username/versions", async (req, res): Promise<void> => {
+  const p = GetProfileByUsernameParams.safeParse(req.params);
+  if (!p.success) {
+    res.status(400).json({ error: p.error.message });
+    return;
+  }
+  const [profile] = await db
+    .select({
+      id: profilesTable.id,
+      isPublic: profilesTable.isPublic,
+      userId: profilesTable.userId,
+    })
+    .from(profilesTable)
+    .where(eq(profilesTable.username, p.data.username))
+    .limit(1);
+  if (!profile) {
+    res.status(404).json({ error: "Profile not found" });
+    return;
+  }
+  if (!profile.isPublic) {
+    const requesterId = getUserIdOrNull(req);
+    if (!requesterId || requesterId !== profile.userId) {
+      res.status(404).json({ error: "Profile not found" });
+      return;
+    }
+  }
+  const versions = await db
+    .select()
+    .from(profileVersionsTable)
+    .where(eq(profileVersionsTable.profileId, profile.id))
+    .orderBy(desc(profileVersionsTable.version));
+  res.json({ versions });
+});
 
 export default router;

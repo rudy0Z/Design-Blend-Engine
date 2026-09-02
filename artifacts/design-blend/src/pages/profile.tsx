@@ -102,9 +102,9 @@ export default function ProfilePage() {
             <p className="text-destructive font-semibold" data-testid="text-profile-error">
               Profile not found.
             </p>
-            <Link href="/quiz">
+            <Link href="/capture">
               <Button className="mt-6" data-testid="button-take-quiz">
-                Take the quiz
+                Build your taste profile
               </Button>
             </Link>
           </div>

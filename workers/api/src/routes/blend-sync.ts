@@ -13,6 +13,7 @@ import {
   type Signal,
 } from "@workspace/taste-engine";
 import { getDb, type Env } from "../db";
+import { getRequestUserId } from "../auth";
 
 export const blendRoutes = new Hono<{ Bindings: Env }>();
 
@@ -35,9 +36,13 @@ blendRoutes.get("/blends/:userA/:userB/sync", async (c) => {
   if (!profA || !profB) {
     return c.json({ error: "Profile not found" }, 404);
   }
-  // Anonymous demo: only public profiles participate.
-  if (!profA.isPublic || !profB.isPublic) {
-    return c.json({ error: "Profile not found" }, 404);
+  // Visibility: private profiles participate only for their owner (parity with
+  // the Express server — a private profile is never 404'd for its own owner).
+  const requesterId = await getRequestUserId(c);
+  for (const prof of [profA, profB]) {
+    if (!prof.isPublic && requesterId !== prof.userId) {
+      return c.json({ error: "Profile not found" }, 404);
+    }
   }
   if (!profA.currentVersionId || !profB.currentVersionId) {
     return c.json(

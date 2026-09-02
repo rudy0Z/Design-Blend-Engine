@@ -245,7 +245,7 @@ captureRoutes.post("/capture/sessions/:sessionId/complete", async (c) => {
     fieldDistribution: {},
     selectedFields,
     confidence: versionData.archetype.confidence,
-    isPublic: existing?.isPublic ?? true,
+    isPublic: existing?.isPublic ?? false,
     currentVersionId: versionId,
   };
 

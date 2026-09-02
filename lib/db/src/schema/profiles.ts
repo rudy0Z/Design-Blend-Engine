@@ -25,7 +25,7 @@ export const profilesTable = pgTable(
     categoryScores: jsonb("category_scores").$type<Record<string, number>>().notNull().default({}),
     selectedFields: text("selected_fields").array().notNull().default([]),
     confidence: real("confidence").notNull().default(0),
-    isPublic: boolean("is_public").notNull().default(true),
+    isPublic: boolean("is_public").notNull().default(false),
     /** Current published profile version (profile_versions.id). Null for legacy rows. */
     currentVersionId: text("current_version_id"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),

@@ -9,6 +9,8 @@ import * as schema from "@workspace/db/schema";
 export type Env = {
   DATABASE_URL: string;
   CORS_ORIGIN?: string;
+  /** Enables Clerk identity resolution; absent = anonymous mode. */
+  CLERK_SECRET_KEY?: string;
 };
 
 let cached: ReturnType<typeof createDb> | null = null;

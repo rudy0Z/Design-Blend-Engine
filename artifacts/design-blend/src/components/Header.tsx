@@ -1,9 +1,31 @@
+import { useState } from "react";
 import { Link } from "wouter";
 import { Show, useUser, useClerk } from "@clerk/react";
+import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useGetMyProfile, getGetMyProfileQueryKey } from "@workspace/api-client-react";
+import { getTheme, setTheme, type Theme } from "@/lib/theme";
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+function ThemeToggle() {
+  const [theme, setThemeState] = useState<Theme>(getTheme);
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      onClick={() => {
+        const next: Theme = theme === "dark" ? "light" : "dark";
+        setTheme(next);
+        setThemeState(next);
+      }}
+      data-testid="button-toggle-theme"
+    >
+      {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+    </Button>
+  );
+}
 
 export function Header() {
   const { user } = useUser();
@@ -24,6 +46,7 @@ export function Header() {
           <span className="tracking-wide uppercase">Design Blend</span>
         </Link>
         <nav className="flex items-center gap-2">
+          <ThemeToggle />
           <Show when="signed-in">
             {myProfile && (
               <Link href={`/profile/${myProfile.username}`}>

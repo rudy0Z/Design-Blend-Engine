@@ -1,6 +1,18 @@
 import { Router, type IRouter } from "express";
-import { eq, inArray } from "drizzle-orm";
-import { db, profilesTable } from "@workspace/db";
+import { eq, sql } from "drizzle-orm";
+import {
+  db,
+  plateResponsesTable,
+  platesTable,
+  profileVersionsTable,
+  profilesTable,
+} from "@workspace/db";
+import {
+  computeBlend,
+  type PlateRef,
+  type ProfileVersionData,
+  type Signal,
+} from "@workspace/taste-engine";
 
 const router: IRouter = Router();
 
@@ -87,29 +99,87 @@ router.get("/og/profile/:username", async (req, res): Promise<void> => {
 });
 
 router.get("/og/blend/:userA/:userB", async (req, res): Promise<void> => {
-  const { userA, userB } = req.params;
+  const userA = String(req.params.userA ?? "").toLowerCase();
+  const userB = String(req.params.userB ?? "").toLowerCase();
   const profiles = await db
     .select()
     .from(profilesTable)
-    .where(inArray(profilesTable.username, [userA, userB]));
-  const a = profiles.find((p) => p.username === userA);
-  const b = profiles.find((p) => p.username === userB);
-  if (!a || !b || !a.isPublic || !b.isPublic) {
+    .where(sql`${profilesTable.username} in (${userA}, ${userB})`);
+  const profA = profiles.find((p) => p.username === userA);
+  const profB = profiles.find((p) => p.username === userB);
+  if (!profA || !profB || !profA.isPublic || !profB.isPublic) {
     res.status(404).send("");
     return;
   }
-  // Quick cosine for the score, no DB hit beyond what we have.
-  let dot = 0, na = 0, nb = 0;
-  const keys = new Set([...Object.keys(a.styleVector), ...Object.keys(b.styleVector)]);
-  for (const k of keys) {
-    const x = a.styleVector[k] ?? 0;
-    const y = b.styleVector[k] ?? 0;
-    dot += x * y; na += x * x; nb += y * y;
+  if (!profA.currentVersionId || !profB.currentVersionId) {
+    res.status(404).send("");
+    return;
   }
-  const sim = na && nb ? dot / (Math.sqrt(na) * Math.sqrt(nb)) : 0;
-  const pct = Math.round(Math.max(0, Math.min(1, (sim - 0.6) / 0.4)) * 100);
+
+  // Score the card with the SAME engine path as /api/blends/:a/:b/sync so the
+  // shared image never disagrees with the page (audit: OG used a legacy formula).
+  const [versionA] = await db
+    .select()
+    .from(profileVersionsTable)
+    .where(eq(profileVersionsTable.id, profA.currentVersionId))
+    .limit(1);
+  const [versionB] = await db
+    .select()
+    .from(profileVersionsTable)
+    .where(eq(profileVersionsTable.id, profB.currentVersionId))
+    .limit(1);
+  if (!versionA || !versionB) {
+    res.status(404).send("");
+    return;
+  }
+
+  const plateRows = await db
+    .select()
+    .from(platesTable)
+    .where(sql`${platesTable.status} <> 'retired'`);
+  const plateRefs: PlateRef[] = plateRows.map((p) => ({
+    id: p.id,
+    styleId: p.styleId,
+    categoryId: p.categoryId,
+    fieldId: p.fieldId,
+    label: p.label,
+    imageUrl: p.imageUrl,
+    axisLoadings: p.axisLoadings,
+  }));
+  const loadSignals = async (ownerId: string | null): Promise<Signal[]> =>
+    ownerId
+      ? (
+          await db
+            .select()
+            .from(plateResponsesTable)
+            .where(eq(plateResponsesTable.userId, ownerId))
+        ).map((s) => ({
+          plateId: s.plateId,
+          mode: s.mode as Signal["mode"],
+          value: s.value,
+          sequence: s.sequence,
+        }))
+      : [];
+
+  const toProfileData = (v: typeof versionA): ProfileVersionData =>
+    ({ axes: v.axes, axisCoverage: v.axisCoverage, modelVersion: v.modelVersion }) as ProfileVersionData;
+
+  const blend = computeBlend(
+    toProfileData(versionA),
+    toProfileData(versionB),
+    await loadSignals(profA.userId),
+    await loadSignals(profB.userId),
+    plateRefs,
+  );
+
   svgResponse(
-    blendSvg({ a: a.username, b: b.username, aTitle: a.archetypeTitle, bTitle: b.archetypeTitle, pct }),
+    blendSvg({
+      a: profA.username,
+      b: profB.username,
+      aTitle: profA.archetypeTitle,
+      bTitle: profB.archetypeTitle,
+      pct: blend.score,
+    }),
     res,
   );
 });

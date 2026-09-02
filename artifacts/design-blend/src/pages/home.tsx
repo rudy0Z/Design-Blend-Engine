@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Zap, Share2 } from "lucide-react";
+import { Images, Compass, Zap, Share2 } from "lucide-react";
 import { Header } from "@/components/Header";
 
 export default function HomePage() {
@@ -17,9 +17,10 @@ export default function HomePage() {
         </h1>
 
         <p className="mt-8 text-lg sm:text-xl text-muted-foreground max-w-2xl leading-relaxed" data-testid="text-hero-sub">
-          A guided descent through a graph of design styles. React to images,
-          and we'll map your taste fingerprint across 8 dimensions, give you a
-          designer archetype, and a card you can blend with anyone.
+          React to a curated catalog of credited design work — every choice is an
+          image, never a label. We map your taste across 8 axes, match you to an
+          archetype, and blend you with another designer using the plates you
+          both actually rated.
         </p>
 
         <div className="mt-12 flex flex-wrap gap-4">
@@ -38,19 +39,19 @@ export default function HomePage() {
 
         <div className="mt-24 grid sm:grid-cols-3 gap-6">
           <Feature
-            icon={<Sparkles className="h-5 w-5" />}
-            title="Adaptive"
-            body="Each rating reshapes the path. We ask the smallest number of questions to find your fingerprint."
+            icon={<Images className="h-5 w-5" />}
+            title="Image-led, always"
+            body="Rate real, credited work. Skipping counts as unknown — the model never invents a preference you didn't state."
           />
           <Feature
-            icon={<Zap className="h-5 w-5" />}
-            title="8-axis taste vector"
-            body="From Order ↔ Chaos to Literal ↔ Abstract. Plus one of 32 designer archetypes."
+            icon={<Compass className="h-5 w-5" />}
+            title="8-axis fingerprint"
+            body="From Order ↔ Chaos to Literal ↔ Abstract, with honest per-axis coverage so you can see what the model actually knows."
           />
           <Feature
             icon={<Share2 className="h-5 w-5" />}
-            title="Shareable & blendable"
-            body="Save your card, send it to a friend, see how your tastes overlap."
+            title="Blends that show their work"
+            body="A percentage with coverage, plus the exact plates you both scored. No AI in the score, ever — and your taste versions forward when you change your mind."
           />
         </div>
       </div>

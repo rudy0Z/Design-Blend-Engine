@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef } from "react";
 import {
   Switch,
   Route,
@@ -10,23 +10,24 @@ import {
   QueryClientProvider,
   useQueryClient,
 } from "@tanstack/react-query";
-import { ClerkProvider, useClerk } from "@clerk/react";
+import { ClerkProvider, useAuth, useClerk } from "@clerk/react";
 import { publishableKeyFromHost } from "@clerk/react/internal";
+import { setBaseUrl, setAuthTokenGetter } from "@workspace/api-client-react";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { buildAppearance } from "@/lib/clerk-appearance";
+import { API_BASE } from "@/lib/api";
 import NotFound from "@/pages/not-found";
 import HomePage from "@/pages/home";
-import CapturePage from "@/pages/capture";
-import QuizFieldsPage from "@/pages/quiz-fields";
-import QuizCategoriesPage from "@/pages/quiz-categories";
-import QuizRatePage from "@/pages/quiz-rate";
-import QuizResultsPage from "@/pages/quiz-results";
-import SignInPage from "@/pages/sign-in";
-import SignUpPage from "@/pages/sign-up";
-import ProfilePage from "@/pages/profile";
-import BlendPage from "@/pages/blend";
-import BlendInvitePage from "@/pages/blend-invite";
+
+// Route-level code splitting: the landing page stays eager, everything else
+// (capture, profile, blend, auth) loads on demand (audit: 1.18 MB single chunk).
+const CapturePage = lazy(() => import("@/pages/capture"));
+const ProfilePage = lazy(() => import("@/pages/profile"));
+const BlendPage = lazy(() => import("@/pages/blend"));
+const BlendInvitePage = lazy(() => import("@/pages/blend-invite"));
+const SignInPage = lazy(() => import("@/pages/sign-in"));
+const SignUpPage = lazy(() => import("@/pages/sign-up"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,6 +43,33 @@ const clerkPubKey = publishableKeyFromHost(
 );
 
 const clerkProxyUrl = import.meta.env.VITE_CLERK_PROXY_URL;
+
+// The generated client (profile / invite / privacy calls) must hit the same
+// API origin as the hand-written client, otherwise a split-origin Pages +
+// Worker deploy silently 404s those endpoints (audit finding).
+setBaseUrl(API_BASE || null);
+
+/**
+ * Bridges Clerk into the generated fetch client: every request carries a
+ * Clerk session JWT as `Authorization: Bearer …`, which both the Express
+ * server (@clerk/express) and the Worker (@clerk/backend verifyToken) accept.
+ */
+function ClerkAuthBridge() {
+  const { getToken } = useAuth();
+  useEffect(() => {
+    setAuthTokenGetter(() => getToken());
+    return () => setAuthTokenGetter(null);
+  }, [getToken]);
+  return null;
+}
+
+function PageFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="h-8 w-8 animate-spin rounded-full border-2 border-border border-t-primary" />
+    </div>
+  );
+}
 
 function stripBase(path: string): string {
   return basePath && path.startsWith(basePath)
@@ -73,20 +101,18 @@ function ClerkQueryClientCacheInvalidator() {
 
 function Router() {
   return (
-    <Switch>
-      <Route path="/" component={HomePage} />
-      <Route path="/capture" component={CapturePage} />
-      <Route path="/quiz" component={QuizFieldsPage} />
-      <Route path="/quiz/categories" component={QuizCategoriesPage} />
-      <Route path="/quiz/rate" component={QuizRatePage} />
-      <Route path="/quiz/results/:sessionId" component={QuizResultsPage} />
-      <Route path="/profile/:username" component={ProfilePage} />
-      <Route path="/blend/invite/:token" component={BlendInvitePage} />
-      <Route path="/blend/:userA/:userB" component={BlendPage} />
-      <Route path="/sign-in/*?" component={SignInPage} />
-      <Route path="/sign-up/*?" component={SignUpPage} />
-      <Route component={NotFound} />
-    </Switch>
+    <Suspense fallback={<PageFallback />}>
+      <Switch>
+        <Route path="/" component={HomePage} />
+        <Route path="/capture" component={CapturePage} />
+        <Route path="/profile/:username" component={ProfilePage} />
+        <Route path="/blend/invite/:token" component={BlendInvitePage} />
+        <Route path="/blend/:userA/:userB" component={BlendPage} />
+        <Route path="/sign-in/*?" component={SignInPage} />
+        <Route path="/sign-up/*?" component={SignUpPage} />
+        <Route component={NotFound} />
+      </Switch>
+    </Suspense>
   );
 }
 
@@ -104,6 +130,7 @@ function ClerkProviderWithRoutes() {
     >
       <QueryClientProvider client={queryClient}>
         <ClerkQueryClientCacheInvalidator />
+        <ClerkAuthBridge />
         <TooltipProvider>
           <Router />
           <Toaster />

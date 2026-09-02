@@ -113,6 +113,7 @@
           "styles": [
             "ui_dashboard_dense",
             "ui_b2b_saas",
+            "ui_brutalist_ui",
             "ui_command_palette",
             "ui_data_viz_rich",
             "ui_terminal"

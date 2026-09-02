@@ -4,8 +4,11 @@ compatibility_date = "2025-01-01"
 workers_dev = true
 
 # Per-environment secrets (set with `wrangler secret put DATABASE_URL`):
-#   DATABASE_URL   — Neon Postgres connection string (https:// neon.tech)
+#   DATABASE_URL      — Neon Postgres connection string (https:// neon.tech)
+#   CLERK_SECRET_KEY  — optional; enables Clerk identity (sk_…). Absent = anonymous.
 # Optional vars:
+#   CORS_ORIGIN — pin to your Pages origin (comma-separated list allowed).
+#                 Unset = reflect the request origin (local dev only).
 [vars]
 CORS_ORIGIN = "*"
 

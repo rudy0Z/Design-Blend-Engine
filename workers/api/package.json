@@ -5,12 +5,15 @@
   "type": "module",
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
     "build": "wrangler deploy --dry-run --outdir dist",
     "dev": "wrangler dev",
     "deploy": "wrangler deploy"
   },
   "dependencies": {
+    "@clerk/backend": "^3.4.4",
     "@neondatabase/serverless": "^0.10.4",
+    "@workspace/api-zod": "workspace:*",
     "@workspace/db": "workspace:*",
     "@workspace/taste-engine": "workspace:*",
     "drizzle-orm": "catalog:",
@@ -19,6 +22,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20250224.0",
     "typescript": "~5.9.2",
+    "vitest": "^3.2.4",
     "wrangler": "^4.7.2"
   }
 }

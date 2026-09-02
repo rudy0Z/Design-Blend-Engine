@@ -19,6 +19,11 @@ const QUICK_RATINGS = [
   { label: "Nope", value: 15 },
 ];
 
+/** SERVER enforces the same minimum. */
+const MIN_RATINGS = 6;
+/** Bounded queue: the "under 15 minutes" promise needs a stoppable flow. */
+const MAX_PLATES = 24;
+
 export default function CapturePage() {
   const [, setLocation] = useLocation();
   const { user } = useUser();
@@ -48,9 +53,10 @@ export default function CapturePage() {
     return map;
   }, [catalog]);
 
-  // Flatten selected categories into one rating queue.
+  // Flatten selected categories into one rating queue, bounded so a
+  // multi-category selection can never become an endless form.
   const queue = useMemo(
-    () => categoryIds.flatMap((c) => plateByCategory.get(c) ?? []),
+    () => categoryIds.flatMap((c) => plateByCategory.get(c) ?? []).slice(0, MAX_PLATES),
     [categoryIds, plateByCategory],
   );
   const ratedIds = useMemo(() => new Set(responses.map((r) => r.plateId)), [responses]);
@@ -230,6 +236,23 @@ export default function CapturePage() {
                 <X className="h-3 w-3" /> Change categories
               </button>
             </div>
+            {ratedCount >= MIN_RATINGS && (
+              <div className="mb-5">
+                <Button
+                  variant="outline"
+                  onClick={finish}
+                  disabled={submitting}
+                  data-testid="button-finish-early"
+                >
+                  {submitting ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Check className="h-4 w-4" />
+                  )}
+                  Build my profile with {ratedCount} rated
+                </Button>
+              </div>
+            )}
             {current ? (
               <div
                 className="rounded-2xl border border-border bg-card overflow-hidden"

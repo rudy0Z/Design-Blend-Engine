@@ -105,15 +105,15 @@ export default function BlendInvitePage() {
           <div className="mt-10 rounded-xl border border-border bg-card p-8">
             <Show when="signed-out">
               <p className="text-sm text-foreground">
-                Sign in or take the quiz first to generate your fingerprint, then we'll show you the blend.
+                Sign in or build a taste profile first, then we'll show you the blend.
               </p>
               <div className="mt-6 flex gap-3">
                 <Link href={`/sign-in?after=${encodeURIComponent(`${basePath}/blend/invite/${token}`)}`}>
                   <Button data-testid="button-sign-in-to-blend">Sign in</Button>
                 </Link>
-                <Link href="/quiz">
-                  <Button variant="outline" data-testid="button-quiz-to-blend">
-                    Take the quiz
+                <Link href="/capture">
+                  <Button variant="outline" data-testid="button-capture-to-blend">
+                    Build your taste profile
                   </Button>
                 </Link>
               </div>
@@ -128,11 +128,11 @@ export default function BlendInvitePage() {
               ) : (
                 <>
                   <p className="text-sm text-foreground">
-                    You're signed in but haven't saved a profile yet. Take the quiz to generate one — then we'll compute your blend with @{invite.username}.
+                    You're signed in but haven't built a profile yet. Rate a few plates to generate one — then we'll compute your blend with @{invite.username}.
                   </p>
                   <div className="mt-6 flex gap-3">
-                    <Link href="/quiz">
-                      <Button data-testid="button-quiz-to-blend">Take the quiz</Button>
+                    <Link href="/capture">
+                      <Button data-testid="button-capture-to-blend">Build your taste profile</Button>
                     </Link>
                   </div>
                 </>
