@@ -1,253 +1,476 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useParams } from "wouter";
-import { useUser } from "@clerk/react";
-import { Loader2, Share2, Sparkles, Lock, Unlock } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { motion } from "framer-motion";
 import {
-  useGetProfileByUsername,
-  getGetProfileByUsernameQueryKey,
-  useCreateBlendInvite,
-  useUpdateProfilePrivacy,
-  useGetMyProfile,
-  getGetMyProfileQueryKey,
-} from "@workspace/api-client-react";
-import { Button } from "@/components/ui/button";
-import { Switch as ToggleSwitch } from "@/components/ui/switch";
-import { ProfileCard } from "@/components/ProfileCard";
+  ArrowUpRight,
+  Check,
+  Copy,
+  Lock,
+  Plus,
+  Share2,
+  Sparkles,
+  Unlock,
+} from "lucide-react";
+import { CRITIQUE_TAGS } from "@workspace/taste-engine";
 import { Header } from "@/components/Header";
-import { usePageMeta } from "@/lib/meta";
+import { AxisRuler } from "@/components/AxisRuler";
+import { PlateSpecimen } from "@/components/PlateSpecimen";
+import {
+  STUDIO_CATALOG,
+  createStudioInvite,
+  getActiveHandle,
+  getArchetypeDetails,
+  getDesignerProfile,
+  getProfileDrift,
+  listPublicDesigners,
+  setActiveHandle,
+  toggleProfilePrivacy,
+} from "@/lib/backend-provider";
+import { cn } from "@/lib/utils";
 
 export default function ProfilePage() {
-  const params = useParams<{ username: string }>();
-  const username = params.username;
-  const { user } = useUser();
+  const { username = "" } = useParams<{ username: string }>();
+  const [refreshTick, setRefreshTick] = useState(0);
+  const record = useMemo(
+    () => getDesignerProfile(username),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [username, refreshTick],
+  );
 
-  const { data: profile, isLoading, error } = useGetProfileByUsername(username, {
-    query: {
-      enabled: !!username,
-      queryKey: getGetProfileByUsernameQueryKey(username),
-    },
-  });
-  const { data: myProfile } = useGetMyProfile({
-    query: { enabled: !!user, queryKey: getGetMyProfileQueryKey() },
-  });
+  const [selectedVerIdx, setSelectedVerIdx] = useState<number | null>(null);
+  const [activeWorld, setActiveWorld] = useState<string>("global");
+  const [inviteCopied, setInviteCopied] = useState<string | null>(null);
 
-  const [inviteUrl, setInviteUrl] = useState<string | null>(null);
-  const [actionMsg, setActionMsg] = useState<string | null>(null);
-  const createInvite = useCreateBlendInvite();
-  const queryClient = useQueryClient();
-  const updatePrivacy = useUpdateProfilePrivacy({
-    mutation: {
-      onSuccess: (updated) => {
-        queryClient.setQueryData(
-          getGetProfileByUsernameQueryKey(updated.username),
-          updated,
-        );
-        queryClient.setQueryData(getGetMyProfileQueryKey(), updated);
-      },
-    },
-  });
+  const platesById = useMemo(
+    () => new Map(STUDIO_CATALOG.plates.map((p) => [p.id, p])),
+    [],
+  );
+  const fieldLabels = useMemo(() => {
+    const m = new Map<string, string>();
+    for (const f of STUDIO_CATALOG.fields) m.set(f.id, f.label);
+    return m;
+  }, []);
 
-  const isMine = !!myProfile && !!profile && myProfile.id === profile.id;
-
-  usePageMeta({
-    title: profile
-      ? `@${profile.username} — ${profile.archetypeTitle} · Design Blend`
-      : "Design Blend",
-    description: profile?.archetypeDescription,
-    ogDescription: profile?.archetypeDescription,
-    ogImage: profile
-      ? `${window.location.origin}/api/og/profile/${profile.username}`
-      : undefined,
-  });
-
-  function generateInvite() {
-    createInvite.mutate(undefined as never, {
-      onSuccess: (inv) => {
-        const url = `${window.location.origin}${import.meta.env.BASE_URL}blend/invite/${inv.token}`;
-        setInviteUrl(url);
-        navigator.clipboard.writeText(url).catch(() => {});
-        setActionMsg("Invite link copied to clipboard.");
-      },
-      onError: (e) =>
-        setActionMsg(`Couldn't create invite: ${(e as Error).message}`),
-    });
-  }
-
-  function togglePrivacy(next: boolean) {
-    if (!profile) return;
-    updatePrivacy.mutate(
-      { username: profile.username, data: { isPublic: next } },
-      {
-        onSuccess: () => setActionMsg(next ? "Profile is now public." : "Profile is now private."),
-        onError: (e) =>
-          setActionMsg(`Couldn't update privacy: ${(e as Error).message}`),
-      },
-    );
-  }
-
-  if (isLoading) {
+  if (!record) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="min-h-screen bg-background text-foreground flex flex-col">
+        <Header />
+        <main className="flex-1 flex flex-col items-center justify-center p-6 text-center gap-4">
+          <h1 className="font-display font-extrabold text-3xl sm:text-4xl">
+            @{username} hasn&apos;t minted a Taste Card yet.
+          </h1>
+          <Link
+            href="/capture"
+            className="tactile-pill px-7 h-12 rounded-full bg-primary text-primary-foreground font-display font-bold text-sm inline-flex items-center"
+          >
+            Create @{username}&apos;s Taste Card
+          </Link>
+        </main>
       </div>
     );
   }
-  if (error || !profile) {
-    return (
-      <>
-        <Header />
-        <div className="min-h-screen flex items-center justify-center p-6">
-          <div className="text-center max-w-md">
-            <p className="text-destructive font-semibold" data-testid="text-profile-error">
-              Profile not found.
-            </p>
-            <Link href="/capture">
-              <Button className="mt-6" data-testid="button-take-quiz">
-                Build your taste profile
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </>
-    );
-  }
 
-  if (!profile.isPublic && !isMine) {
-    return (
-      <>
-        <Header />
-        <div className="min-h-screen flex items-center justify-center p-6">
-          <div className="text-center max-w-md" data-testid="text-profile-private">
-            <Lock className="h-8 w-8 mx-auto text-muted-foreground" />
-            <p className="mt-4 font-semibold">This profile is private.</p>
-            <p className="mt-2 text-sm text-muted-foreground">
-              @{profile.username} hasn't made their taste fingerprint public.
-            </p>
-          </div>
-        </div>
-      </>
-    );
+  const verIdx = selectedVerIdx ?? record.versions.length - 1;
+  const snapshot = record.versions[verIdx] ?? record.versions[record.versions.length - 1];
+  const data = snapshot.data;
+  const arch = getArchetypeDetails(data.archetype.id);
+  const drift = getProfileDrift(record);
+  const activeUser = getActiveHandle();
+  const isOwner = activeUser === record.username || !record.isSeededDemo;
+  const otherDesigners = listPublicDesigners().filter((d) => d.username !== record.username);
+  const aura = data.auraColors ?? ["#FF5A36", "#F59E0B", "#FB7185"];
+
+  const displayedAxes =
+    activeWorld !== "global" && data.fieldSlices[activeWorld]
+      ? data.fieldSlices[activeWorld].axes
+      : data.axes;
+
+  function handleSendBlendInvite() {
+    const token = createStudioInvite(record!.username);
+    const url = `${window.location.origin}/blend/invite/${token}`;
+    navigator.clipboard?.writeText(url).catch(() => {});
+    setInviteCopied(url);
+    setTimeout(() => setInviteCopied(null), 4000);
   }
 
   return (
-    <>
+    <div className="min-h-screen bg-background text-foreground flex flex-col">
       <Header />
-      <div className="min-h-screen bg-background">
-        <div className="max-w-5xl mx-auto px-6 py-12">
-          <div className="text-sm text-muted-foreground tracking-wide uppercase mb-3">
-            Designer profile
-          </div>
-          <h1
-            className="text-3xl sm:text-5xl font-serif font-bold tracking-tight text-foreground"
-            data-testid="text-profile-title"
-          >
-            @{profile.username}
-          </h1>
-          <p className="mt-3 text-muted-foreground text-lg">
-            {profile.archetypeTitle}
-          </p>
-          {profile.confidence < 0.6 && (
-            <div
-              className="mt-4 inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-3 py-1 text-xs text-amber-700 dark:text-amber-400"
-              data-testid="text-low-confidence"
-            >
-              <Sparkles className="h-3 w-3" />
-              Low-confidence read — take a few more questions to sharpen this fingerprint.
-            </div>
-          )}
 
-          <div className="mt-10 grid lg:grid-cols-[auto,1fr] gap-10 items-start">
-            <div className="flex justify-center lg:justify-start">
-              <ProfileCard profile={profile} />
-            </div>
+      <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-10 relative">
+        {/* Ambient Generative Taste Aura Backdrop */}
+        <div
+          style={{
+            background: `radial-gradient(520px circle at 25% 12%, ${aura[0]}33, transparent 70%), radial-gradient(460px circle at 78% 18%, ${aura[1]}29, transparent 70%)`,
+          }}
+          className="pointer-events-none absolute inset-x-0 top-0 h-[440px] -z-10 blur-2xl"
+        />
 
-            <div className="space-y-6">
-              <div className="rounded-xl border border-border bg-card p-6">
-                <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                  Blend with this designer
-                </h3>
-                {isMine ? (
-                  <>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Generate a one-time link to share with another designer. When they open it, you'll see your blend.
-                    </p>
-                    <Button
-                      onClick={generateInvite}
-                      disabled={createInvite.isPending}
-                      data-testid="button-generate-invite"
-                    >
-                      {createInvite.isPending ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <Share2 className="h-4 w-4" />
-                      )}
-                      Create blend invite
-                    </Button>
-                    {inviteUrl && (
-                      <div className="mt-3 rounded-lg bg-muted p-3 text-xs font-mono break-all" data-testid="text-invite-url">
-                        {inviteUrl}
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      Take the quiz to compare your taste with @{profile.username}.
-                    </p>
-                    {myProfile ? (
-                      <Link href={`/blend/${myProfile.username}/${profile.username}`}>
-                        <Button data-testid="button-blend-now">
-                          <Sparkles className="h-4 w-4" />
-                          Blend now
-                        </Button>
-                      </Link>
-                    ) : (
-                      <Link href="/capture">
-                        <Button data-testid="button-take-quiz-to-blend">
-                          Build your taste profile
-                        </Button>
-                      </Link>
-                    )}
-                  </>
+        {/* ==================================================================
+            HERO TASTE PASS + BLEND INVITE TICKET
+            ================================================================== */}
+        <section className="slide-housing p-6 sm:p-9 relative overflow-hidden">
+          <div className="grid lg:grid-cols-12 gap-8 items-center">
+            <div className="lg:col-span-7 space-y-4">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <span
+                  style={{ background: `linear-gradient(135deg, ${aura[0]}, ${aura[1]})` }}
+                  className="px-3 py-1 rounded-full text-white text-xs font-bold shadow-sm"
+                >
+                  @{record.username}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {record.disciplineLine}
+                  {record.location ? ` · ${record.location}` : ""}
+                </span>
+
+                {record.versions.length > 1 && (
+                  <div className="flex items-center gap-1 ml-auto">
+                    {record.versions.map((v, idx) => (
+                      <button
+                        key={v.version}
+                        type="button"
+                        onClick={() => setSelectedVerIdx(idx)}
+                        className={cn(
+                          "spring-tap px-2.5 py-0.5 rounded-full text-xs font-semibold",
+                          verIdx === idx
+                            ? "bg-foreground text-background"
+                            : "bg-secondary text-muted-foreground",
+                        )}
+                      >
+                        v{v.version}
+                      </button>
+                    ))}
+                  </div>
                 )}
               </div>
 
-              {isMine && (
-                <div className="rounded-xl border border-border bg-card p-6">
-                  <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                    Privacy
-                  </h3>
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-2 text-sm">
-                      {profile.isPublic ? (
-                        <Unlock className="h-4 w-4 text-primary" />
-                      ) : (
-                        <Lock className="h-4 w-4 text-muted-foreground" />
-                      )}
-                      <span data-testid="text-privacy-state">
-                        {profile.isPublic ? "Public" : "Private"}
-                      </span>
-                    </div>
-                    <ToggleSwitch
-                      checked={profile.isPublic}
-                      onCheckedChange={togglePrivacy}
-                      disabled={updatePrivacy.isPending}
-                      data-testid="switch-privacy"
-                    />
+              <div>
+                <div className="text-xs font-semibold text-primary mb-1">Creative Signature</div>
+                <h1 className="font-display font-extrabold text-4xl sm:text-5xl tracking-tight leading-[0.98]">
+                  {arch.title}
+                </h1>
+              </div>
+
+              <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-xl">
+                {arch.description}
+              </p>
+
+              {data.creativeRange.hasDuality && (
+                <div className="rounded-2xl bg-secondary/75 p-4 flex items-start gap-3">
+                  <Sparkles className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                  <div className="text-xs sm:text-sm">
+                    <strong className="text-foreground">Multi-world range: </strong>
+                    <span className="text-muted-foreground">{data.creativeRange.summary}</span>
                   </div>
                 </div>
               )}
+            </div>
 
-              {actionMsg && (
-                <p className="text-xs text-muted-foreground" data-testid="text-action-msg">
-                  {actionMsg}
-                </p>
+            {/* Right: Tactile Blend Ticket Stub */}
+            <div className="lg:col-span-5 rounded-3xl bg-secondary/65 p-5 sm:p-6 space-y-4 border border-foreground/10">
+              <div className="flex items-center gap-3">
+                <div
+                  style={{
+                    background: `conic-gradient(from 45deg, ${aura[0]}, ${aura[1]}, ${aura[2]}, ${aura[0]})`,
+                  }}
+                  className="h-14 w-14 rounded-2xl shadow-md shrink-0"
+                />
+                <div>
+                  <div className="font-display font-bold text-lg leading-snug">
+                    Blend with {record.displayName}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Send an invite link to merge your taste into a 5-card story.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleSendBlendInvite}
+                data-testid="button-copy-invite"
+                className="tactile-pill w-full h-12 rounded-full bg-primary text-primary-foreground font-display font-bold text-sm inline-flex items-center justify-center gap-2"
+              >
+                {inviteCopied ? <Check className="h-4 w-4" /> : <Share2 className="h-4 w-4" />}
+                <span>
+                  {inviteCopied ? "Blend Link Copied!" : "Copy Blend Invite Link"}
+                </span>
+              </button>
+
+              {inviteCopied && (
+                <div className="rounded-xl bg-background/80 px-3 py-2 font-mono text-[11px] text-muted-foreground truncate flex items-center justify-between gap-2">
+                  <span className="truncate">{inviteCopied}</span>
+                  <Copy className="h-3.5 w-3.5 shrink-0 text-primary" />
+                </div>
               )}
+
+              <div className="grid grid-cols-2 gap-2 pt-1">
+                <Link
+                  href="/capture"
+                  onClick={() => setActiveHandle(record.username)}
+                  className="spring-tap h-10 rounded-full bg-card text-xs font-semibold inline-flex items-center justify-center gap-1.5"
+                >
+                  <Plus className="h-3.5 w-3.5" /> Add more picks
+                </Link>
+
+                {isOwner && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      toggleProfilePrivacy(record.username, !record.isPublic);
+                      setRefreshTick((t) => t + 1);
+                    }}
+                    className="spring-tap h-10 rounded-full bg-card text-xs font-semibold inline-flex items-center justify-center gap-1.5"
+                  >
+                    {record.isPublic ? (
+                      <>
+                        <Unlock className="h-3.5 w-3.5 text-emerald-400" /> Public
+                      </>
+                    ) : (
+                      <>
+                        <Lock className="h-3.5 w-3.5" /> Private
+                      </>
+                    )}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </>
+
+          {/* One-Tap Blend With Community Creatives */}
+          <div className="mt-7 pt-5 border-t border-border/70 flex flex-wrap items-center gap-2">
+            <span className="text-xs text-muted-foreground mr-1">Instant Blend with:</span>
+            {otherDesigners.map((other) => {
+              const otherAura =
+                other.versions[other.versions.length - 1]?.data.auraColors ?? [
+                  "#38BDF8",
+                  "#818CF8",
+                  "#2DD4BF",
+                ];
+              return (
+                <Link
+                  key={other.username}
+                  href={`/blend/${record.username}/${other.username}`}
+                  className="spring-tap pl-2 pr-3.5 py-1.5 rounded-full bg-secondary hover:bg-accent text-xs font-semibold inline-flex items-center gap-2"
+                >
+                  <span
+                    style={{ background: `linear-gradient(135deg, ${otherAura[0]}, ${otherAura[1]})` }}
+                    className="h-4 w-4 rounded-full"
+                  />
+                  <span>{other.displayName}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Taste Evolution Timeline Banner if v2+ */}
+        {drift && (
+          <section className="slide-housing p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="text-xs font-semibold text-primary">
+                Taste Evolution · v{record.versions.length - 1} → v{record.versions.length}
+              </div>
+              <div className="font-display font-bold text-lg">{drift.summary}</div>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {drift.movedAxes.slice(0, 3).map((m) => (
+                <span
+                  key={m.key}
+                  className="px-3 py-1 rounded-full bg-secondary text-xs font-medium tabular-nums"
+                >
+                  {m.label}: {m.delta > 0 ? `+${m.delta}` : m.delta} toward {m.directionPole}
+                </span>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ==================================================================
+            HOW THEIR EYE MOVES ACROSS WORLDS (FADERS + GUT NOTES)
+            ================================================================== */}
+        <section className="grid lg:grid-cols-12 gap-6 items-start">
+          <div className="lg:col-span-7 slide-housing p-6 sm:p-7 space-y-5">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 className="font-display font-bold text-2xl">How your eye is tuned</h2>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Switch worlds to see how your instincts shift from space to screen.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setActiveWorld("global")}
+                  className={cn(
+                    "spring-tap px-3 py-1 rounded-full text-xs font-semibold",
+                    activeWorld === "global"
+                      ? "bg-foreground text-background"
+                      : "bg-secondary text-muted-foreground",
+                  )}
+                >
+                  All Worlds
+                </button>
+                {Object.keys(data.fieldSlices).map((fId) => (
+                  <button
+                    key={fId}
+                    type="button"
+                    onClick={() => setActiveWorld(fId)}
+                    className={cn(
+                      "spring-tap px-3 py-1 rounded-full text-xs font-semibold",
+                      activeWorld === fId
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-secondary text-muted-foreground",
+                    )}
+                  >
+                    {fieldLabels.get(fId)?.split(" ")[0] ?? fId}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {activeWorld !== "global" && data.fieldSlices[activeWorld] && (
+              <div className="rounded-2xl bg-secondary/70 px-4 py-2.5 text-xs flex items-center justify-between">
+                <span>
+                  In <strong>{fieldLabels.get(activeWorld) ?? activeWorld}</strong>, you lean{" "}
+                  <strong className="text-primary">
+                    {data.fieldSlices[activeWorld].archetypeTitle}
+                  </strong>
+                </span>
+                <span className="text-muted-foreground tabular-nums">
+                  {data.fieldSlices[activeWorld].ratedCount} picks
+                </span>
+              </div>
+            )}
+
+            <AxisRuler
+              axes={displayedAxes}
+              coverage={activeWorld === "global" ? data.axisCoverage : undefined}
+              colorA={aura[0]}
+            />
+          </div>
+
+          {/* Right: Gut Notes + Pinned North-Star Work */}
+          <div className="lg:col-span-5 space-y-6">
+            {Object.keys(data.critiqueCounts).length > 0 && (
+              <div className="slide-housing p-6 space-y-3.5">
+                <h3 className="font-display font-bold text-xl">What you notice first</h3>
+                <div className="flex flex-wrap gap-2">
+                  {Object.entries(data.critiqueCounts)
+                    .sort((a, b) => b[1] - a[1])
+                    .map(([tagId, count]) => {
+                      const def = CRITIQUE_TAGS.find((t) => t.id === tagId);
+                      return (
+                        <span
+                          key={tagId}
+                          className={cn(
+                            "px-3.5 py-1.5 rounded-full text-xs font-semibold",
+                            def?.polarity === "negative"
+                              ? "bg-rose-500/15 text-rose-400"
+                              : "bg-secondary text-foreground",
+                          )}
+                        >
+                          {def?.label ?? tagId} · {count}
+                        </span>
+                      );
+                    })}
+                </div>
+              </div>
+            )}
+
+            {record.anchors.length > 0 && (
+              <div className="slide-housing p-6 space-y-3.5">
+                <div className="text-xs font-semibold text-primary">Pinned Inspiration</div>
+                {record.anchors[0].imageUrl && (
+                  <img
+                    src={record.anchors[0].imageUrl}
+                    alt={record.anchors[0].title}
+                    className="w-full h-44 object-cover rounded-2xl"
+                  />
+                )}
+                <h3 className="font-display font-bold text-xl leading-snug">
+                  {record.anchors[0].title}
+                </h3>
+                {record.anchors[0].note && (
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    &ldquo;{record.anchors[0].note}&rdquo;
+                  </p>
+                )}
+                <a
+                  href={record.anchors[0].url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-foreground hover:text-primary"
+                >
+                  <span>Open reference</span>
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* ==================================================================
+            OBSESSED STACK vs HARD PASSES
+            ================================================================== */}
+        <section className="space-y-4">
+          <h2 className="font-display font-bold text-2xl sm:text-3xl">
+            Obsessions &amp; Hard Passes
+          </h2>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {data.topPlates.slice(0, 3).map((tp) => {
+              const p = platesById.get(tp.plateId);
+              if (!p) return null;
+              return (
+                <motion.div
+                  key={tp.plateId}
+                  whileHover={{ y: -3 }}
+                  className="slide-housing p-4 space-y-3"
+                >
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 font-semibold">
+                      Obsessed
+                    </span>
+                    <span className="text-muted-foreground">{fieldLabels.get(p.fieldId)}</span>
+                  </div>
+                  <PlateSpecimen plate={p} compact interactiveTilt />
+                  <div>
+                    <div className="font-display font-bold text-lg">{p.label}</div>
+                    <p className="text-xs text-muted-foreground">{p.canonicalRef}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+
+            {data.negativeAnchors.slice(0, 3).map((na) => {
+              const p = platesById.get(na.plateId);
+              if (!p) return null;
+              return (
+                <motion.div
+                  key={na.plateId}
+                  whileHover={{ y: -3 }}
+                  className="slide-housing p-4 space-y-3"
+                >
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="px-2.5 py-0.5 rounded-full bg-rose-500/15 text-rose-400 font-semibold">
+                      Hard Pass
+                    </span>
+                    <span className="text-muted-foreground">Dealbreaker</span>
+                  </div>
+                  <PlateSpecimen plate={p} compact interactiveTilt />
+                  <div>
+                    <div className="font-display font-bold text-lg">{p.label}</div>
+                    <p className="text-xs text-muted-foreground">{p.subtitle}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </section>
+      </main>
+    </div>
   );
 }

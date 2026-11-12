@@ -1,18 +1,19 @@
 {
   "_meta": {
     "name": "design-blend-catalog",
-    "version": "v1.1.0",
+    "version": "v3.0.0",
     "schema_notes": {
-      "axis_loadings": "Object keyed by the 8 AXIS_KEYS from scoring.ts. Range -1.0..1.0. Sign convention: POSITIVE = the second pole of the axis name (chaos, maximal, contemporary, expressive, cold, dimensional, abstract, intuition); NEGATIVE = the first pole (order, minimal, classic, functional, warm, flat, literal, system). 0 or absent = axis not expressed by this plate.",
-      "status": "approved = curated & credited, ready to ship | pending = slot reserved, image + credit still to be curated | retired = removed via CREDITS.md takedown process",
-      "capture_modes": "plates are eligible for pick, rank, and rate flows unless tags exclude them (rank requires 3 siblings in the same category)"
+      "axis_loadings": "8 bipolar taste axes in -1.0..1.0.",
+      "craft_loadings": "4 isolated craft dimensions in -1.0..1.0.",
+      "status": "approved | pending | retired",
+      "capture_modes": "Supports pairwise trade-offs, live FM craft tuners, and swipeable physical stacks across 8 creative worlds."
     },
-    "fields_count": 2,
-    "categories_count": 12,
-    "plates_target_per_category": 6,
-    "plates_target_total": 72,
-    "plates_approved": 0,
-    "plates_pending": 68,
+    "fields_count": 8,
+    "categories_count": 17,
+    "plates_target_per_category": 4,
+    "plates_target_total": 68,
+    "plates_approved": 68,
+    "plates_pending": 0,
     "plates_count": 68
   },
   "axes": [
@@ -59,167 +60,244 @@
   ],
   "fields": [
     {
+      "id": "architecture",
+      "label": "Architecture & Spaces",
+      "cover_hint": "Board-formed concrete, warm Japanese cedar, steel pavilions, quiet plaster interiors",
+      "categories": [
+        {
+          "id": "arch-monolith",
+          "label": "Concrete, Timber & Light",
+          "description": "Cast concrete light slits, warm cedar joinery, structural steel, fluid Zaha curves",
+          "styles": [
+            "arch_brutalist_light",
+            "arch_timber_joinery",
+            "arch_steel_pavilion",
+            "arch_parametric_curve"
+          ]
+        },
+        {
+          "id": "arch-interiors",
+          "label": "Interiors & Atmosphere",
+          "description": "Limewash monastic silence, saturated Milanese salons, sun-baked color walls, generic luxury slop",
+          "styles": [
+            "arch_monastic_plaster",
+            "arch_milanese_salon",
+            "arch_chromatic_wall",
+            "arch_airbnb_slop"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "industrial",
+      "label": "Industrial & Objects",
+      "cover_hint": "Machined aluminum dials, transparent PCB hardware, bent plywood icons, tactile switches",
+      "categories": [
+        {
+          "id": "ind-hardware",
+          "label": "Precision Hardware & Devices",
+          "description": "Anodized rotary instruments, transparent circuitry, pebble-soft minimalism, over-styled gamer plastic",
+          "styles": [
+            "ind_tactile_instrument",
+            "ind_transparent_tech",
+            "ind_quiet_object",
+            "ind_gamer_slop"
+          ]
+        },
+        {
+          "id": "ind-furniture",
+          "label": "Furniture & Physical Craft",
+          "description": "Molded walnut & leather, cantilevered tubular steel, radical raw pine, sculptural resin",
+          "styles": [
+            "ind_molded_plywood",
+            "ind_tubular_steel",
+            "ind_autoprogettazione",
+            "ind_cast_resin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "photography",
+      "label": "Photography & Film",
+      "cover_hint": "35mm tungsten street grain, medium-format stillness, direct flash editorial, anamorphic cinema",
+      "categories": [
+        {
+          "id": "photo-lens",
+          "label": "Light, Grain & Framing",
+          "description": "High-contrast 35mm street grit, serene horizon geometry, raw direct-flash fashion, HDR AI slop",
+          "styles": [
+            "photo_street_grain",
+            "photo_horizon_stillness",
+            "photo_direct_flash",
+            "photo_hdr_slop"
+          ]
+        },
+        {
+          "id": "photo-cinema",
+          "label": "Color Grading & Cinema",
+          "description": "Step-printed neon tungsten, symmetrical pastel tableaux, crisp architectural daylight, desert bleach",
+          "styles": [
+            "photo_neon_tungsten",
+            "photo_one_point_symmetry",
+            "photo_american_color",
+            "photo_sculptural_still"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fashion",
+      "label": "Fashion & Material",
+      "cover_hint": "Sculptural black wool draping, technical GORE-TEX seam tape, quiet cashmere tailoring, indigo boro",
+      "categories": [
+        {
+          "id": "fash-silhouette",
+          "label": "Silhouette & Tailoring",
+          "description": "Avant-garde deconstructed volume, effortless quiet drape, technical articulated gear, loud logo slop",
+          "styles": [
+            "fash_avant_deconstruct",
+            "fash_quiet_tailoring",
+            "fash_technical_shell",
+            "fash_logo_slop"
+          ]
+        },
+        {
+          "id": "fash-textile",
+          "label": "Textile, Stitch & Surface",
+          "description": "Sashiko indigo repair, 3D laser-sintered couture, archival canvas workwear, pleated origami",
+          "styles": [
+            "fash_indigo_boro",
+            "fash_origami_pleats",
+            "fash_biomimetic_couture",
+            "fash_exposed_lining"
+          ]
+        }
+      ]
+    },
+    {
       "id": "ui-ux",
-      "label": "UI / Product Design",
-      "cover_hint": "image-led card, dark editorial screenshot",
+      "label": "Interface & Apps",
+      "cover_hint": "Tactile mobile apps, dark pro tools, spatial glass, live spacing tuners",
       "categories": [
         {
           "id": "ui-visual-language",
-          "label": "Visual Design Language",
-          "description": "Surface treatments: flat, glass, brutalist, editorial dark, bento, clay",
+          "label": "App Surfaces & Feel",
+          "description": "Crisp dark command apps, calm daylight minimalism, liquid optical glass, purple AI SaaS slop",
           "styles": [
-            "ui_flat_minimal",
-            "ui_glassmorphism",
-            "ui_neumorphism",
-            "ui_brutalist_ui",
             "ui_dark_editorial",
-            "ui_bento_grid",
-            "ui_claymorphism",
-            "ui_skeuomorphic",
-            "ui_aurora_gradient"
-          ]
-        },
-        {
-          "id": "ui-layout-composition",
-          "label": "Layout & Composition",
-          "description": "Grid logic: strict, asymmetric, full-bleed, spacious, editorial web, split",
-          "styles": [
-            "ui_grid_strict",
-            "ui_asymmetric",
-            "ui_fullbleed",
-            "ui_card_heavy",
-            "ui_dashboard_dense",
-            "ui_spacious_minimal",
-            "ui_editorial_web",
-            "ui_split_screen"
-          ]
-        },
-        {
-          "id": "ui-interaction-motion",
-          "label": "Interaction & Motion",
-          "description": "How interfaces move: micro-interactions, scroll storytelling, kinetic feedback",
-          "styles": [
-            "ui_micro_interactions",
-            "ui_scroll_storytelling",
-            "ui_kinetic_feedback",
-            "ui_no_animation",
-            "ui_playful_physics"
+            "ui_aurora_slop",
+            "ui_flat_minimal",
+            "ui_glassmorphism"
           ]
         },
         {
           "id": "ui-data-interfaces",
-          "label": "Data & Dense Interfaces",
-          "description": "Dashboards, trading screens, B2B SaaS, command palettes",
+          "label": "Layout & Density",
+          "description": "High-density data terminals, playful tactile consumer apps, modular bento, raw hypertext",
           "styles": [
             "ui_dashboard_dense",
-            "ui_b2b_saas",
-            "ui_brutalist_ui",
-            "ui_command_palette",
-            "ui_data_viz_rich",
-            "ui_terminal"
+            "ui_pastel_soft",
+            "ui_bento_grid",
+            "ui_brutalist_ui"
           ]
         },
         {
-          "id": "ui-design-systems",
-          "label": "Systems & Craft",
-          "description": "Design systems, type scales, accessibility-first patterns",
+          "id": "ui-craft-density",
+          "label": "Tuner: Space & Breathing Room",
+          "description": "Same content tuned from tight cockpit density to gallery-wide calm",
           "styles": [
-            "ui_system_identity",
-            "ui_type_scale_strict",
-            "ui_accessibility_first",
-            "ui_token_driven"
-          ]
-        },
-        {
-          "id": "ui-emerging",
-          "label": "Emerging Paradigms",
-          "description": "Spatial UI, AI-native, retro computing, typographic-first",
-          "styles": [
-            "ui_spatial_ui",
-            "ui_ai_native",
-            "ui_retro_computing",
-            "ui_typographic_ui",
-            "ui_material_you"
+            "craft_density_telemetry",
+            "craft_density_operator",
+            "craft_density_balanced",
+            "craft_density_gallery"
           ]
         }
       ]
     },
     {
       "id": "graphic",
-      "label": "Graphic Design",
-      "cover_hint": "image-led card, constructivist poster",
+      "label": "Graphic & Print",
+      "cover_hint": "Swiss concert posters, punk xerox zines, risograph overprints, timeless book spreads",
       "categories": [
         {
           "id": "gd-posters",
-          "label": "Poster Design",
-          "description": "Order-based, expressive, historical, conceptual posters",
+          "label": "Posters & Print Energy",
+          "description": "Mathematical Swiss grids, raw xerox punk zines, Japanese planar balance, loud type collision",
           "styles": [
             "gd_swiss_intl",
-            "gd_bauhaus",
-            "gd_constructivist",
-            "gd_psychedelic",
             "gd_punk_zine",
-            "gd_maximalist_poster",
-            "gd_minimalist_conceptual"
-          ]
-        },
-        {
-          "id": "gd-typography",
-          "label": "Typography",
-          "description": "Type as image, editorial setting, lettering, kinetic type",
-          "styles": [
-            "gd_experimental_type",
-            "gd_editorial_typography",
-            "gd_hand_lettered",
-            "gd_kinetic_type",
-            "gd_concrete_poetry"
-          ]
-        },
-        {
-          "id": "gd-brand-identity",
-          "label": "Brand & Identity",
-          "description": "Wordmarks, geometric marks, gradient brands, brand systems",
-          "styles": [
-            "gd_wordmark_classic",
-            "gd_geometric_mark",
-            "gd_gradient_brand",
-            "gd_system_identity",
-            "gd_artisan_packaging"
+            "gd_japanese_poster",
+            "gd_maximalist_poster"
           ]
         },
         {
           "id": "gd-editorial-print",
-          "label": "Editorial & Print",
-          "description": "Magazine layout, book typography, catalog design, wayfinding",
+          "label": "Books, Zines & Ink",
+          "description": "Classical book proportions, fluorescent soy-ink risograph, shattered magazine spreads, tactile labels",
           "styles": [
-            "gd_magazine_layout",
             "gd_book_typography",
-            "gd_catalog_design",
-            "gd_wayfinding_system",
-            "gd_technical_diagram"
+            "gd_editorial_expressive",
+            "gd_risograph",
+            "gd_packaging_minimal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "brand-type",
+      "label": "Brand & Lettering",
+      "cover_hint": "Iconic geometric symbols, hand-drawn ligatures, generative identities, live type voice tuner",
+      "categories": [
+        {
+          "id": "bt-identity",
+          "label": "Marks, Logos & Lettering",
+          "description": "Timeless geometric symbols, generative shape-shifting brands, hand-drawn curves, warped display type",
+          "styles": [
+            "gd_geometric_mark",
+            "gd_dynamic_identity",
+            "gd_custom_lettering",
+            "gd_experimental_type"
           ]
         },
         {
-          "id": "gd-packaging",
-          "label": "Packaging & Objects",
-          "description": "Minimal packaging, artisan packaging, label systems",
+          "id": "bt-craft-type",
+          "label": "Tuner: Type Personality",
+          "description": "Same headline tuned from clean engineered sans to wild sculptural contrast",
           "styles": [
-            "gd_packaging_minimal",
-            "gd_artisan_packaging",
-            "gd_label_systems",
-            "gd_naive_folk"
+            "craft_type_grotesk",
+            "craft_type_mono",
+            "craft_type_serif",
+            "craft_type_kinetic"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "motion-spatial",
+      "label": "Motion, 3D & Spatial",
+      "cover_hint": "Physical spring gestures, refractive 3D glass & shaders, tactile surface tuner, anti-slop motion",
+      "categories": [
+        {
+          "id": "ms-interaction",
+          "label": "Motion, 3D & Generative",
+          "description": "Silky physical springs, instant 0ms snaps, generative flow shaders, wobbly 3D clay/bounce slop",
+          "styles": [
+            "ui_micro_physics",
+            "ui_instant_snappy",
+            "gd_generative_graphic",
+            "gd_clay_slop"
           ]
         },
         {
-          "id": "gd-illustration",
-          "label": "Illustration & Image",
-          "description": "Flat vector, 3D illustration, collage, naive folk, character work",
+          "id": "ms-craft-surface",
+          "label": "Tuner: Material & Tactility",
+          "description": "Same module tuned from razor-flat ink wire to sculpted physical keycaps",
           "styles": [
-            "gd_flat_vector",
-            "gd_3d_illustration",
-            "gd_collage_poster",
-            "gd_character_cartoon",
-            "gd_geometric_abstract"
+            "craft_surface_wire",
+            "craft_surface_vellum",
+            "craft_surface_glass",
+            "craft_surface_hardware"
           ]
         }
       ]
@@ -227,1411 +305,2450 @@
   ],
   "plates": [
     {
-      "id": "plate_gd_brand_identity_gd_artisan_packaging",
-      "style_id": "gd_artisan_packaging",
-      "category_id": "gd-brand-identity",
+      "id": "pl_arch_ando",
+      "style_id": "arch_brutalist_light",
+      "category_id": "arch-monolith",
+      "field_id": "architecture",
+      "label": "Cast Concrete & Light Slit",
+      "subtitle": "Smooth tie-hole concrete · single razor beam of daylight",
+      "canonical_ref": "Tadao Ando — Church of the Light",
       "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
+      "credit_line": "Architectural Study — Tadao Ando concrete & light lineage",
       "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "Crafted packaging with natural papers, soft tactile surfaces and small human details",
-      "axis_loadings": {
-        "warm_cold": 0.8,
-        "functional_expressive": 0.4,
-        "minimal_maximal": -0.2,
-        "classic_contemporary": -0.3
-      },
-      "tags": [
-        "rank-eligible"
+      "license_note": "portfolio",
+      "alt_text": "Cast Concrete & Light Slit — Smooth tie-hole concrete · single razor beam of daylight (Tadao Ando — Church of the Light)",
+      "pair_group_id": "pair_arch_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "arch_ando",
+      "palette": [
+        "#1A1B1E",
+        "#E6E4DF",
+        "#F59E0B"
       ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_brand_identity_gd_geometric_mark",
-      "style_id": "gd_geometric_mark",
-      "category_id": "gd-brand-identity",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A pure geometric logomark built from circles, arcs and strict angles with mathematical precision",
-      "axis_loadings": {
-        "minimal_maximal": -0.5,
-        "order_chaos": -0.8,
-        "warm_cold": 0.3,
-        "system_intuition": -0.7,
-        "functional_expressive": -0.4
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_brand_identity_gd_gradient_brand",
-      "style_id": "gd_gradient_brand",
-      "category_id": "gd-brand-identity",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A modern brand identity animated by vivid layered gradients across letterforms and shapes",
-      "axis_loadings": {
-        "flat_dimensional": 0.7,
-        "classic_contemporary": 0.8,
-        "warm_cold": 0.4,
-        "minimal_maximal": 0.3
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_brand_identity_gd_system_identity",
-      "style_id": "gd_system_identity",
-      "category_id": "gd-brand-identity",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A systematic identity built from a modular grid, constrained palette and repeatable components",
-      "axis_loadings": {
-        "order_chaos": -0.8,
-        "system_intuition": -0.8,
-        "minimal_maximal": -0.4,
-        "functional_expressive": -0.6
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_brand_identity_gd_wordmark_classic",
-      "style_id": "gd_wordmark_classic",
-      "category_id": "gd-brand-identity",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A classic serif wordmark or monogram with refined detailing, even weight and timeless proportions",
       "axis_loadings": {
         "order_chaos": -0.9,
-        "minimal_maximal": -0.5,
-        "classic_contemporary": -0.6,
-        "functional_expressive": -0.7,
+        "minimal_maximal": -0.92,
+        "warm_cold": 0.65,
+        "flat_dimensional": 0.75,
+        "system_intuition": -0.75
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "architecture"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_arch_kuma",
+      "style_id": "arch_timber_joinery",
+      "category_id": "arch-monolith",
+      "field_id": "architecture",
+      "label": "Interlocking Cedar Joinery",
+      "subtitle": "Filtered Hinoki wood louvers · warm dappled shadow · zero nails",
+      "canonical_ref": "Kengo Kuma / Peter Zumthor Timber Craft",
+      "image_url": null,
+      "credit_line": "Architectural Study — Contemporary Japanese timber joinery",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Interlocking Cedar Joinery — Filtered Hinoki wood louvers · warm dappled shadow · zero nails (Kengo Kuma / Peter Zumthor Timber Craft)",
+      "pair_group_id": "pair_arch_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "arch_timber",
+      "palette": [
+        "#241B14",
+        "#EBD9C3",
+        "#C87D4B"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.65,
+        "minimal_maximal": -0.45,
+        "warm_cold": -0.92,
+        "flat_dimensional": 0.7,
+        "system_intuition": -0.35
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "architecture"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_arch_mies",
+      "style_id": "arch_steel_pavilion",
+      "category_id": "arch-monolith",
+      "field_id": "architecture",
+      "label": "Glass & I-Beam Pavilion",
+      "subtitle": "Floating travertine plinth · exposed black steel mullions",
+      "canonical_ref": "Mies van der Rohe — Farnsworth / Neue Nationalgalerie",
+      "image_url": null,
+      "credit_line": "Historical Lineage — International Style steel pavilion",
+      "source_url": null,
+      "license_note": "public-domain",
+      "alt_text": "Glass & I-Beam Pavilion — Floating travertine plinth · exposed black steel mullions (Mies van der Rohe — Farnsworth / Neue Nationalgalerie)",
+      "pair_group_id": "pair_arch_2",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "arch_mies",
+      "palette": [
+        "#DCE4E8",
+        "#111315",
+        "#38BDF8"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.98,
+        "minimal_maximal": -0.88,
+        "classic_contemporary": -0.65,
+        "warm_cold": 0.85,
+        "system_intuition": -0.95
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "architecture"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_arch_parametric",
+      "style_id": "arch_parametric_curve",
+      "category_id": "arch-monolith",
+      "field_id": "architecture",
+      "label": "Sweeping Parametric Shell",
+      "subtitle": "Seamless fluid fiberglass ribs · zero 90-degree corners",
+      "canonical_ref": "Zaha Hadid — Heydar Aliyev Center",
+      "image_url": null,
+      "credit_line": "Architectural Study — Parametric fluid shell geometry",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Sweeping Parametric Shell — Seamless fluid fiberglass ribs · zero 90-degree corners (Zaha Hadid — Heydar Aliyev Center)",
+      "pair_group_id": "pair_arch_2",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "arch_curve",
+      "palette": [
+        "#EEF1F5",
+        "#181A20",
+        "#FB7185"
+      ],
+      "axis_loadings": {
+        "order_chaos": 0.45,
+        "minimal_maximal": 0.35,
+        "classic_contemporary": 0.92,
+        "functional_expressive": 0.88,
+        "flat_dimensional": 0.95,
+        "system_intuition": 0.55
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "architecture"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_arch_wabi",
+      "style_id": "arch_monastic_plaster",
+      "category_id": "arch-interiors",
+      "field_id": "architecture",
+      "label": "Raw Limewash & Linen Room",
+      "subtitle": "Hand-troweled mineral plaster · single travertine block",
+      "canonical_ref": "Axel Vervoordt / Vincent Van Duysen",
+      "image_url": null,
+      "credit_line": "Interior Study — Monastic Belgian mineral plaster",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Raw Limewash & Linen Room — Hand-troweled mineral plaster · single travertine block (Axel Vervoordt / Vincent Van Duysen)",
+      "pair_group_id": "pair_arch_3",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "arch_wabi",
+      "palette": [
+        "#DDD6C8",
+        "#2B2621",
+        "#8C7A64"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.55,
+        "minimal_maximal": -0.94,
+        "warm_cold": -0.85,
+        "functional_expressive": -0.2,
+        "flat_dimensional": 0.35
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "architecture"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_arch_milan",
+      "style_id": "arch_milanese_salon",
+      "category_id": "arch-interiors",
+      "field_id": "architecture",
+      "label": "Velvet & Brass Milanese Salon",
+      "subtitle": "Jewel-tonedlacquer · Murano glass · layered historical tension",
+      "canonical_ref": "Dimorestudio / Villa Necchi Milan",
+      "image_url": null,
+      "credit_line": "Interior Study — Layered Milanese chromatic salon",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Velvet & Brass Milanese Salon — Jewel-tonedlacquer · Murano glass · layered historical tension (Dimorestudio / Villa Necchi Milan)",
+      "pair_group_id": "pair_arch_3",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "arch_milan",
+      "palette": [
+        "#261219",
+        "#F2D5B8",
+        "#D946EF"
+      ],
+      "axis_loadings": {
+        "order_chaos": 0.55,
+        "minimal_maximal": 0.88,
+        "classic_contemporary": -0.5,
+        "functional_expressive": 0.85,
+        "warm_cold": -0.8
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "architecture"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_arch_barragan",
+      "style_id": "arch_chromatic_wall",
+      "category_id": "arch-interiors",
+      "field_id": "architecture",
+      "label": "Sun-Baked Terracotta Courtyard",
+      "subtitle": "Stucco planes of Mexican pink & ochre slicing desert sky",
+      "canonical_ref": "Luis Barragán — Casa Gilardi",
+      "image_url": null,
+      "credit_line": "Historical Lineage — Luis Barragán emotional architecture",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Sun-Baked Terracotta Courtyard — Stucco planes of Mexican pink & ochre slicing desert sky (Luis Barragán — Casa Gilardi)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "arch_barragan",
+      "palette": [
+        "#E04D70",
+        "#F59E0B",
+        "#1D4ED8"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.6,
+        "minimal_maximal": -0.4,
+        "functional_expressive": 0.78,
+        "warm_cold": -0.95,
+        "literal_abstract": 0.8
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "architecture"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_arch_led_slop",
+      "style_id": "arch_airbnb_slop",
+      "category_id": "arch-interiors",
+      "field_id": "architecture",
+      "label": "RGB Strip & Fake Marble Flip",
+      "subtitle": "Grey vinyl plank floor · neon purple ceiling cove · fake ivy wall",
+      "canonical_ref": "Generic Influencer Studio Flip",
+      "image_url": null,
+      "credit_line": "Diagnostic Foil — Synthetic Flip Interior Anti-Pattern",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "RGB Strip & Fake Marble Flip — Grey vinyl plank floor · neon purple ceiling cove · fake ivy wall (Generic Influencer Studio Flip)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "anti_slop",
+      "specimen_kind": "arch_slop",
+      "palette": [
+        "#1F242D",
+        "#A855F7",
+        "#2DD4BF"
+      ],
+      "axis_loadings": {
+        "order_chaos": 0.4,
+        "minimal_maximal": 0.7,
+        "classic_contemporary": 0.75,
+        "flat_dimensional": 0.65,
+        "system_intuition": 0.4
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "architecture",
+        "anti-slop"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_ms_tactile_instrument",
+      "style_id": "ind_tactile_instrument",
+      "category_id": "ind-hardware",
+      "field_id": "industrial",
+      "label": "Anodized Rotary Synthesizer",
+      "subtitle": "CNC-milled aluminum · color-coded mechanical encoders · crisp detents",
+      "canonical_ref": "Dieter Rams Braun T3 × teenage engineering OP–1",
+      "image_url": null,
+      "credit_line": "Industrial Study — Braun & teenage engineering instrument lineage",
+      "source_url": null,
+      "license_note": "product-screenshot",
+      "alt_text": "Anodized Rotary Synthesizer — CNC-milled aluminum · color-coded mechanical encoders · crisp detents (Dieter Rams Braun T3 × teenage engineering OP–1)",
+      "pair_group_id": "pair_ind_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "braun_te_dial",
+      "palette": [
+        "#E6E4DE",
+        "#151514",
+        "#FF5A36"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.9,
+        "minimal_maximal": -0.55,
+        "functional_expressive": -0.45,
+        "flat_dimensional": 0.6,
+        "system_intuition": -0.88
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "industrial"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_ind_transparent",
+      "style_id": "ind_transparent_tech",
+      "category_id": "ind-hardware",
+      "field_id": "industrial",
+      "label": "Clear Polycarbonate & Exposed PCB",
+      "subtitle": "Visible copper traces, ribbon cables, and honest screws",
+      "canonical_ref": "Nothing Phone / Clear Game Boy / Playdate",
+      "image_url": null,
+      "credit_line": "Industrial Study — Transparent industrial electronics",
+      "source_url": null,
+      "license_note": "product-screenshot",
+      "alt_text": "Clear Polycarbonate & Exposed PCB — Visible copper traces, ribbon cables, and honest screws (Nothing Phone / Clear Game Boy / Playdate)",
+      "pair_group_id": "pair_ind_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "ind_clear_pcb",
+      "palette": [
+        "#111317",
+        "#F3F4F6",
+        "#EF4444"
+      ],
+      "axis_loadings": {
+        "order_chaos": 0.25,
+        "minimal_maximal": 0.6,
+        "classic_contemporary": 0.85,
+        "functional_expressive": 0.65,
+        "flat_dimensional": 0.8
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "industrial"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_ind_fukasawa",
+      "style_id": "ind_quiet_object",
+      "category_id": "ind-hardware",
+      "field_id": "industrial",
+      "label": "Matte Bead-Blasted Monolith",
+      "subtitle": "Zero visible seams · intuitive radius · disappears into daily life",
+      "canonical_ref": "Naoto Fukasawa (MUJI) / Jony Ive Unibody",
+      "image_url": null,
+      "credit_line": "Industrial Study — Super Normal quiet object design",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Matte Bead-Blasted Monolith — Zero visible seams · intuitive radius · disappears into daily life (Naoto Fukasawa (MUJI) / Jony Ive Unibody)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "ind_pebble",
+      "palette": [
+        "#EDEBE6",
+        "#232322",
+        "#9CA3AF"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.85,
+        "minimal_maximal": -0.96,
+        "warm_cold": -0.25,
+        "functional_expressive": -0.65,
         "system_intuition": -0.7
       },
+      "craft_loadings": {},
       "tags": [
-        "rank-eligible"
+        "rank-eligible",
+        "industrial"
       ],
-      "status": "pending"
+      "status": "approved"
     },
     {
-      "id": "plate_gd_constructivist_books",
-      "style_id": "gd_constructivist",
-      "category_id": "gd-posters",
+      "id": "pl_ind_gamer_slop",
+      "style_id": "ind_gamer_slop",
+      "category_id": "ind-hardware",
+      "field_id": "industrial",
+      "label": "Fake Carbon-Fiber RGB Mouse",
+      "subtitle": "19 pointless aggressive vents · rainbow LED dragon logo",
+      "canonical_ref": "Over-Styled Plastic Gadget Anti-Pattern",
       "image_url": null,
-      "credit_line": "Poster: Alexander Rodchenko, Books (Please!…), 1924",
-      "source_url": "https://www.moma.org/collection/works/8399",
-      "license_note": "public-domain",
-      "alt_text": "Constructivist poster, hard diagonals, red and black type calling for books",
-      "axis_loadings": {
-        "order_chaos": 0.5,
-        "classic_contemporary": -0.8,
-        "functional_expressive": 0.9,
-        "literal_abstract": 0.5,
-        "warm_cold": -0.2
-      },
-      "tags": [
-        "exemplar",
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_editorial_print_gd_book_typography",
-      "style_id": "gd_book_typography",
-      "category_id": "gd-editorial-print",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
+      "credit_line": "Diagnostic Foil — Aggressive Fake-Vent Hardware Slop",
       "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A book interior with quiet, impeccably set type, humble margins and nothing competing with the text",
-      "axis_loadings": {
-        "order_chaos": -0.6,
-        "minimal_maximal": -0.5,
-        "warm_cold": 0.3,
-        "functional_expressive": -0.4,
-        "system_intuition": -0.5
-      },
-      "tags": [
-        "rank-eligible"
+      "license_note": "portfolio",
+      "alt_text": "Fake Carbon-Fiber RGB Mouse — 19 pointless aggressive vents · rainbow LED dragon logo (Over-Styled Plastic Gadget Anti-Pattern)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "anti_slop",
+      "specimen_kind": "ind_gamer_slop",
+      "palette": [
+        "#0B0C10",
+        "#22C55E",
+        "#EC4899"
       ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_editorial_print_gd_catalog_design",
-      "style_id": "gd_catalog_design",
-      "category_id": "gd-editorial-print",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A clean catalog layout that lets dense product information breathe through consistent templates",
       "axis_loadings": {
-        "order_chaos": -0.5,
-        "minimal_maximal": -0.3,
-        "warm_cold": 0.3,
-        "functional_expressive": -0.3,
-        "system_intuition": -0.4
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_editorial_print_gd_magazine_layout",
-      "style_id": "gd_magazine_layout",
-      "category_id": "gd-editorial-print",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A magazine spread with a confident grid, pull quotes, layered imagery and editorial flair",
-      "axis_loadings": {
-        "order_chaos": -0.4,
-        "functional_expressive": 0.5,
-        "minimal_maximal": -0.3,
+        "order_chaos": 0.75,
+        "minimal_maximal": 0.9,
         "classic_contemporary": 0.5,
-        "flat_dimensional": 0.3
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_editorial_print_gd_technical_diagram",
-      "style_id": "gd_technical_diagram",
-      "category_id": "gd-editorial-print",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A technical diagram with fine precise lines, annotations and exploded detail explaining how something works",
-      "axis_loadings": {
-        "order_chaos": -0.7,
-        "minimal_maximal": -0.3,
-        "warm_cold": -0.3,
-        "functional_expressive": -0.6,
-        "system_intuition": -0.6
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_editorial_print_gd_wayfinding_system",
-      "style_id": "gd_wayfinding_system",
-      "category_id": "gd-editorial-print",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A wayfinding system of directional signage using strong pictograms, arrows and high legibility at a distance",
-      "axis_loadings": {
-        "order_chaos": -0.9,
-        "minimal_maximal": -0.4,
-        "warm_cold": 0.2,
-        "functional_expressive": -0.5,
-        "system_intuition": -0.8
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_illustration_gd_3d_illustration",
-      "style_id": "gd_3d_illustration",
-      "category_id": "gd-illustration",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A dimensional 3D illustration with rendered lighting, smooth materials and playful perspective",
-      "axis_loadings": {
-        "flat_dimensional": 0.9,
-        "minimal_maximal": 0.4,
-        "classic_contemporary": 0.7,
-        "functional_expressive": 0.5
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_illustration_gd_character_cartoon",
-      "style_id": "gd_character_cartoon",
-      "category_id": "gd-illustration",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A cartoon character illustration with exaggerated features, lively poses and expressive linework",
-      "axis_loadings": {
-        "functional_expressive": 0.8,
-        "warm_cold": 0.7,
-        "order_chaos": 0.4,
-        "minimal_maximal": 0.4,
-        "literal_abstract": 0.5
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_illustration_gd_collage_poster",
-      "style_id": "gd_collage_poster",
-      "category_id": "gd-illustration",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A collage poster layering cut-out photographs, textures and type into a rhythmic assembled whole",
-      "axis_loadings": {
-        "order_chaos": 0.6,
-        "minimal_maximal": 0.5,
-        "functional_expressive": 0.8,
-        "warm_cold": 0.5,
-        "literal_abstract": 0.6
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_illustration_gd_flat_vector",
-      "style_id": "gd_flat_vector",
-      "category_id": "gd-illustration",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A flat vector illustration with crisp solid shapes, no gradients and bold unmodulated color",
-      "axis_loadings": {
-        "flat_dimensional": -0.8,
-        "minimal_maximal": -0.4,
-        "warm_cold": 0.5,
-        "functional_expressive": 0.3,
-        "order_chaos": -0.3
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_illustration_gd_geometric_abstract",
-      "style_id": "gd_geometric_abstract",
-      "category_id": "gd-illustration",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A geometric abstract composition of reduced shapes and fields, more about form than subject",
-      "axis_loadings": {
-        "literal_abstract": 0.8,
-        "order_chaos": -0.4,
-        "minimal_maximal": -0.3,
-        "flat_dimensional": -0.2,
-        "system_intuition": -0.5
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_packaging_gd_artisan_packaging",
-      "style_id": "gd_artisan_packaging",
-      "category_id": "gd-packaging",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "Crafted packaging with natural papers, soft tactile surfaces and small human details",
-      "axis_loadings": {
-        "warm_cold": 0.8,
-        "functional_expressive": 0.4,
-        "minimal_maximal": -0.2,
-        "classic_contemporary": -0.3
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_packaging_gd_label_systems",
-      "style_id": "gd_label_systems",
-      "category_id": "gd-packaging",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A systematic label design applying a strict template of type and color across a family of products",
-      "axis_loadings": {
-        "order_chaos": -0.6,
-        "minimal_maximal": -0.4,
-        "warm_cold": 0.4,
-        "functional_expressive": -0.4,
-        "system_intuition": -0.6
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_packaging_gd_naive_folk",
-      "style_id": "gd_naive_folk",
-      "category_id": "gd-packaging",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A naive folk-art illustration with flat folk motifs, hand-painted texture and vivid folk color",
-      "axis_loadings": {
-        "warm_cold": 0.9,
-        "functional_expressive": 0.7,
-        "order_chaos": 0.5,
-        "minimal_maximal": 0.4,
-        "classic_contemporary": -0.5
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_packaging_gd_packaging_minimal",
-      "style_id": "gd_packaging_minimal",
-      "category_id": "gd-packaging",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "Minimal packaging with a single color block, one line of type and vast blank surface",
-      "axis_loadings": {
-        "minimal_maximal": -0.9,
-        "order_chaos": -0.6,
-        "functional_expressive": -0.5,
-        "warm_cold": 0.3,
-        "flat_dimensional": -0.3
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_posters_gd_bauhaus",
-      "style_id": "gd_bauhaus",
-      "category_id": "gd-posters",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "Bauhaus composition with primary-color geometric shapes, diagonal energy and industrial-modernist type",
-      "axis_loadings": {
-        "order_chaos": -0.5,
-        "minimal_maximal": -0.4,
-        "classic_contemporary": 0.7,
         "functional_expressive": 0.6,
-        "warm_cold": 0.4,
-        "literal_abstract": 0.5
+        "warm_cold": 0.6
       },
+      "craft_loadings": {},
       "tags": [
-        "rank-eligible"
+        "rank-eligible",
+        "industrial",
+        "anti-slop"
       ],
-      "status": "pending"
+      "status": "approved"
     },
     {
-      "id": "plate_gd_posters_gd_maximalist_poster",
-      "style_id": "gd_maximalist_poster",
-      "category_id": "gd-posters",
+      "id": "pl_ind_eames",
+      "style_id": "ind_molded_plywood",
+      "category_id": "ind-furniture",
+      "field_id": "industrial",
+      "label": "Bent Walnut & Saddle Leather",
+      "subtitle": "Compound organic wood curves · warm patina · human ergonomics",
+      "canonical_ref": "Charles & Ray Eames / Hans Wegner",
       "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
+      "credit_line": "Historical Lineage — Mid-century molded plywood & leather",
       "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A maximalist poster crammed edge-to-edge with many layers, colors and overlapping elements and no breathing room",
-      "axis_loadings": {
-        "minimal_maximal": 0.95,
-        "order_chaos": 0.6,
-        "functional_expressive": 0.8,
-        "warm_cold": 0.5,
-        "flat_dimensional": 0.4
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_posters_gd_minimalist_conceptual",
-      "style_id": "gd_minimalist_conceptual",
-      "category_id": "gd-posters",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A conceptual poster reduced to a single powerful idea and tiny formal gesture on a near-empty background",
-      "axis_loadings": {
-        "minimal_maximal": -0.9,
-        "order_chaos": -0.5,
-        "functional_expressive": 0.3,
-        "literal_abstract": 0.7,
-        "system_intuition": -0.3
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_posters_gd_psychedelic",
-      "style_id": "gd_psychedelic",
-      "category_id": "gd-posters",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A flowing, liquid psychedelic poster with swirling warped type, vibrating high-chroma color and dense ornament",
-      "axis_loadings": {
-        "order_chaos": 0.9,
-        "warm_cold": 0.8,
-        "functional_expressive": 0.8,
-        "minimal_maximal": 0.7,
-        "literal_abstract": 0.6,
-        "classic_contemporary": -0.6
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_posters_gd_punk_zine",
-      "style_id": "gd_punk_zine",
-      "category_id": "gd-posters",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A cut-and-paste punk zine spread with torn collaged type, photocopy texture, staples and raw black ink",
-      "axis_loadings": {
-        "order_chaos": 0.9,
-        "minimal_maximal": 0.7,
-        "functional_expressive": 0.9,
-        "warm_cold": 0.3,
-        "literal_abstract": 0.4,
-        "classic_contemporary": -0.7
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_gd_swiss_beethoven",
-      "style_id": "gd_swiss_intl",
-      "category_id": "gd-posters",
-      "image_url": null,
-      "credit_line": "Poster: Josef Müller-Brockmann, Beethoven, 1955",
-      "source_url": "https://www.moma.org/collection/works/6765",
       "license_note": "public-domain",
-      "alt_text": "Swiss poster of nested concentric arcs on white, mathematical rhythm",
+      "alt_text": "Bent Walnut & Saddle Leather — Compound organic wood curves · warm patina · human ergonomics (Charles & Ray Eames / Hans Wegner)",
+      "pair_group_id": "pair_ind_2",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "ind_plywood",
+      "palette": [
+        "#2D1B12",
+        "#F2E5D5",
+        "#B45309"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.5,
+        "minimal_maximal": -0.35,
+        "classic_contemporary": -0.85,
+        "warm_cold": -0.92,
+        "flat_dimensional": 0.7
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "industrial"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_ind_bauhaus_tube",
+      "style_id": "ind_tubular_steel",
+      "category_id": "ind-furniture",
+      "field_id": "industrial",
+      "label": "Cantilevered Chrome & Belting",
+      "subtitle": "Continuous cold-bent steel tube floating on air",
+      "canonical_ref": "Marcel Breuer — Wassily / Cesca Chair",
+      "image_url": null,
+      "credit_line": "Historical Lineage — Bauhaus tubular steel furniture",
+      "source_url": null,
+      "license_note": "public-domain",
+      "alt_text": "Cantilevered Chrome & Belting — Continuous cold-bent steel tube floating on air (Marcel Breuer — Wassily / Cesca Chair)",
+      "pair_group_id": "pair_ind_2",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "ind_chrome_tube",
+      "palette": [
+        "#E5E7EB",
+        "#111827",
+        "#2563EB"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.88,
+        "minimal_maximal": -0.75,
+        "classic_contemporary": -0.6,
+        "warm_cold": 0.85,
+        "system_intuition": -0.85
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "industrial"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_ind_mari",
+      "style_id": "ind_autoprogettazione",
+      "category_id": "ind-furniture",
+      "field_id": "industrial",
+      "label": "Rough-Sawn Pine & Hammered Nails",
+      "subtitle": "Open-source timber boards anyone can build in an afternoon",
+      "canonical_ref": "Enzo Mari — Autoprogettazione (1974)",
+      "image_url": null,
+      "credit_line": "Historical Lineage — Enzo Mari democratic DIY timber",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Rough-Sawn Pine & Hammered Nails — Open-source timber boards anyone can build in an afternoon (Enzo Mari — Autoprogettazione (1974))",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "ind_raw_pine",
+      "palette": [
+        "#E8D5B7",
+        "#292118",
+        "#D97706"
+      ],
+      "axis_loadings": {
+        "order_chaos": 0.15,
+        "minimal_maximal": -0.5,
+        "functional_expressive": 0.4,
+        "warm_cold": -0.7,
+        "system_intuition": 0.35
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "industrial"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_ind_resin",
+      "style_id": "ind_cast_resin",
+      "category_id": "ind-furniture",
+      "field_id": "industrial",
+      "label": "Translucent Amber Cast Block",
+      "subtitle": "Light-trapping poured resin · blurred silhouette · gallery object",
+      "canonical_ref": "Sabine Marcelis / Shiro Kuramata",
+      "image_url": null,
+      "credit_line": "Contemporary Study — Cast optical resin object",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Translucent Amber Cast Block — Light-trapping poured resin · blurred silhouette · gallery object (Sabine Marcelis / Shiro Kuramata)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "ind_resin_glow",
+      "palette": [
+        "#451A03",
+        "#FDE68A",
+        "#F97316"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.65,
+        "minimal_maximal": -0.8,
+        "classic_contemporary": 0.9,
+        "functional_expressive": 0.75,
+        "flat_dimensional": 0.92,
+        "literal_abstract": 0.85
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "industrial"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_photo_moriyama",
+      "style_id": "photo_street_grain",
+      "category_id": "photo-lens",
+      "field_id": "photography",
+      "label": "Pushed Tri-X 35mm Street Blur",
+      "subtitle": "Crushed silver blacks · tilted horizon · visceral midnight energy",
+      "canonical_ref": "Daido Moriyama / Provoke Era",
+      "image_url": null,
+      "credit_line": "Photographic Lineage — High-grain 35mm monochrome reportage",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Pushed Tri-X 35mm Street Blur — Crushed silver blacks · tilted horizon · visceral midnight energy (Daido Moriyama / Provoke Era)",
+      "pair_group_id": "pair_photo_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "photo_trix",
+      "palette": [
+        "#0D0D0D",
+        "#EBE9E4",
+        "#737373"
+      ],
+      "axis_loadings": {
+        "order_chaos": 0.92,
+        "minimal_maximal": 0.45,
+        "functional_expressive": 0.95,
+        "warm_cold": 0.25,
+        "system_intuition": 0.95
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "photography"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_photo_sugimoto",
+      "style_id": "photo_horizon_stillness",
+      "category_id": "photo-lens",
+      "field_id": "photography",
+      "label": "Long-Exposure Sea Horizon",
+      "subtitle": "Exact 50/50 horizon split · 3-hour shutter · meditative silver tonalities",
+      "canonical_ref": "Hiroshi Sugimoto — Seascapes",
+      "image_url": null,
+      "credit_line": "Photographic Lineage — Large-format meditative horizon",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Long-Exposure Sea Horizon — Exact 50/50 horizon split · 3-hour shutter · meditative silver tonalities (Hiroshi Sugimoto — Seascapes)",
+      "pair_group_id": "pair_photo_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "photo_seascape",
+      "palette": [
+        "#D6D9DE",
+        "#1E2229",
+        "#64748B"
+      ],
       "axis_loadings": {
         "order_chaos": -0.95,
-        "minimal_maximal": -0.6,
+        "minimal_maximal": -0.98,
+        "functional_expressive": 0.55,
         "warm_cold": 0.7,
-        "functional_expressive": -0.8,
-        "system_intuition": -0.9,
-        "classic_contemporary": -0.4
+        "literal_abstract": 0.9
       },
+      "craft_loadings": {},
       "tags": [
-        "exemplar",
-        "rank-eligible"
+        "rank-eligible",
+        "photography"
       ],
-      "status": "pending"
+      "status": "approved"
     },
     {
-      "id": "plate_gd_typography_gd_concrete_poetry",
-      "style_id": "gd_concrete_poetry",
-      "category_id": "gd-typography",
+      "id": "pl_photo_flash",
+      "style_id": "photo_direct_flash",
+      "category_id": "photo-lens",
+      "field_id": "photography",
+      "label": "Unfiltered On-Camera Strobe",
+      "subtitle": "Hard drop-shadow against wall · hyper-honest skin & fabric texture",
+      "canonical_ref": "Juergen Teller / Wolfgang Tillmans Editorial",
       "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
+      "credit_line": "Photographic Lineage — Raw direct-flash editorial realism",
       "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A concrete-poetry page where the arrangement of words on the page is itself the meaning",
-      "axis_loadings": {
-        "literal_abstract": 0.9,
-        "functional_expressive": 0.7,
-        "order_chaos": 0.4,
-        "minimal_maximal": -0.3,
-        "system_intuition": 0.4
-      },
-      "tags": [
-        "rank-eligible"
+      "license_note": "portfolio",
+      "alt_text": "Unfiltered On-Camera Strobe — Hard drop-shadow against wall · hyper-honest skin & fabric texture (Juergen Teller / Wolfgang Tillmans Editorial)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "photo_flash",
+      "palette": [
+        "#F3ECE1",
+        "#141312",
+        "#EF4444"
       ],
-      "status": "pending"
+      "axis_loadings": {
+        "order_chaos": 0.65,
+        "minimal_maximal": 0.2,
+        "classic_contemporary": 0.7,
+        "functional_expressive": 0.85,
+        "system_intuition": 0.88
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "photography"
+      ],
+      "status": "approved"
     },
     {
-      "id": "plate_gd_typography_gd_editorial_typography",
-      "style_id": "gd_editorial_typography",
-      "category_id": "gd-typography",
+      "id": "pl_photo_hdr_slop",
+      "style_id": "photo_hdr_slop",
+      "category_id": "photo-lens",
+      "field_id": "photography",
+      "label": "Plastic Skin & Teal-Orange HDR",
+      "subtitle": "Crunchy clarity slider at +100 · fake lens flare · uncanny AI pores",
+      "canonical_ref": "Over-Processed Stock / Midjourney v4 Portrait Slop",
       "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
+      "credit_line": "Diagnostic Foil — Over-Cooked HDR / Plastic AI Portrait",
       "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "An editorial spread driven by expressive yet disciplined typography in a clear structure",
+      "license_note": "portfolio",
+      "alt_text": "Plastic Skin & Teal-Orange HDR — Crunchy clarity slider at +100 · fake lens flare · uncanny AI pores (Over-Processed Stock / Midjourney v4 Portrait Slop)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "anti_slop",
+      "specimen_kind": "photo_hdr_slop",
+      "palette": [
+        "#0F2933",
+        "#F97316",
+        "#06B6D4"
+      ],
       "axis_loadings": {
-        "order_chaos": -0.3,
-        "minimal_maximal": -0.5,
-        "functional_expressive": 0.5,
+        "order_chaos": 0.2,
+        "minimal_maximal": 0.8,
         "classic_contemporary": 0.6,
-        "literal_abstract": 0.3
+        "flat_dimensional": 0.85
       },
+      "craft_loadings": {},
       "tags": [
-        "rank-eligible"
+        "rank-eligible",
+        "photography",
+        "anti-slop"
       ],
-      "status": "pending"
+      "status": "approved"
     },
     {
-      "id": "plate_gd_typography_gd_experimental_type",
-      "style_id": "gd_experimental_type",
-      "category_id": "gd-typography",
+      "id": "pl_photo_wkw",
+      "style_id": "photo_neon_tungsten",
+      "category_id": "photo-cinema",
+      "field_id": "photography",
+      "label": "Halation Emerald & Neon Rain",
+      "subtitle": "8fps step-printed motion blur · warm tungsten bleeding into humid green",
+      "canonical_ref": "Christopher Doyle & Wong Kar-wai — Chungking / In the Mood",
       "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
+      "credit_line": "Cinema Study — Anamorphic tungsten & emerald halation",
       "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "An experimental type treatment where the letterforms themselves are distorted, broken, layered or drawn",
+      "license_note": "portfolio",
+      "alt_text": "Halation Emerald & Neon Rain — 8fps step-printed motion blur · warm tungsten bleeding into humid green (Christopher Doyle & Wong Kar-wai — Chungking / In the Mood)",
+      "pair_group_id": "pair_photo_2",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "photo_wkw",
+      "palette": [
+        "#08261E",
+        "#FDE047",
+        "#EF4444"
+      ],
       "axis_loadings": {
-        "functional_expressive": 0.9,
+        "order_chaos": 0.6,
+        "minimal_maximal": 0.55,
+        "functional_expressive": 0.94,
+        "warm_cold": -0.78,
+        "flat_dimensional": 0.8,
+        "system_intuition": 0.9
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "photography"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_photo_kubrick",
+      "style_id": "photo_one_point_symmetry",
+      "category_id": "photo-cinema",
+      "field_id": "photography",
+      "label": "Dead-Center One-Point Perspective",
+      "subtitle": "Locked tripod · architectural corridor symmetry · clinical tension",
+      "canonical_ref": "Stanley Kubrick / Wes Anderson Framing",
+      "image_url": null,
+      "credit_line": "Cinema Study — Strict one-point perspective tableau",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Dead-Center One-Point Perspective — Locked tripod · architectural corridor symmetry · clinical tension (Stanley Kubrick / Wes Anderson Framing)",
+      "pair_group_id": "pair_photo_2",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "photo_symmetry",
+      "palette": [
+        "#F4E4D7",
+        "#1F1916",
+        "#DC2626"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.98,
+        "minimal_maximal": 0.15,
+        "classic_contemporary": -0.45,
+        "system_intuition": -0.95
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "photography"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_photo_kodachrome",
+      "style_id": "photo_american_color",
+      "category_id": "photo-cinema",
+      "field_id": "photography",
+      "label": "Golden-Hour Kodachrome Vernacular",
+      "subtitle": "Cadillac tailfin & diner sign bathed in warm 1973 dye-transfer red",
+      "canonical_ref": "William Eggleston / Stephen Shore",
+      "image_url": null,
+      "credit_line": "Photographic Lineage — New Color Kodachrome vernacular",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Golden-Hour Kodachrome Vernacular — Cadillac tailfin & diner sign bathed in warm 1973 dye-transfer red (William Eggleston / Stephen Shore)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "photo_eggleston",
+      "palette": [
+        "#FCEBD2",
+        "#7F1D1D",
+        "#2563EB"
+      ],
+      "axis_loadings": {
+        "order_chaos": 0.1,
+        "minimal_maximal": -0.2,
+        "classic_contemporary": -0.7,
+        "warm_cold": -0.9,
+        "literal_abstract": -0.5
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "photography"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_photo_still_life",
+      "style_id": "photo_sculptural_still",
+      "category_id": "photo-cinema",
+      "field_id": "photography",
+      "label": "Studio Pedestal Object Study",
+      "subtitle": "Raking directional key light · crisp cast shadow · museum clarity",
+      "canonical_ref": "Irving Penn / Contemporary Luxury Still Life",
+      "image_url": null,
+      "credit_line": "Photographic Lineage — Sculptural studio still life",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Studio Pedestal Object Study — Raking directional key light · crisp cast shadow · museum clarity (Irving Penn / Contemporary Luxury Still Life)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "photo_penn",
+      "palette": [
+        "#EAE6DF",
+        "#141413",
+        "#B45309"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.82,
+        "minimal_maximal": -0.75,
+        "classic_contemporary": -0.55,
+        "flat_dimensional": 0.65,
+        "system_intuition": -0.6
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "photography"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_fash_avant",
+      "style_id": "fash_avant_deconstruct",
+      "category_id": "fash-silhouette",
+      "field_id": "fashion",
+      "label": "Asymmetric Boiled-Wool Volume",
+      "subtitle": "Raw unfinished hems · sculptural monochrome silhouette defying anatomy",
+      "canonical_ref": "Rei Kawakubo (Comme des Garçons) / Yohji Yamamoto",
+      "image_url": null,
+      "credit_line": "Fashion Lineage — Japanese avant-garde architectural drape",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Asymmetric Boiled-Wool Volume — Raw unfinished hems · sculptural monochrome silhouette defying anatomy (Rei Kawakubo (Comme des Garçons) / Yohji Yamamoto)",
+      "pair_group_id": "pair_fash_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "fash_avant",
+      "palette": [
+        "#0E0E10",
+        "#E5E5E0",
+        "#52525B"
+      ],
+      "axis_loadings": {
+        "order_chaos": 0.75,
+        "minimal_maximal": -0.25,
+        "classic_contemporary": 0.55,
+        "functional_expressive": 0.96,
+        "literal_abstract": 0.88,
+        "system_intuition": 0.85
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "fashion"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_fash_quiet",
+      "style_id": "fash_quiet_tailoring",
+      "category_id": "fash-silhouette",
+      "field_id": "fashion",
+      "label": "Unlined Double-Faced Cashmere",
+      "subtitle": "Zero logos · fluid wide trouser break · tonal espresso & bone",
+      "canonical_ref": "Phoebe Philo / The Row / Lemaire",
+      "image_url": null,
+      "credit_line": "Fashion Study — Reductive tonal tailoring & drape",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Unlined Double-Faced Cashmere — Zero logos · fluid wide trouser break · tonal espresso & bone (Phoebe Philo / The Row / Lemaire)",
+      "pair_group_id": "pair_fash_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "fash_quiet",
+      "palette": [
+        "#EFEAE2",
+        "#29231E",
+        "#8C7865"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.8,
+        "minimal_maximal": -0.92,
+        "classic_contemporary": -0.45,
+        "warm_cold": -0.7,
+        "system_intuition": -0.6
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "fashion"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_fash_techwear",
+      "style_id": "fash_technical_shell",
+      "category_id": "fash-silhouette",
+      "field_id": "fashion",
+      "label": "3-Layer Taped Ballistic Shell",
+      "subtitle": "Articulated elbow darts · quick-release Fidlock sling · weatherproof utility",
+      "canonical_ref": "Errolson Hugh (Acronym) / Arc'teryx Veilance",
+      "image_url": null,
+      "credit_line": "Fashion Study — Modular technical outerwear engineering",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "3-Layer Taped Ballistic Shell — Articulated elbow darts · quick-release Fidlock sling · weatherproof utility (Errolson Hugh (Acronym) / Arc'teryx Veilance)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "fash_tech",
+      "palette": [
+        "#14171A",
+        "#D1D5DB",
+        "#10B981"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.85,
+        "minimal_maximal": 0.35,
+        "classic_contemporary": 0.88,
+        "functional_expressive": -0.92,
+        "warm_cold": 0.8,
+        "system_intuition": -0.9
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "fashion"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_fash_logo_slop",
+      "style_id": "fash_logo_slop",
+      "category_id": "fash-silhouette",
+      "field_id": "fashion",
+      "label": "All-Over Monogram Hype Hoodie",
+      "subtitle": "Polyester blend · giant chest graphic + 14 rubberized hype patches",
+      "canonical_ref": "Fast-Fashion Loud Logo Anti-Pattern",
+      "image_url": null,
+      "credit_line": "Diagnostic Foil — Loud Synthetic Logo-Mania Slop",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "All-Over Monogram Hype Hoodie — Polyester blend · giant chest graphic + 14 rubberized hype patches (Fast-Fashion Loud Logo Anti-Pattern)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "anti_slop",
+      "specimen_kind": "fash_slop",
+      "palette": [
+        "#18181B",
+        "#FACC15",
+        "#EF4444"
+      ],
+      "axis_loadings": {
+        "order_chaos": 0.6,
+        "minimal_maximal": 0.92,
+        "classic_contemporary": 0.5,
+        "functional_expressive": 0.45,
+        "literal_abstract": -0.85
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "fashion",
+        "anti-slop"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_fash_boro",
+      "style_id": "fash_indigo_boro",
+      "category_id": "fash-textile",
+      "field_id": "fashion",
+      "label": "Hand-Mended Indigo Sashiko",
+      "subtitle": "Generations of visible running-stitch repair on natural dyed hemp",
+      "canonical_ref": "Japanese Boro Archive / Kapital / Visvim",
+      "image_url": null,
+      "credit_line": "Textile Lineage — Visible sashiko mending & natural indigo",
+      "source_url": null,
+      "license_note": "public-domain",
+      "alt_text": "Hand-Mended Indigo Sashiko — Generations of visible running-stitch repair on natural dyed hemp (Japanese Boro Archive / Kapital / Visvim)",
+      "pair_group_id": "pair_fash_2",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "fash_boro",
+      "palette": [
+        "#172554",
+        "#F1EDE4",
+        "#93C5FD"
+      ],
+      "axis_loadings": {
+        "order_chaos": 0.45,
+        "minimal_maximal": 0.55,
+        "classic_contemporary": -0.9,
+        "warm_cold": -0.85,
+        "flat_dimensional": 0.65,
+        "system_intuition": 0.7
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "fashion"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_fash_pleats",
+      "style_id": "fash_origami_pleats",
+      "category_id": "fash-textile",
+      "field_id": "fashion",
+      "label": "Kinetic Heat-Set Origami Pleat",
+      "subtitle": "Flat geometric polygon folds into a bouncy sculptural garment",
+      "canonical_ref": "Issey Miyake — Pleats Please / 132 5.",
+      "image_url": null,
+      "credit_line": "Textile Lineage — Mathematical origami garment engineering",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Kinetic Heat-Set Origami Pleat — Flat geometric polygon folds into a bouncy sculptural garment (Issey Miyake — Pleats Please / 132 5.)",
+      "pair_group_id": "pair_fash_2",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "fash_pleat",
+      "palette": [
+        "#F4F3EF",
+        "#18181B",
+        "#FF5A36"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.78,
+        "minimal_maximal": -0.35,
+        "classic_contemporary": 0.8,
+        "functional_expressive": 0.65,
+        "flat_dimensional": 0.85,
+        "system_intuition": -0.75
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "fashion"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_fash_iris",
+      "style_id": "fash_biomimetic_couture",
+      "category_id": "fash-textile",
+      "field_id": "fashion",
+      "label": "Laser-Cut Organza Exoskeleton",
+      "subtitle": "Translucent gills rippling around the body like liquid bone",
+      "canonical_ref": "Iris van Herpen Haute Couture",
+      "image_url": null,
+      "credit_line": "Couture Study — Biomimetic algorithmic couture",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Laser-Cut Organza Exoskeleton — Translucent gills rippling around the body like liquid bone (Iris van Herpen Haute Couture)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "fash_biomimetic",
+      "palette": [
+        "#0F172A",
+        "#E2E8F0",
+        "#38BDF8"
+      ],
+      "axis_loadings": {
         "order_chaos": 0.5,
-        "literal_abstract": 0.7,
-        "minimal_maximal": 0.3,
-        "classic_contemporary": 0.6
+        "minimal_maximal": 0.85,
+        "classic_contemporary": 0.96,
+        "functional_expressive": 0.98,
+        "flat_dimensional": 0.95,
+        "literal_abstract": 0.85
       },
+      "craft_loadings": {},
       "tags": [
-        "rank-eligible"
+        "rank-eligible",
+        "fashion"
       ],
-      "status": "pending"
+      "status": "approved"
     },
     {
-      "id": "plate_gd_typography_gd_hand_lettered",
-      "style_id": "gd_hand_lettered",
-      "category_id": "gd-typography",
+      "id": "pl_fash_margiela",
+      "style_id": "fash_exposed_lining",
+      "category_id": "fash-textile",
+      "field_id": "fashion",
+      "label": "Four White Tack Stitches & Basting",
+      "subtitle": "Inside-out tailor canvas · numbered cotton tag · anonymity as luxury",
+      "canonical_ref": "Martin Margiela Artisanal",
       "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
+      "credit_line": "Fashion Lineage — Deconstructed sartorial construction",
       "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "Hand-lettered signage or packaging where warm, human-drawn letterforms are the hero",
+      "license_note": "portfolio",
+      "alt_text": "Four White Tack Stitches & Basting — Inside-out tailor canvas · numbered cotton tag · anonymity as luxury (Martin Margiela Artisanal)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "fash_margiela",
+      "palette": [
+        "#F5F4F0",
+        "#1C1B19",
+        "#A1A1AA"
+      ],
       "axis_loadings": {
-        "warm_cold": 0.7,
-        "functional_expressive": 0.6,
-        "order_chaos": 0.4,
-        "classic_contemporary": -0.4,
+        "order_chaos": 0.35,
+        "minimal_maximal": -0.55,
+        "functional_expressive": 0.75,
+        "literal_abstract": 0.7,
         "system_intuition": 0.5
       },
+      "craft_loadings": {},
       "tags": [
-        "rank-eligible"
+        "rank-eligible",
+        "fashion"
       ],
-      "status": "pending"
+      "status": "approved"
     },
     {
-      "id": "plate_gd_typography_gd_kinetic_type",
-      "style_id": "gd_kinetic_type",
-      "category_id": "gd-typography",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "Kinetic or motion-based type where letters dance, skew and overlap with apparent speed",
-      "axis_loadings": {
-        "functional_expressive": 0.9,
-        "classic_contemporary": 0.8,
-        "order_chaos": 0.5,
-        "warm_cold": 0.4
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_aurora_gradient_stripe",
-      "style_id": "ui_aurora_gradient",
-      "category_id": "ui-visual-language",
-      "image_url": null,
-      "credit_line": "Stripe, Inc. (stripe.com)",
-      "source_url": "https://stripe.com",
-      "license_note": "product-screenshot",
-      "alt_text": "Flowing multicolor gradient mesh across a clean white page",
-      "axis_loadings": {
-        "classic_contemporary": 0.9,
-        "flat_dimensional": 0.8,
-        "minimal_maximal": 0.4,
-        "warm_cold": -0.3,
-        "functional_expressive": 0.4
-      },
-      "tags": [
-        "exemplar",
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_brutalist_bloomberg",
-      "style_id": "ui_brutalist_ui",
-      "category_id": "ui-data-interfaces",
-      "image_url": null,
-      "credit_line": "Bloomberg L.P. (Bloomberg Terminal)",
-      "source_url": "https://www.bloomberg.com/professional/",
-      "license_note": "product-screenshot",
-      "alt_text": "Dense amber-on-black terminal grid, raw data panels, no decorative chrome",
-      "axis_loadings": {
-        "minimal_maximal": 0.5,
-        "order_chaos": 0.4,
-        "warm_cold": -0.5,
-        "functional_expressive": 0.3,
-        "flat_dimensional": -0.8
-      },
-      "tags": [
-        "exemplar",
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_dark_editorial_linear",
+      "id": "pl_ui_dark_editorial",
       "style_id": "ui_dark_editorial",
       "category_id": "ui-visual-language",
+      "field_id": "ui-ux",
+      "label": "Velvet Carbon Pro Workspace",
+      "subtitle": "Subtle 1px rim light · instant keyboard flow · zero clutter",
+      "canonical_ref": "Linear / Raycast / Arc",
       "image_url": null,
-      "credit_line": "Linear (linear.app)",
-      "source_url": "https://linear.app",
+      "credit_line": "Interface Study — Contemporary dark pro-tool craft",
+      "source_url": null,
       "license_note": "product-screenshot",
-      "alt_text": "Dark product interface with restrained type, muted surfaces and a single accent color",
-      "axis_loadings": {
-        "minimal_maximal": -0.7,
-        "warm_cold": 0.8,
-        "classic_contemporary": 0.9,
-        "functional_expressive": -0.5,
-        "system_intuition": 0.6
-      },
-      "tags": [
-        "exemplar",
-        "rank-eligible"
+      "alt_text": "Velvet Carbon Pro Workspace — Subtle 1px rim light · instant keyboard flow · zero clutter (Linear / Raycast / Arc)",
+      "pair_group_id": "pair_ui_surface_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "dark_command",
+      "palette": [
+        "#0C0D12",
+        "#F4F3EF",
+        "#FF5A36"
       ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_data_interfaces_ui_b2b_saas",
-      "style_id": "ui_b2b_saas",
-      "category_id": "ui-data-interfaces",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A composed enterprise application with a top nav, left sidebar, dense tables and colored status chips",
-      "axis_loadings": {
-        "order_chaos": -0.6,
-        "system_intuition": -0.7,
-        "minimal_maximal": 0.6,
-        "functional_expressive": -0.5,
-        "flat_dimensional": -0.4
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_data_interfaces_ui_command_palette",
-      "style_id": "ui_command_palette",
-      "category_id": "ui-data-interfaces",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A keyboard-driven interface centered on a searchable command bar with a short flat list of fuzzy-matched actions",
-      "axis_loadings": {
-        "system_intuition": -0.6,
-        "minimal_maximal": -0.5,
-        "order_chaos": -0.5,
-        "functional_expressive": -0.3
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_data_interfaces_ui_dashboard_dense",
-      "style_id": "ui_dashboard_dense",
-      "category_id": "ui-data-interfaces",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A high-density operational screen packing many panels, tables and small charts into a tight information grid",
-      "axis_loadings": {
-        "order_chaos": -0.4,
-        "minimal_maximal": 0.8,
-        "system_intuition": -0.6,
-        "flat_dimensional": -0.5,
-        "functional_expressive": -0.6
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_data_interfaces_ui_data_viz_rich",
-      "style_id": "ui_data_viz_rich",
-      "category_id": "ui-data-interfaces",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A visualization-heavy screen packed with charts, gradients and dense but readable encoded data",
-      "axis_loadings": {
-        "functional_expressive": 0.5,
-        "flat_dimensional": 0.6,
-        "warm_cold": 0.4,
-        "minimal_maximal": 0.3
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_data_interfaces_ui_terminal",
-      "style_id": "ui_terminal",
-      "category_id": "ui-data-interfaces",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A monospaced terminal-style interface on a dark background, raw text output, no icons or chrome",
-      "axis_loadings": {
-        "flat_dimensional": -0.6,
-        "minimal_maximal": 0.5,
-        "warm_cold": -0.4,
-        "functional_expressive": -0.3,
-        "system_intuition": -0.5
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_design_systems_ui_accessibility_first",
-      "style_id": "ui_accessibility_first",
-      "category_id": "ui-design-systems",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A high-contrast, screen-reader-friendly interface prioritizing legibility, labels, focus states and clarity",
-      "axis_loadings": {
-        "functional_expressive": -0.7,
-        "order_chaos": -0.6,
-        "system_intuition": -0.6,
-        "minimal_maximal": -0.4,
-        "warm_cold": -0.5
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_design_systems_ui_system_identity",
-      "style_id": "ui_system_identity",
-      "category_id": "ui-design-systems",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A disciplined, token-driven interface where spacing, type and color follow strict documented rules",
       "axis_loadings": {
         "order_chaos": -0.8,
-        "system_intuition": -0.9,
-        "minimal_maximal": -0.5,
-        "functional_expressive": -0.6
+        "minimal_maximal": -0.65,
+        "classic_contemporary": 0.75,
+        "warm_cold": 0.65,
+        "system_intuition": -0.8
       },
+      "craft_loadings": {},
       "tags": [
-        "rank-eligible"
+        "rank-eligible",
+        "ui-ux"
       ],
-      "status": "pending"
+      "status": "approved"
     },
     {
-      "id": "plate_ui_design_systems_ui_token_driven",
-      "style_id": "ui_token_driven",
-      "category_id": "ui-design-systems",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A design-system component panel showing interfaces assembled entirely from named design tokens",
-      "axis_loadings": {
-        "order_chaos": -0.8,
-        "system_intuition": -0.8,
-        "minimal_maximal": -0.4,
-        "functional_expressive": -0.5
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_design_systems_ui_type_scale_strict",
-      "style_id": "ui_type_scale_strict",
-      "category_id": "ui-design-systems",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A layout where a rigorous typographic scale and baseline grid determine everything; type is the interface",
-      "axis_loadings": {
-        "order_chaos": -0.7,
-        "system_intuition": -0.7,
-        "minimal_maximal": -0.4,
-        "functional_expressive": -0.5
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_emerging_ui_ai_native",
-      "style_id": "ui_ai_native",
-      "category_id": "ui-emerging",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A generative, adaptive interface with chat-like prompts, streaming responses and suggested actions",
-      "axis_loadings": {
-        "classic_contemporary": 0.9,
-        "system_intuition": 0.6,
-        "functional_expressive": 0.5,
-        "order_chaos": 0.3
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_emerging_ui_material_you",
-      "style_id": "ui_material_you",
-      "category_id": "ui-emerging",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A color-extracted, tactile Android-style interface with dynamic tonal palettes and soft ambient shapes",
-      "axis_loadings": {
-        "warm_cold": 0.5,
-        "flat_dimensional": 0.6,
-        "minimal_maximal": 0.2,
-        "classic_contemporary": 0.7
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_emerging_ui_retro_computing",
-      "style_id": "ui_retro_computing",
-      "category_id": "ui-emerging",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A nostalgic interface recalling early computers - scanlines, blocky pixels, beige or phosphor-green palettes",
-      "axis_loadings": {
-        "classic_contemporary": -0.5,
-        "order_chaos": -0.3,
-        "minimal_maximal": 0.5,
-        "warm_cold": -0.4,
-        "flat_dimensional": -0.5
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_emerging_ui_spatial_ui",
-      "style_id": "ui_spatial_ui",
-      "category_id": "ui-emerging",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A spatial interface with depth, layers and perspective, panels floating at different z-heights in 3D space",
-      "axis_loadings": {
-        "classic_contemporary": 0.9,
-        "flat_dimensional": 0.9,
-        "functional_expressive": 0.6,
-        "minimal_maximal": 0.3
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_emerging_ui_typographic_ui",
-      "style_id": "ui_typographic_ui",
-      "category_id": "ui-emerging",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "An interface led primarily by typography, where oversized type sets the hierarchy over imagery and icons",
-      "axis_loadings": {
-        "functional_expressive": 0.6,
-        "minimal_maximal": -0.4,
-        "order_chaos": -0.3,
-        "literal_abstract": 0.4
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_interaction_motion_ui_kinetic_feedback",
-      "style_id": "ui_kinetic_feedback",
-      "category_id": "ui-interaction-motion",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "An interface built around physical motion - inertia, springs, drag and momentum - where every gesture reacts",
-      "axis_loadings": {
-        "functional_expressive": 0.7,
-        "warm_cold": 0.3,
-        "minimal_maximal": 0.2,
-        "system_intuition": 0.5
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_interaction_motion_ui_micro_interactions",
-      "style_id": "ui_micro_interactions",
-      "category_id": "ui-interaction-motion",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A lively interface where buttons, toggles and fields respond with small physical, animated feedback",
-      "axis_loadings": {
-        "system_intuition": 0.6,
-        "functional_expressive": 0.5,
-        "warm_cold": 0.4,
-        "minimal_maximal": -0.2
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_interaction_motion_ui_no_animation",
-      "style_id": "ui_no_animation",
-      "category_id": "ui-interaction-motion",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A still, static interface where nothing animates; state changes are instant and unadorned",
-      "axis_loadings": {
-        "order_chaos": -0.7,
-        "system_intuition": -0.8,
-        "minimal_maximal": -0.5,
-        "functional_expressive": -0.6
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_interaction_motion_ui_playful_physics",
-      "style_id": "ui_playful_physics",
-      "category_id": "ui-interaction-motion",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A whimsical UI with physics-driven elements that bounce, wobble and collide in a playful sandbox",
-      "axis_loadings": {
-        "functional_expressive": 0.8,
-        "warm_cold": 0.6,
-        "order_chaos": 0.5,
-        "minimal_maximal": 0.3
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_interaction_motion_ui_scroll_storytelling",
-      "style_id": "ui_scroll_storytelling",
-      "category_id": "ui-interaction-motion",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A long page that unfolds a narrative as you scroll, with sections morphing, pinning and revealing",
-      "axis_loadings": {
-        "classic_contemporary": 0.9,
-        "functional_expressive": 0.7,
-        "flat_dimensional": 0.6,
-        "order_chaos": 0.3
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_layout_composition_ui_asymmetric",
-      "style_id": "ui_asymmetric",
-      "category_id": "ui-layout-composition",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "Deliberately off-balance layout using asymmetric columns and tensioned whitespace for a dynamic read",
-      "axis_loadings": {
-        "order_chaos": 0.4,
-        "functional_expressive": 0.5,
-        "minimal_maximal": -0.3,
-        "classic_contemporary": 0.6
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_layout_composition_ui_card_heavy",
-      "style_id": "ui_card_heavy",
-      "category_id": "ui-layout-composition",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A surface built almost entirely from stacked rectangular cards with independent shadows and rounded corners",
-      "axis_loadings": {
-        "flat_dimensional": 0.6,
-        "minimal_maximal": 0.5,
-        "order_chaos": -0.3,
-        "system_intuition": -0.3
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_layout_composition_ui_dashboard_dense",
-      "style_id": "ui_dashboard_dense",
-      "category_id": "ui-layout-composition",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A high-density operational screen packing many panels, tables and small charts into a tight information grid",
-      "axis_loadings": {
-        "order_chaos": -0.4,
-        "minimal_maximal": 0.8,
-        "system_intuition": -0.6,
-        "flat_dimensional": -0.5,
-        "functional_expressive": -0.6
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_layout_composition_ui_editorial_web",
-      "style_id": "ui_editorial_web",
-      "category_id": "ui-layout-composition",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A magazine-like web layout with a masthead, crisp headlines, overset columns and refined typography",
-      "axis_loadings": {
-        "classic_contemporary": 0.6,
-        "order_chaos": -0.4,
-        "functional_expressive": 0.5,
-        "flat_dimensional": 0.3
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_layout_composition_ui_fullbleed",
-      "style_id": "ui_fullbleed",
-      "category_id": "ui-layout-composition",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "Edge-to-edge imagery and type filling the entire viewport, no frame or margin containing the content",
-      "axis_loadings": {
-        "minimal_maximal": 0.4,
-        "flat_dimensional": 0.6,
-        "functional_expressive": 0.4,
-        "order_chaos": 0.3
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_layout_composition_ui_grid_strict",
-      "style_id": "ui_grid_strict",
-      "category_id": "ui-layout-composition",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A rigid, mathematically aligned grid of columns and rows; alignment and rhythm are the entire design",
-      "axis_loadings": {
-        "order_chaos": -0.9,
-        "system_intuition": -0.9,
-        "minimal_maximal": -0.5,
-        "flat_dimensional": -0.4
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_layout_composition_ui_split_screen",
-      "style_id": "ui_split_screen",
-      "category_id": "ui-layout-composition",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "Viewport divided into two or more flanking panes that scroll or change together",
-      "axis_loadings": {
-        "order_chaos": -0.2,
-        "system_intuition": -0.4,
-        "minimal_maximal": -0.3,
-        "flat_dimensional": 0.4
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_spacious_minimal_superhuman",
-      "style_id": "ui_spacious_minimal",
-      "category_id": "ui-layout-composition",
-      "image_url": null,
-      "credit_line": "Superhuman (superhuman.com)",
-      "source_url": "https://superhuman.com",
-      "license_note": "product-screenshot",
-      "alt_text": "Extremely sparse interface, few elements per screen, wide whitespace",
-      "axis_loadings": {
-        "minimal_maximal": -0.9,
-        "order_chaos": -0.5,
-        "warm_cold": -0.6,
-        "functional_expressive": -0.6
-      },
-      "tags": [
-        "exemplar"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_visual_language_ui_bento_grid",
-      "style_id": "ui_bento_grid",
+      "id": "pl_ui_aurora_slop",
+      "style_id": "ui_aurora_slop",
       "category_id": "ui-visual-language",
+      "field_id": "ui-ux",
+      "label": "Glowing Purple AI SaaS Template",
+      "subtitle": "Sparkle badges · neon violet blur · generic centered slogan",
+      "canonical_ref": "Generic AI Landing Slop",
       "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
+      "credit_line": "Diagnostic Foil — Purple AI Template Anti-Pattern",
       "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A tidy grid of rounded cards of varied sizes, like a bento box, each holding one focused module",
-      "axis_loadings": {
-        "order_chaos": -0.6,
-        "minimal_maximal": -0.3,
-        "flat_dimensional": 0.4,
-        "classic_contemporary": 0.6,
-        "system_intuition": -0.5
-      },
-      "tags": [
-        "rank-eligible"
+      "license_note": "portfolio",
+      "alt_text": "Glowing Purple AI SaaS Template — Sparkle badges · neon violet blur · generic centered slogan (Generic AI Landing Slop)",
+      "pair_group_id": "pair_ui_surface_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "anti_slop",
+      "specimen_kind": "purple_slop",
+      "palette": [
+        "#190B33",
+        "#A855F7",
+        "#22D3EE"
       ],
-      "status": "pending"
+      "axis_loadings": {
+        "order_chaos": 0.35,
+        "minimal_maximal": 0.7,
+        "classic_contemporary": 0.9,
+        "flat_dimensional": 0.85
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "ui-ux",
+        "anti-slop"
+      ],
+      "status": "approved"
     },
     {
-      "id": "plate_ui_visual_language_ui_brutalist_ui",
-      "style_id": "ui_brutalist_ui",
-      "category_id": "ui-visual-language",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "Raw, unpolished web UI - thick borders, default system type, harsh color blocks and a deliberately unfinished look",
-      "axis_loadings": {
-        "order_chaos": 0.5,
-        "minimal_maximal": 0.5,
-        "flat_dimensional": -0.7,
-        "functional_expressive": 0.4,
-        "literal_abstract": -0.6
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_visual_language_ui_claymorphism",
-      "style_id": "ui_claymorphism",
-      "category_id": "ui-visual-language",
-      "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
-      "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "Playful chunky 3D clay-like UI elements with soft blob shadows and pastel fills",
-      "axis_loadings": {
-        "warm_cold": 0.6,
-        "flat_dimensional": 0.7,
-        "functional_expressive": 0.3,
-        "minimal_maximal": -0.2
-      },
-      "tags": [
-        "rank-eligible"
-      ],
-      "status": "pending"
-    },
-    {
-      "id": "plate_ui_visual_language_ui_flat_minimal",
+      "id": "pl_ui_flat_minimal",
       "style_id": "ui_flat_minimal",
       "category_id": "ui-visual-language",
+      "field_id": "ui-ux",
+      "label": "Quiet Daylight Reading Canvas",
+      "subtitle": "Pure typography & breathing room · chrome disappears while you work",
+      "canonical_ref": "iA Writer / Things 3 / Read.cv",
       "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
+      "credit_line": "Interface Study — Calm document-led software",
       "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "A flat, cropped-simple interface with straight edges, restrained palette and generous whitespace; nothing decorative",
-      "axis_loadings": {
-        "minimal_maximal": -0.9,
-        "order_chaos": -0.8,
-        "flat_dimensional": -0.7,
-        "functional_expressive": -0.5,
-        "system_intuition": -0.4
-      },
-      "tags": [
-        "rank-eligible"
+      "license_note": "product-screenshot",
+      "alt_text": "Quiet Daylight Reading Canvas — Pure typography & breathing room · chrome disappears while you work (iA Writer / Things 3 / Read.cv)",
+      "pair_group_id": "pair_ui_surface_2",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "surgical_minimal",
+      "palette": [
+        "#F7F6F2",
+        "#141413",
+        "#8C8980"
       ],
-      "status": "pending"
+      "axis_loadings": {
+        "order_chaos": -0.85,
+        "minimal_maximal": -0.95,
+        "functional_expressive": -0.65,
+        "flat_dimensional": -0.95
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "ui-ux"
+      ],
+      "status": "approved"
     },
     {
-      "id": "plate_ui_visual_language_ui_glassmorphism",
+      "id": "pl_ui_glassmorphism",
       "style_id": "ui_glassmorphism",
       "category_id": "ui-visual-language",
+      "field_id": "ui-ux",
+      "label": "Refractive Liquid-Glass Sheet",
+      "subtitle": "Optical lens refraction · soft specular edge · physical depth",
+      "canonical_ref": "iOS 26 Liquid Glass / visionOS",
       "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
+      "credit_line": "Interface Study — Optical translucent material layers",
       "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "Frosted translucent panels layered over a soft colorful glow, with blurred backdrops and floating cards",
-      "axis_loadings": {
-        "flat_dimensional": 0.6,
-        "warm_cold": 0.5,
-        "classic_contemporary": 0.7,
-        "minimal_maximal": -0.3,
-        "system_intuition": 0.4
-      },
-      "tags": [
-        "rank-eligible"
+      "license_note": "product-screenshot",
+      "alt_text": "Refractive Liquid-Glass Sheet — Optical lens refraction · soft specular edge · physical depth (iOS 26 Liquid Glass / visionOS)",
+      "pair_group_id": "pair_ui_surface_2",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "frosted_glass",
+      "palette": [
+        "#DCE4EC",
+        "#1E293B",
+        "#3B82F6"
       ],
-      "status": "pending"
+      "axis_loadings": {
+        "order_chaos": -0.35,
+        "classic_contemporary": 0.85,
+        "flat_dimensional": 0.92
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "ui-ux"
+      ],
+      "status": "approved"
     },
     {
-      "id": "plate_ui_visual_language_ui_neumorphism",
-      "style_id": "ui_neumorphism",
-      "category_id": "ui-visual-language",
+      "id": "pl_ui_dashboard_dense",
+      "style_id": "ui_dashboard_dense",
+      "category_id": "ui-data-interfaces",
+      "field_id": "ui-ux",
+      "label": "High-Speed Live Data Console",
+      "subtitle": "Aligned tabular numbers · everything visible at once · zero scrolling",
+      "canonical_ref": "Bloomberg / Flighty Pro Telemetry",
       "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
+      "credit_line": "Interface Study — High-density information cockpit",
       "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "Soft extruded UI where cards appear pressed into a single-tone background, using gentle shadows and highlights",
-      "axis_loadings": {
-        "flat_dimensional": 0.7,
-        "warm_cold": 0.3,
-        "minimal_maximal": -0.4,
-        "classic_contemporary": 0.5
-      },
-      "tags": [
-        "rank-eligible"
+      "license_note": "product-screenshot",
+      "alt_text": "High-Speed Live Data Console — Aligned tabular numbers · everything visible at once · zero scrolling (Bloomberg / Flighty Pro Telemetry)",
+      "pair_group_id": "pair_ui_data_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "dense_telemetry",
+      "palette": [
+        "#090A0E",
+        "#E2E8F0",
+        "#F59E0B"
       ],
-      "status": "pending"
+      "axis_loadings": {
+        "order_chaos": -0.85,
+        "minimal_maximal": 0.85,
+        "functional_expressive": -0.95,
+        "warm_cold": 0.85,
+        "system_intuition": -0.95
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "ui-ux"
+      ],
+      "status": "approved"
     },
     {
-      "id": "plate_ui_visual_language_ui_skeuomorphic",
-      "style_id": "ui_skeuomorphic",
-      "category_id": "ui-visual-language",
+      "id": "pl_ui_pastel_soft",
+      "style_id": "ui_pastel_soft",
+      "category_id": "ui-data-interfaces",
+      "field_id": "ui-ux",
+      "label": "Playful Tactile Consumer App",
+      "subtitle": "Warm sticker cards · bouncy thumb pills · joyful human tone",
+      "canonical_ref": "Poolsuite / Partiful / (Not Boring) Apps",
       "image_url": null,
-      "credit_line": "Pending curation — see CREDITS.md",
+      "credit_line": "Interface Study — Joyful tactile consumer mobile design",
       "source_url": null,
-      "license_note": "to-curate",
-      "alt_text": "Interfaces textured to imitate physical objects - leather, metal, stitching, glossy buttons and real-world affordances",
+      "license_note": "product-screenshot",
+      "alt_text": "Playful Tactile Consumer App — Warm sticker cards · bouncy thumb pills · joyful human tone (Poolsuite / Partiful / (Not Boring) Apps)",
+      "pair_group_id": "pair_ui_data_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "soft_pastel",
+      "palette": [
+        "#F6EFF4",
+        "#2B2129",
+        "#FF5A36"
+      ],
       "axis_loadings": {
+        "order_chaos": 0.15,
+        "minimal_maximal": -0.25,
+        "functional_expressive": 0.7,
+        "warm_cold": -0.88,
+        "system_intuition": 0.55
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "ui-ux"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_ui_bento_grid",
+      "style_id": "ui_bento_grid",
+      "category_id": "ui-data-interfaces",
+      "field_id": "ui-ux",
+      "label": "Concentric Modular Summary",
+      "subtitle": "Variable-scale widgets locked in harmonious nested corner radii",
+      "canonical_ref": "Apple Summary Boards / Amie",
+      "image_url": null,
+      "credit_line": "Interface Study — Multi-scale modular summary layout",
+      "source_url": null,
+      "license_note": "product-screenshot",
+      "alt_text": "Concentric Modular Summary — Variable-scale widgets locked in harmonious nested corner radii (Apple Summary Boards / Amie)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "bento_modular",
+      "palette": [
+        "#14151A",
+        "#F5F3EE",
+        "#FF5A36"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.6,
+        "minimal_maximal": 0.35,
+        "classic_contemporary": 0.8,
+        "system_intuition": -0.55
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "ui-ux"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_ui_brutalist_ui",
+      "style_id": "ui_brutalist_ui",
+      "category_id": "ui-data-interfaces",
+      "field_id": "ui-ux",
+      "label": "Raw Unvarnished Web Index",
+      "subtitle": "Exposed structure · zero polish · content hits you straight on",
+      "canonical_ref": "Are.na / Craigslist / Anti-Design Web",
+      "image_url": null,
+      "credit_line": "Interface Study — Honest structural hypertext",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Raw Unvarnished Web Index — Exposed structure · zero polish · content hits you straight on (Are.na / Craigslist / Anti-Design Web)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "brutalist_web",
+      "palette": [
+        "#EFECE4",
+        "#0D0D0D",
+        "#0038FF"
+      ],
+      "axis_loadings": {
+        "order_chaos": 0.45,
+        "minimal_maximal": 0.3,
+        "functional_expressive": 0.5,
+        "flat_dimensional": -0.98
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "ui-ux"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_craft_density_telemetry",
+      "style_id": "craft_density_telemetry",
+      "category_id": "ui-craft-density",
+      "field_id": "ui-ux",
+      "label": "Tight Cockpit (4px)",
+      "subtitle": "Maximum rows on screen · zero wasted pixels",
+      "canonical_ref": "Spacing Tuner · 95% Dense",
+      "image_url": null,
+      "credit_line": "Design Blend Live Tuner — 4px Rhythm",
+      "source_url": null,
+      "license_note": "product-screenshot",
+      "alt_text": "Tight Cockpit (4px) — Maximum rows on screen · zero wasted pixels (Spacing Tuner · 95% Dense)",
+      "pair_group_id": null,
+      "craft_dimension": "density",
+      "diagnostic_kind": "craft_variant",
+      "specimen_kind": "craft_density_95",
+      "palette": [
+        "#121318",
+        "#F4F2EC",
+        "#FF5A36"
+      ],
+      "axis_loadings": {
+        "minimal_maximal": 0.85,
+        "functional_expressive": -0.75
+      },
+      "craft_loadings": {
+        "density": 0.95
+      },
+      "tags": [
+        "rank-eligible",
+        "ui-ux",
+        "craft-strip"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_craft_density_operator",
+      "style_id": "craft_density_operator",
+      "category_id": "ui-craft-density",
+      "field_id": "ui-ux",
+      "label": "Crisp Pro Tool (8px)",
+      "subtitle": "Snappy studio density with clear visual scanlines",
+      "canonical_ref": "Spacing Tuner · 68% Crisp",
+      "image_url": null,
+      "credit_line": "Design Blend Live Tuner — 8px Rhythm",
+      "source_url": null,
+      "license_note": "product-screenshot",
+      "alt_text": "Crisp Pro Tool (8px) — Snappy studio density with clear visual scanlines (Spacing Tuner · 68% Crisp)",
+      "pair_group_id": null,
+      "craft_dimension": "density",
+      "diagnostic_kind": "craft_variant",
+      "specimen_kind": "craft_density_68",
+      "palette": [
+        "#121318",
+        "#F4F2EC",
+        "#FF5A36"
+      ],
+      "axis_loadings": {
+        "minimal_maximal": 0.3,
+        "functional_expressive": -0.5
+      },
+      "craft_loadings": {
+        "density": 0.4
+      },
+      "tags": [
+        "rank-eligible",
+        "ui-ux",
+        "craft-strip"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_craft_density_balanced",
+      "style_id": "craft_density_balanced",
+      "category_id": "ui-craft-density",
+      "field_id": "ui-ux",
+      "label": "Balanced Airy (16px)",
+      "subtitle": "Relaxed everyday breathing room around every item",
+      "canonical_ref": "Spacing Tuner · 35% Open",
+      "image_url": null,
+      "credit_line": "Design Blend Live Tuner — 16px Rhythm",
+      "source_url": null,
+      "license_note": "product-screenshot",
+      "alt_text": "Balanced Airy (16px) — Relaxed everyday breathing room around every item (Spacing Tuner · 35% Open)",
+      "pair_group_id": null,
+      "craft_dimension": "density",
+      "diagnostic_kind": "craft_variant",
+      "specimen_kind": "craft_density_35",
+      "palette": [
+        "#F6F4EF",
+        "#141412",
+        "#FF5A36"
+      ],
+      "axis_loadings": {
+        "minimal_maximal": -0.45
+      },
+      "craft_loadings": {
+        "density": -0.35
+      },
+      "tags": [
+        "rank-eligible",
+        "ui-ux",
+        "craft-strip"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_craft_density_gallery",
+      "style_id": "craft_density_gallery",
+      "category_id": "ui-craft-density",
+      "field_id": "ui-ux",
+      "label": "Wide Gallery Silence (32px)",
+      "subtitle": "Luxury negative space — only the essential remains",
+      "canonical_ref": "Spacing Tuner · 08% Spacious",
+      "image_url": null,
+      "credit_line": "Design Blend Live Tuner — 32px Rhythm",
+      "source_url": null,
+      "license_note": "product-screenshot",
+      "alt_text": "Wide Gallery Silence (32px) — Luxury negative space — only the essential remains (Spacing Tuner · 08% Spacious)",
+      "pair_group_id": null,
+      "craft_dimension": "density",
+      "diagnostic_kind": "craft_variant",
+      "specimen_kind": "craft_density_08",
+      "palette": [
+        "#F6F4EF",
+        "#141412",
+        "#FF5A36"
+      ],
+      "axis_loadings": {
+        "minimal_maximal": -0.92,
+        "functional_expressive": 0.25
+      },
+      "craft_loadings": {
+        "density": -0.92
+      },
+      "tags": [
+        "rank-eligible",
+        "ui-ux",
+        "craft-strip"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_gd_swiss_intl",
+      "style_id": "gd_swiss_intl",
+      "category_id": "gd-posters",
+      "field_id": "graphic",
+      "label": "Swiss Concert Grid Poster",
+      "subtitle": "Geometric arcs locked to an exact modular column system",
+      "canonical_ref": "Josef Müller-Brockmann — Tonhalle Zürich",
+      "image_url": null,
+      "credit_line": "Historical Lineage — Swiss International Style",
+      "source_url": null,
+      "license_note": "public-domain",
+      "alt_text": "Swiss Concert Grid Poster — Geometric arcs locked to an exact modular column system (Josef Müller-Brockmann — Tonhalle Zürich)",
+      "pair_group_id": "pair_gd_poster_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "swiss_poster",
+      "palette": [
+        "#F1EDE4",
+        "#121211",
+        "#D9381E"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.95,
+        "minimal_maximal": -0.55,
+        "classic_contemporary": -0.75,
+        "warm_cold": 0.65,
+        "system_intuition": -0.95
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "graphic"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_gd_punk_zine",
+      "style_id": "gd_punk_zine",
+      "category_id": "gd-posters",
+      "field_id": "graphic",
+      "label": "Cut-and-Paste Xerox Zine",
+      "subtitle": "Photocopier grit · torn paper edges · raw underground urgency",
+      "canonical_ref": "Jamie Reid / DIY Punk Press",
+      "image_url": null,
+      "credit_line": "Historical Lineage — Underground photocopy zine tradition",
+      "source_url": null,
+      "license_note": "public-domain",
+      "alt_text": "Cut-and-Paste Xerox Zine — Photocopier grit · torn paper edges · raw underground urgency (Jamie Reid / DIY Punk Press)",
+      "pair_group_id": "pair_gd_poster_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "punk_zine",
+      "palette": [
+        "#111110",
+        "#F3E600",
+        "#E11D48"
+      ],
+      "axis_loadings": {
+        "order_chaos": 0.96,
+        "minimal_maximal": 0.75,
+        "functional_expressive": 0.92,
+        "system_intuition": 0.95
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "graphic"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_gd_japanese_poster",
+      "style_id": "gd_japanese_poster",
+      "category_id": "gd-posters",
+      "field_id": "graphic",
+      "label": "Bold Planar Geometry & Ma",
+      "subtitle": "Pure flat circles and triangles balanced in poetic tension",
+      "canonical_ref": "Ikko Tanaka — Nihon Buyo",
+      "image_url": null,
+      "credit_line": "Historical Lineage — Japanese planar graphic synthesis",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Bold Planar Geometry & Ma — Pure flat circles and triangles balanced in poetic tension (Ikko Tanaka — Nihon Buyo)",
+      "pair_group_id": "pair_gd_poster_2",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "japanese_ma",
+      "palette": [
+        "#F3EFE6",
+        "#161514",
+        "#C83228"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.75,
+        "minimal_maximal": -0.7,
+        "functional_expressive": 0.45,
+        "flat_dimensional": -0.95,
+        "literal_abstract": 0.8
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "graphic"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_gd_maximalist_poster",
+      "style_id": "gd_maximalist_poster",
+      "category_id": "gd-posters",
+      "field_id": "graphic",
+      "label": "Wall-to-Wall Woodblock Shout",
+      "subtitle": "Interlocking angled headlines filling every millimeter with rhythm",
+      "canonical_ref": "Paula Scher — Public Theater Posters",
+      "image_url": null,
+      "credit_line": "Graphic Study — Polyphonic typographic maximalism",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Wall-to-Wall Woodblock Shout — Interlocking angled headlines filling every millimeter with rhythm (Paula Scher — Public Theater Posters)",
+      "pair_group_id": "pair_gd_poster_2",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "maximal_scher",
+      "palette": [
+        "#FFD100",
+        "#111111",
+        "#0057B8"
+      ],
+      "axis_loadings": {
+        "order_chaos": 0.65,
+        "minimal_maximal": 0.96,
+        "functional_expressive": 0.85,
+        "warm_cold": -0.55
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "graphic"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_gd_book_typography",
+      "style_id": "gd_book_typography",
+      "category_id": "gd-editorial-print",
+      "field_id": "graphic",
+      "label": "Timeless Hardcover Book Spread",
+      "subtitle": "Golden-ratio margins, crisp serif text, and quiet running notes",
+      "canonical_ref": "Jan Tschichold / Stripe Press",
+      "image_url": null,
+      "credit_line": "Historical Lineage — Classical book architecture",
+      "source_url": null,
+      "license_note": "public-domain",
+      "alt_text": "Timeless Hardcover Book Spread — Golden-ratio margins, crisp serif text, and quiet running notes (Jan Tschichold / Stripe Press)",
+      "pair_group_id": "pair_gd_edit_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "book_canon",
+      "palette": [
+        "#F7F3E8",
+        "#1E1C18",
+        "#8B261D"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.88,
+        "minimal_maximal": -0.6,
+        "classic_contemporary": -0.95,
+        "warm_cold": -0.65,
+        "system_intuition": -0.8
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "graphic"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_gd_editorial_expressive",
+      "style_id": "gd_editorial_expressive",
+      "category_id": "gd-editorial-print",
+      "field_id": "graphic",
+      "label": "Rule-Breaking Magazine Spread",
+      "subtitle": "Overlapping crops and sheared headlines driven by pure instinct",
+      "canonical_ref": "David Carson — Ray Gun",
+      "image_url": null,
+      "credit_line": "Graphic Lineage — Expressive anti-grid editorial",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Rule-Breaking Magazine Spread — Overlapping crops and sheared headlines driven by pure instinct (David Carson — Ray Gun)",
+      "pair_group_id": "pair_gd_edit_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "raygun_spread",
+      "palette": [
+        "#EAE6DF",
+        "#121212",
+        "#D9381E"
+      ],
+      "axis_loadings": {
+        "order_chaos": 0.92,
+        "minimal_maximal": 0.65,
+        "functional_expressive": 0.95,
+        "system_intuition": 0.95
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "graphic"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_gd_risograph",
+      "style_id": "gd_risograph",
+      "category_id": "gd-editorial-print",
+      "field_id": "graphic",
+      "label": "Two-Color Soy Risograph Print",
+      "subtitle": "Fluorescent pink overlapping cobalt blue with warm paper grain",
+      "canonical_ref": "Independent Risograph Press",
+      "image_url": null,
+      "credit_line": "Print Study — Two-drum risograph overprint",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Two-Color Soy Risograph Print — Fluorescent pink overlapping cobalt blue with warm paper grain (Independent Risograph Press)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "risograph_grain",
+      "palette": [
+        "#F5F0E6",
+        "#1D4ED8",
+        "#F43F5E"
+      ],
+      "axis_loadings": {
+        "order_chaos": 0.45,
+        "functional_expressive": 0.8,
+        "warm_cold": -0.75,
+        "system_intuition": 0.75
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "graphic"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_gd_packaging_minimal",
+      "style_id": "gd_packaging_minimal",
+      "category_id": "gd-editorial-print",
+      "field_id": "graphic",
+      "label": "Apothecary Cotton Bottle Label",
+      "subtitle": "Structured batch specs on textured cream paper — zero ornament",
+      "canonical_ref": "Aesop / Le Labo",
+      "image_url": null,
+      "credit_line": "Packaging Study — Typographic apothecary restraint",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Apothecary Cotton Bottle Label — Structured batch specs on textured cream paper — zero ornament (Aesop / Le Labo)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "apothecary_label",
+      "palette": [
+        "#F3EBDD",
+        "#191715",
+        "#5C3A21"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.85,
+        "minimal_maximal": -0.85,
+        "warm_cold": -0.65,
+        "system_intuition": -0.8
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "graphic"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_bt_geometric_mark",
+      "style_id": "gd_geometric_mark",
+      "category_id": "bt-identity",
+      "field_id": "brand-type",
+      "label": "Pure Geometric Symbol",
+      "subtitle": "Built from circles and 45° cuts — unmistakable at 16px or 16ft",
+      "canonical_ref": "Paul Rand / Otl Aicher",
+      "image_url": null,
+      "credit_line": "Brand Lineage — Modernist reductive symbol",
+      "source_url": null,
+      "license_note": "public-domain",
+      "alt_text": "Pure Geometric Symbol — Built from circles and 45° cuts — unmistakable at 16px or 16ft (Paul Rand / Otl Aicher)",
+      "pair_group_id": "pair_bt_brand_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "geometric_symbol",
+      "palette": [
+        "#F5F3EE",
+        "#111110",
+        "#FF5A36"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.95,
+        "minimal_maximal": -0.9,
         "classic_contemporary": -0.6,
-        "flat_dimensional": 0.8,
-        "functional_expressive": -0.4,
-        "warm_cold": 0.5
+        "literal_abstract": 0.85,
+        "system_intuition": -0.9
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "brand-type"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_bt_dynamic_identity",
+      "style_id": "gd_dynamic_identity",
+      "category_id": "bt-identity",
+      "field_id": "brand-type",
+      "label": "Living Generative Identity",
+      "subtitle": "No static logo — the brand mutates live to music, weather, or data",
+      "canonical_ref": "MIT Media Lab / Studio Dumbar",
+      "image_url": null,
+      "credit_line": "Brand Study — Rule-driven dynamic identity",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Living Generative Identity — No static logo — the brand mutates live to music, weather, or data (MIT Media Lab / Studio Dumbar)",
+      "pair_group_id": "pair_bt_brand_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "dynamic_brand",
+      "palette": [
+        "#0F1015",
+        "#F4F3EF",
+        "#10B981"
+      ],
+      "axis_loadings": {
+        "order_chaos": 0.25,
+        "minimal_maximal": 0.4,
+        "classic_contemporary": 0.9,
+        "functional_expressive": 0.65,
+        "literal_abstract": 0.85
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "brand-type"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_bt_custom_lettering",
+      "style_id": "gd_custom_lettering",
+      "category_id": "bt-identity",
+      "field_id": "brand-type",
+      "label": "Hand-Drawn Calligraphic Wordmark",
+      "subtitle": "Sweeping custom curves where you still feel the artist's wrist",
+      "canonical_ref": "Louise Fili / Jessica Hische",
+      "image_url": null,
+      "credit_line": "Lettering Study — Bespoke hand-drawn ligatures",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Hand-Drawn Calligraphic Wordmark — Sweeping custom curves where you still feel the artist's wrist (Louise Fili / Jessica Hische)",
+      "pair_group_id": "pair_bt_type_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "custom_lettering",
+      "palette": [
+        "#221A15",
+        "#F5E9D4",
+        "#C9933B"
+      ],
+      "axis_loadings": {
+        "classic_contemporary": -0.85,
+        "functional_expressive": 0.75,
+        "warm_cold": -0.9,
+        "system_intuition": 0.7
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "brand-type"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_bt_experimental_type",
+      "style_id": "gd_experimental_type",
+      "category_id": "bt-identity",
+      "field_id": "brand-type",
+      "label": "Sculptural Warped Display Type",
+      "subtitle": "Letters stretched to the edge between reading and pure sculpture",
+      "canonical_ref": "Emigre / Contemporary Variable Type",
+      "image_url": null,
+      "credit_line": "Type Study — Post-legibility sculptural display",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Sculptural Warped Display Type — Letters stretched to the edge between reading and pure sculpture (Emigre / Contemporary Variable Type)",
+      "pair_group_id": "pair_bt_type_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "experimental_warp",
+      "palette": [
+        "#0E0E11",
+        "#F4F2EC",
+        "#FF3B1D"
+      ],
+      "axis_loadings": {
+        "order_chaos": 0.88,
+        "classic_contemporary": 0.8,
+        "functional_expressive": 0.96,
+        "literal_abstract": 0.9,
+        "system_intuition": 0.88
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "brand-type"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_craft_type_grotesk",
+      "style_id": "craft_type_grotesk",
+      "category_id": "bt-craft-type",
+      "field_id": "brand-type",
+      "label": "Clean Neo-Grotesk",
+      "subtitle": "Crisp, invisible clarity that stays out of the way",
+      "canonical_ref": "Type Tuner · 12% Clean",
+      "image_url": null,
+      "credit_line": "Design Blend Live Tuner — Neo-Grotesk",
+      "source_url": null,
+      "license_note": "product-screenshot",
+      "alt_text": "Clean Neo-Grotesk — Crisp, invisible clarity that stays out of the way (Type Tuner · 12% Clean)",
+      "pair_group_id": null,
+      "craft_dimension": "typography",
+      "diagnostic_kind": "craft_variant",
+      "specimen_kind": "craft_type_grotesk",
+      "palette": [
+        "#F6F4EF",
+        "#141412",
+        "#FF5A36"
+      ],
+      "axis_loadings": {
+        "functional_expressive": -0.8,
+        "system_intuition": -0.85
+      },
+      "craft_loadings": {
+        "typography": -0.88
       },
       "tags": [
-        "rank-eligible"
+        "rank-eligible",
+        "brand-type",
+        "craft-strip"
       ],
-      "status": "pending"
+      "status": "approved"
+    },
+    {
+      "id": "pl_craft_type_mono",
+      "style_id": "craft_type_mono",
+      "category_id": "bt-craft-type",
+      "field_id": "brand-type",
+      "label": "Engineered Monospace",
+      "subtitle": "Fixed-width rhythm with raw technical honesty",
+      "canonical_ref": "Type Tuner · 38% Technical",
+      "image_url": null,
+      "credit_line": "Design Blend Live Tuner — Monospace",
+      "source_url": null,
+      "license_note": "product-screenshot",
+      "alt_text": "Engineered Monospace — Fixed-width rhythm with raw technical honesty (Type Tuner · 38% Technical)",
+      "pair_group_id": null,
+      "craft_dimension": "typography",
+      "diagnostic_kind": "craft_variant",
+      "specimen_kind": "craft_type_mono",
+      "palette": [
+        "#F6F4EF",
+        "#141412",
+        "#FF5A36"
+      ],
+      "axis_loadings": {
+        "functional_expressive": -0.45,
+        "warm_cold": 0.7
+      },
+      "craft_loadings": {
+        "typography": -0.25
+      },
+      "tags": [
+        "rank-eligible",
+        "brand-type",
+        "craft-strip"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_craft_type_serif",
+      "style_id": "craft_type_serif",
+      "category_id": "bt-craft-type",
+      "field_id": "brand-type",
+      "label": "Literary Book Serif",
+      "subtitle": "Warmth, history, and human voice on every curve",
+      "canonical_ref": "Type Tuner · 72% Literary",
+      "image_url": null,
+      "credit_line": "Design Blend Live Tuner — Literary Serif",
+      "source_url": null,
+      "license_note": "product-screenshot",
+      "alt_text": "Literary Book Serif — Warmth, history, and human voice on every curve (Type Tuner · 72% Literary)",
+      "pair_group_id": null,
+      "craft_dimension": "typography",
+      "diagnostic_kind": "craft_variant",
+      "specimen_kind": "craft_type_serif",
+      "palette": [
+        "#F6F4EF",
+        "#141412",
+        "#FF5A36"
+      ],
+      "axis_loadings": {
+        "functional_expressive": 0.45,
+        "classic_contemporary": -0.65,
+        "warm_cold": -0.45
+      },
+      "craft_loadings": {
+        "typography": 0.55
+      },
+      "tags": [
+        "rank-eligible",
+        "brand-type",
+        "craft-strip"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_craft_type_kinetic",
+      "style_id": "craft_type_kinetic",
+      "category_id": "bt-craft-type",
+      "field_id": "brand-type",
+      "label": "Loud Sculptural Display",
+      "subtitle": "Type IS the artwork — dramatic contrast and attitude",
+      "canonical_ref": "Type Tuner · 96% Expressive",
+      "image_url": null,
+      "credit_line": "Design Blend Live Tuner — Sculptural Display",
+      "source_url": null,
+      "license_note": "product-screenshot",
+      "alt_text": "Loud Sculptural Display — Type IS the artwork — dramatic contrast and attitude (Type Tuner · 96% Expressive)",
+      "pair_group_id": null,
+      "craft_dimension": "typography",
+      "diagnostic_kind": "craft_variant",
+      "specimen_kind": "craft_type_kinetic",
+      "palette": [
+        "#141418",
+        "#F6F4EF",
+        "#FF5A36"
+      ],
+      "axis_loadings": {
+        "functional_expressive": 0.92,
+        "system_intuition": 0.85
+      },
+      "craft_loadings": {
+        "typography": 0.96
+      },
+      "tags": [
+        "rank-eligible",
+        "brand-type",
+        "craft-strip"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_ms_micro_physics",
+      "style_id": "ui_micro_physics",
+      "category_id": "ms-interaction",
+      "field_id": "motion-spatial",
+      "label": "Physical Momentum & Springs",
+      "subtitle": "Carries your finger's velocity smoothly — interruptible mid-air",
+      "canonical_ref": "Apple Dynamic Island / Fluid UI",
+      "image_url": null,
+      "credit_line": "Motion Study — Velocity-preserving spring physics",
+      "source_url": null,
+      "license_note": "product-screenshot",
+      "alt_text": "Physical Momentum & Springs — Carries your finger's velocity smoothly — interruptible mid-air (Apple Dynamic Island / Fluid UI)",
+      "pair_group_id": "pair_ms_motion_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "spring_physics",
+      "palette": [
+        "#111217",
+        "#F4F3EF",
+        "#10B981"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.45,
+        "classic_contemporary": 0.75,
+        "flat_dimensional": 0.45
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "motion-spatial"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_ms_instant_snappy",
+      "style_id": "ui_instant_snappy",
+      "category_id": "ms-interaction",
+      "field_id": "motion-spatial",
+      "label": "Zero-Delay 0ms Snap",
+      "subtitle": "No animation at all — pure instant reflex at the speed of thought",
+      "canonical_ref": "Raycast / Pro CAD / Terminal",
+      "image_url": null,
+      "credit_line": "Motion Study — Instant zero-latency response",
+      "source_url": null,
+      "license_note": "product-screenshot",
+      "alt_text": "Zero-Delay 0ms Snap — No animation at all — pure instant reflex at the speed of thought (Raycast / Pro CAD / Terminal)",
+      "pair_group_id": "pair_ms_motion_1",
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "zero_latency",
+      "palette": [
+        "#F5F4F0",
+        "#111110",
+        "#FF5A36"
+      ],
+      "axis_loadings": {
+        "order_chaos": -0.9,
+        "minimal_maximal": -0.8,
+        "functional_expressive": -0.95,
+        "warm_cold": 0.75,
+        "flat_dimensional": -0.95
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "motion-spatial"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_ms_generative_graphic",
+      "style_id": "gd_generative_graphic",
+      "category_id": "ms-interaction",
+      "field_id": "motion-spatial",
+      "label": "Live Algorithmic Shader Field",
+      "subtitle": "Thousands of flowing mathematical contours reacting to sound & cursor",
+      "canonical_ref": "Vera Molnár / Casey Reas / TouchDesigner",
+      "image_url": null,
+      "credit_line": "Generative Study — Real-time vector flow shader",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Live Algorithmic Shader Field — Thousands of flowing mathematical contours reacting to sound & cursor (Vera Molnár / Casey Reas / TouchDesigner)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "canonical",
+      "specimen_kind": "generative_field",
+      "palette": [
+        "#101116",
+        "#F4F2EC",
+        "#FF5A36"
+      ],
+      "axis_loadings": {
+        "order_chaos": 0.35,
+        "minimal_maximal": 0.5,
+        "classic_contemporary": 0.85,
+        "functional_expressive": 0.8,
+        "literal_abstract": 0.96
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "motion-spatial"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_gd_clay_slop",
+      "style_id": "gd_clay_slop",
+      "category_id": "ms-interaction",
+      "field_id": "motion-spatial",
+      "label": "Wobbly 3D Bubble-Clay Cartoon",
+      "subtitle": "Puffy plasticine mascots bouncing for 700ms on every click",
+      "canonical_ref": "Over-Used Startup 3D Clay Pack",
+      "image_url": null,
+      "credit_line": "Diagnostic Foil — Inflated Corporate Clay Slop",
+      "source_url": null,
+      "license_note": "portfolio",
+      "alt_text": "Wobbly 3D Bubble-Clay Cartoon — Puffy plasticine mascots bouncing for 700ms on every click (Over-Used Startup 3D Clay Pack)",
+      "pair_group_id": null,
+      "craft_dimension": null,
+      "diagnostic_kind": "anti_slop",
+      "specimen_kind": "clay_slop",
+      "palette": [
+        "#FFF0F6",
+        "#EC4899",
+        "#8B5CF6"
+      ],
+      "axis_loadings": {
+        "minimal_maximal": 0.55,
+        "classic_contemporary": 0.75,
+        "warm_cold": -0.65,
+        "flat_dimensional": 0.95,
+        "literal_abstract": -0.75
+      },
+      "craft_loadings": {},
+      "tags": [
+        "rank-eligible",
+        "motion-spatial",
+        "anti-slop"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_craft_surface_wire",
+      "style_id": "craft_surface_wire",
+      "category_id": "ms-craft-surface",
+      "field_id": "motion-spatial",
+      "label": "Crisp Flat Ink",
+      "subtitle": "Zero shadows, zero bevels — pure graphic sharpness",
+      "canonical_ref": "Material Tuner · 06% Flat",
+      "image_url": null,
+      "credit_line": "Design Blend Live Tuner — Flat Ink",
+      "source_url": null,
+      "license_note": "product-screenshot",
+      "alt_text": "Crisp Flat Ink — Zero shadows, zero bevels — pure graphic sharpness (Material Tuner · 06% Flat)",
+      "pair_group_id": null,
+      "craft_dimension": "surface",
+      "diagnostic_kind": "craft_variant",
+      "specimen_kind": "craft_surface_wire",
+      "palette": [
+        "#F6F4EF",
+        "#141412",
+        "#FF5A36"
+      ],
+      "axis_loadings": {
+        "flat_dimensional": -0.96,
+        "minimal_maximal": -0.6
+      },
+      "craft_loadings": {
+        "surface": -0.95
+      },
+      "tags": [
+        "rank-eligible",
+        "motion-spatial",
+        "craft-strip"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_craft_surface_vellum",
+      "style_id": "craft_surface_vellum",
+      "category_id": "ms-craft-surface",
+      "field_id": "motion-spatial",
+      "label": "Soft Matte Paper",
+      "subtitle": "Gentle warmth and subtle cotton texture without heavy 3D",
+      "canonical_ref": "Material Tuner · 36% Matte",
+      "image_url": null,
+      "credit_line": "Design Blend Live Tuner — Matte Paper",
+      "source_url": null,
+      "license_note": "product-screenshot",
+      "alt_text": "Soft Matte Paper — Gentle warmth and subtle cotton texture without heavy 3D (Material Tuner · 36% Matte)",
+      "pair_group_id": null,
+      "craft_dimension": "surface",
+      "diagnostic_kind": "craft_variant",
+      "specimen_kind": "craft_surface_vellum",
+      "palette": [
+        "#EFECE4",
+        "#181715",
+        "#FF5A36"
+      ],
+      "axis_loadings": {
+        "flat_dimensional": -0.35,
+        "warm_cold": -0.65
+      },
+      "craft_loadings": {
+        "surface": -0.25
+      },
+      "tags": [
+        "rank-eligible",
+        "motion-spatial",
+        "craft-strip"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_craft_surface_glass",
+      "style_id": "craft_surface_glass",
+      "category_id": "ms-craft-surface",
+      "field_id": "motion-spatial",
+      "label": "Refractive Liquid Glass",
+      "subtitle": "Translucent depth catching light along a curved bevel",
+      "canonical_ref": "Material Tuner · 72% Optical",
+      "image_url": null,
+      "credit_line": "Design Blend Live Tuner — Optical Glass",
+      "source_url": null,
+      "license_note": "product-screenshot",
+      "alt_text": "Refractive Liquid Glass — Translucent depth catching light along a curved bevel (Material Tuner · 72% Optical)",
+      "pair_group_id": null,
+      "craft_dimension": "surface",
+      "diagnostic_kind": "craft_variant",
+      "specimen_kind": "craft_surface_glass",
+      "palette": [
+        "#14171F",
+        "#F1F5F9",
+        "#38BDF8"
+      ],
+      "axis_loadings": {
+        "flat_dimensional": 0.68,
+        "classic_contemporary": 0.7
+      },
+      "craft_loadings": {
+        "surface": 0.55
+      },
+      "tags": [
+        "rank-eligible",
+        "motion-spatial",
+        "craft-strip"
+      ],
+      "status": "approved"
+    },
+    {
+      "id": "pl_craft_surface_hardware",
+      "style_id": "craft_surface_hardware",
+      "category_id": "ms-craft-surface",
+      "field_id": "motion-spatial",
+      "label": "Sculpted Physical Keycap",
+      "subtitle": "Skeuomorphic tactile switch you want to press with your thumb",
+      "canonical_ref": "Material Tuner · 95% Tactile",
+      "image_url": null,
+      "credit_line": "Design Blend Live Tuner — Sculpted Keycap",
+      "source_url": null,
+      "license_note": "product-screenshot",
+      "alt_text": "Sculpted Physical Keycap — Skeuomorphic tactile switch you want to press with your thumb (Material Tuner · 95% Tactile)",
+      "pair_group_id": null,
+      "craft_dimension": "surface",
+      "diagnostic_kind": "craft_variant",
+      "specimen_kind": "craft_surface_hardware",
+      "palette": [
+        "#DCD9D0",
+        "#161615",
+        "#FF5A36"
+      ],
+      "axis_loadings": {
+        "flat_dimensional": 0.92,
+        "warm_cold": -0.25
+      },
+      "craft_loadings": {
+        "surface": 0.95
+      },
+      "tags": [
+        "rank-eligible",
+        "motion-spatial",
+        "craft-strip"
+      ],
+      "status": "approved"
     }
   ]
 }

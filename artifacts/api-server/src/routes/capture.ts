@@ -21,9 +21,10 @@ const USERNAME_RE = /^[a-z0-9][a-z0-9-]{1,30}$/;
 
 const responseSchema = z.object({
   plateId: z.string().min(1),
-  mode: z.enum(["pick", "rank", "rate"]),
+  mode: z.enum(["pick", "rank", "rate", "pair"]),
   value: z.number().int().min(0).max(100),
   sequence: z.number().int().min(0),
+  critiqueTags: z.array(z.string()).optional(),
 });
 
 const appendBodySchema = z.object({

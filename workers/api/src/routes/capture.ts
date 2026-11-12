@@ -25,7 +25,7 @@ function parseResponses(body: unknown): ResponseIn[] | null {
     if (!r || typeof r !== "object") return null;
     const o = r as ResponseIn;
     if (typeof o.plateId !== "string" || !o.plateId) return null;
-    if (!["pick", "rank", "rate"].includes(o.mode)) return null;
+    if (!["pick", "rank", "rate", "pair"].includes(o.mode)) return null;
     if (!Number.isInteger(o.value) || o.value < 0 || o.value > 100) return null;
     if (!Number.isInteger(o.sequence) || o.sequence < 0) return null;
   }
